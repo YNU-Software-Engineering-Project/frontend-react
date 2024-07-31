@@ -32,7 +32,7 @@ jobs:
 
       - name: Login to Amazon ECR Public
         run: |
-          aws ecr-public get-login-password --region us-east-1 | docker login --username AWS --password-stdin public.ecr.aws
+          aws ecr-public get-login-password --region ${{ secrets.AWS_ECR_REGTION }} | docker login --username AWS --password-stdin public.ecr.aws
 
       # 아래는 시크릿 리포지토리용
       #- name: Login to Amazon ECR
@@ -43,7 +43,7 @@ jobs:
         id: build-image
         env:
           ECR_REGISTRY: public.ecr.aws
-          ECR_REPOSITORY: g6q1r5o1/ynu-swe-fe
+          ECR_REPOSITORY: ${{ secrets.ECR_PUB_REPO }}
           IMAGE_TAG: ${{ github. sha }}
         run: |
           # Build a docker container and push it to ECR
