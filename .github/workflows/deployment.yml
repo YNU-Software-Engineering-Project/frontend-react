@@ -51,3 +51,10 @@ jobs:
           echo "Pushing image to ECR..."
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+
+      - name: Cleanup old images
+        run: |
+          images=$(aws ecr-public describe-images --repository-name g6q1r5o1/ynu-swe-fe --region ${{ secrets.AWS_ECR_REGTION }} --output json | jq -r '.imageDetails | sort_by(.imagePushedAt) | .[:-2] | .[].imageDigest')
+          for image in $images; do
+            aws ecr-public batch-delete-image --repository-name g6q1r5o1/ynu-swe-fe --image-ids imageDigest=$image --region ${{ secrets.AWS_ECR_REGTION }}
+          done
