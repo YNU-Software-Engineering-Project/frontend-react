@@ -54,7 +54,9 @@ jobs:
 
       - name: Cleanup old images
         run: |
+          echo "Listing images in repository: ${{ secrets.ECR_PUB_REPO }}"
           images=$(aws ecr-public describe-images --repository-name ${{ secrets.ECR_PUB_REPO }} --region ${{ secrets.AWS_ECR_REGION }} --output json | jq -r '.imageDetails | sort_by(.imagePushedAt) | .[:-2] | .[].imageDigest')
+          echo "Images to be deleted: $images"
           for image in $images; do
             aws ecr-public batch-delete-image --repository-name ${{ secrets.ECR_PUB_REPO }} --image-ids imageDigest=$image --region ${{ secrets.AWS_ECR_REGION }}
           done
