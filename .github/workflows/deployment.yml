@@ -58,3 +58,11 @@ jobs:
           for image in $images; do
             aws ecr-public batch-delete-image --repository-name ${{ secrets.ECR_PUB_REPO }} --image-ids imageDigest=$image --region ${{ secrets.AWS_ECR_REGION }}
           done
+
+      - name: Debug repository and region
+        run: |
+          echo "Repository: ${{ secrets.ECR_PUB_REPO }}"
+          echo "Region: ${{ secrets.AWS_ECR_REGION }}"
+          aws ecr-public describe-repositories --region ${{ secrets.AWS_ECR_REGION }}
+
+
