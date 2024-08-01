@@ -52,6 +52,15 @@ jobs:
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
+      - name: Deploy to ECS
+        env:
+          CLUSTER_NAME: ${{ secrets.ECS_CLUSTER_NAME }}
+          SERVICE_NAME: ${{ secrets.ECS_SERVICE_NAME }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          aws ecs update-service --cluster $CLUSTER_NAME --service $SERVICE_NAME --force-new-deployment --region $AWS_REGION
+
       - name: Cleanup old images
         run: |
           images=$(aws ecr-public describe-images --repository-name ${{ secrets.ECR_PUB_REPO_NAME }} --region ${{ secrets.AWS_ECR_REGION }} --output json | jq -r '.imageDetails | sort_by(.imagePushedAt) | .[:-2] | .[].imageDigest')
