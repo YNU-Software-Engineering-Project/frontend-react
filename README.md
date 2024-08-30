@@ -15,12 +15,8 @@
 
 ### Server(back-end)
 
-![](https://img.shields.io/badge/nodejs-339933?style=for-the-badge&logo=Node.js&logoColor=white)
-![](https://img.shields.io/badge/express-000000?style=for-the-badge&logo=Express&logoColor=white)
-
-![](https://img.shields.io/badge/webrtc-333333?style=for-the-badge&logo=WebRTC&logoColor=white)
-![](https://img.shields.io/badge/socketio-010101?style=for-the-badge&logo=Socket.io&logoColor=white)
-![](https://img.shields.io/badge/docker-2496ED?style=for-the-badge&logo=Docker&logoColor=white)
+![](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
+![](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 
 ### Front-end
 
