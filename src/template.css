@@ -1,0 +1,92 @@
+.template {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+.Header{
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-bottom: 70px; */
+    margin-bottom: 7vh;
+    width: 100%;
+    position: relative;
+    /* height: 20vh; */
+    /* height: 240px; */
+}
+
+.Header div {
+    font-weight: bold; 
+    cursor: pointer; 
+  }
+.Header_left{
+    position: absolute;
+    left: 20px;
+}
+.Header_center{
+    flex-grow: 1;
+    font-size: 50px;
+    color: #666666;
+    text-align: center;
+}
+.Header_right{
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    position: absolute;
+    right: 20px;
+}
+.alarm_icon, .profile_icon{
+    /* font-size: 45px; */
+}
+
+.Content {
+    /* max-width: 1158px; */
+    max-height: 62vh;
+    max-width: 100%;
+    overflow: auto;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+
+.Footer{
+    background-color: #F4F4F5;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    /* height: 18vh; */
+}
+
+.Footer_content{
+    max-width: 1158px;
+    width: 100%;
+    margin: 0 auto;
+    flex-grow: 1;
+}
+.Footer span{
+    font-weight: bold; 
+}
+.Footer_top{
+    display: flex;
+    justify-content: space-between;
+}
+.Footer_bottom{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.Footer_bottom_right{
+    display: flex;
+    align-items: flex-end;
+}
+.service_button{
+    background-color: transparent; 
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    font-size: 14px;
+    text-decoration: underline;
+}
