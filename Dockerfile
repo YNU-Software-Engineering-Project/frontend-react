@@ -22,12 +22,10 @@
 
 #CMD ["nginx", "-g", "daemon off;"]
 
-#demo test. delete below after work done
-FROM nginx:latest
-LABEL name="demo"
-
-COPY ./src/index.html /usr/share/nginx/html/index.html
-
-EXPOSE 80
-
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:14
+WORKDIR /app
+COPY package.json .
+RUN npm install
+COPY . .
+EXPOSE 3000
+CMD ["npm", "start"]
