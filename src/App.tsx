@@ -1,10 +1,10 @@
 import { Route, Routes } from 'react-router-dom';
-import DefaultPage from 'pages/DefaultPage';
+import Homepage from 'pages/Homepage';
 
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<DefaultPage />} />
+      <Route path="/" element={<Homepage />} />
     </Routes>
   );
 }
