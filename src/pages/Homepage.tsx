@@ -1,9 +1,14 @@
-import styles from 'styles/HomePage.module.css';
+import styles from 'styles/homePage/HomePage.module.css';
+import PostList from 'components/homePage/PostList';
 
-const Homepage = function Homepage() {
+const Homepage = () => {
   return (
     <>
-      <div className={styles.defaultPage}>테스트 페이지</div>
+      <div>
+        <PostList />
+      </div>
+      <div>contents2</div>
+      <div>contents3</div>
     </>
   );
 };
