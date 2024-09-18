@@ -30,8 +30,6 @@ const OptionList: React.FC<OptionListProps> = ({ items }) => {
     if (nextRect && highlight.current) {
       const highlightEliment = highlight.current;
 
-      console.log(nextRect);
-
       requestAnimationFrame(() => {
         highlightEliment.style.transition = 'transform 0.5s ease';
         highlightEliment.style.height = `${nextRect.height}px`;

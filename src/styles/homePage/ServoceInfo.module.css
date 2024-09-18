@@ -1,0 +1,32 @@
+.wrapper {
+  width: 1160px;
+  margin: 128px auto;
+}
+
+.subHeader > p {
+  font-size: 24px;
+  font-weight: 300;
+}
+
+.main {
+  display: flex;
+  justify-content: space-between;
+}
+.main > img {
+  width: 460px;
+}
+
+.options {
+  width: 632px;
+}
+
+.options > div {
+  margin-top: 20px;
+}
+.options > div > p {
+  font-size: 24px;
+}
+
+.options > div > p:nth-child(2n) {
+  font-weight: 300;
+}

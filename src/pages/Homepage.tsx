@@ -1,5 +1,7 @@
 import styles from 'styles/homePage/HomePage.module.css';
 import PostList from 'components/homePage/PostList';
+import PostInfo from 'components/homePage/PostInfo';
+import ServiceInfo from 'components/homePage/ServiceInfo';
 
 const Homepage = () => {
   return (
@@ -7,8 +9,12 @@ const Homepage = () => {
       <div>
         <PostList />
       </div>
-      <div>contents2</div>
-      <div>contents3</div>
+      <div>
+        <ServiceInfo />
+      </div>
+      <div>
+        <PostInfo />
+      </div>
     </>
   );
 };
