@@ -1,0 +1,117 @@
+.menu_bar{
+  display: flex;
+  flex-direction: column;
+  width: 14vw;
+  height: 100vh;
+}
+.menu_bar_top{
+  text-align: center;
+  margin-top: 7vh;
+}
+
+.admin_container{
+  display: flex;
+  flex-direction: row;
+}
+
+.summary_content{
+  background-color: #FAFAFA;
+  /* width: 46vw; */
+  height: 100vh;
+  max-width: 885px;
+  max-width: 1268px;
+}
+.customer_management{
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  width: 865px;
+  height: 206px;
+  margin: 10px;
+}
+.funding_status{
+  display: flex;
+  flex-direction: row;
+  background-color: #ffffff;
+  width: 865px;
+  height: 533px;
+  margin: 10px;
+}
+.horizontal_line_CAC4D0{
+  width: 100%;
+  border-bottom: 1px solid #CAC4D0;
+  line-height: 0.1em;
+  margin: 10px 0 7vh;
+}
+.horizontal_line{
+  width: 100%;
+  border-bottom: 1px solid #000;
+  line-height: 0.1em;
+  margin: 10px 0 10px;
+}
+hr{
+  border: 0; 
+  height: 84px;/* 7vh; */
+  background-color: #000;
+  width: 0.1px;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+.title{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 75px;
+}
+.vertical_line{
+  border-left: 1px solid #000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.customer_management_top, .customer_management_bottom{
+  display: flex;
+  justify-content: flex-end;
+}
+.customer_management_container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: end;
+}
+.customer_management_component{
+  display: flex;
+  flex-direction: column;
+  width: 790px;
+  height: 206px;
+}
+
+.funding_status_component{
+  display: flex;
+  flex-direction: column;
+  width: 790px;
+  height: 533px;
+}
+.funding_status_top, .funding_status_bottom{
+  display: flex;
+  justify-content: flex-end;
+}
+.funding_status_container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: end;
+}
+.chart{
+  height: 333px;
+}
+.funding_success{
+  color: #1BD9C9;
+}
+.funding_fail{
+  color: #1CBFB2;
+}
+.funding_running{
+  color: #14958B;
+}
+

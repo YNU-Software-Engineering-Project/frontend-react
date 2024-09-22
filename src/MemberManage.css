@@ -1,0 +1,68 @@
+.member_status_bar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.search{
+    border-radius:20px;
+}
+.page_manage{
+    display: flex;
+    flex-direction: row;
+}
+.customer_management_content{
+    background-color: #FAFAFA;
+    width: 46vw; 
+    height: 100vh;
+    max-width: 885px;
+    max-width: 1268px;
+}
+
+.userState_popup{
+    width: 860px;
+    height: 1148px;
+    border: 1px solid #919191;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.userState_popup_top{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 820px;
+    height: 68px;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+.userState_popup_content{
+    height: 940px;
+}
+input{ 
+    /* className지정해서 변경해야 함 */
+    margin-bottom: 10px;
+}
+.userState_popup_bottom{
+    width: 820px;
+    height: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+.cancel_button{
+    width: 380px;
+    background-color: #E3E3E3;
+    border-radius: 10px;
+    color: #1E1E1E;
+    font-size: 16PX;
+    border-color: #767676;
+    border-width: thin;
+}
+.save_button{
+    width: 380px;
+    background-color: #2C2C2C;
+    border-radius: 10px;
+    color: #F5F5F5;
+    font-size: 16PX;
+    border: none;
+}
