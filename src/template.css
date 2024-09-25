@@ -1,0 +1,15 @@
+.template {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-width: 100vw;
+}
+
+.Content {
+    max-width: 1158px;
+    max-height: 62vh;
+    max-width: 100%;
+    overflow: auto;
+    margin: 0 auto;
+    flex-grow: 1;
+}
