@@ -1,4 +1,4 @@
-import style from 'styles/PostListPage/CheckBox.module.css';
+import style from 'styles/PostListPage/Checkbox.module.css';
 
 type CheckboxProps = {
   title: string;

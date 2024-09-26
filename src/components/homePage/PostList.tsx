@@ -1,7 +1,6 @@
 import Button from 'components/common/Button';
 import OptionList from 'components/common/OptionList';
-import PostCard from 'components/common/PostCard';
-import { PostCardProps } from 'components/common/PostCard';
+import PostCard, { PostCardProps } from 'components/common/PostCard';
 
 const PostList = () => {
   const optionsItems = [
@@ -71,7 +70,7 @@ const PostList = () => {
               postSummary={info.postSummary}
               progressBarValue={info.progressBarValue}
               tagList={info.tagList}
-              key={index}
+              key={`${info.postTitle} - ${info.postSummary}`}
             />
           ))}
         </div>
