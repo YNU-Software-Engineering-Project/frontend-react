@@ -10,20 +10,20 @@
     height: 240px;
 }
 
-.Header div {
-    font-weight: bold; 
-    cursor: pointer; 
-  }
 .Header_left{
     position: absolute;
     left: 20px;
     font-size: 24px;
+    cursor: pointer; 
 }
 .Header_center{
     flex-grow: 1;
     font-size: 140px;
+    letter-spacing: -15px;
     color: #666666;
     text-align: center;
+    font-weight: bold; 
+    cursor: pointer; 
 }
 .Header_right{
     display: flex;
@@ -36,6 +36,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer; 
 }
 .post{
     font-size: 24px;
