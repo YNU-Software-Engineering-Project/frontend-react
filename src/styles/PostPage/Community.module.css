@@ -1,0 +1,19 @@
+.divider {
+  border: 1px solid gray;
+}
+
+.wrapper {
+  padding-right: 30px;
+}
+
+.wrapper > header {
+  margin-bottom: 40px;
+  text-align: end;
+}
+
+.wrapper > main{
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 20px;
+}

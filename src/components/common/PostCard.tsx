@@ -24,7 +24,7 @@ const PostCard: React.FC<PostCardProps> = props => {
   const handleLike = () => {
     setLiked(prev => !prev);
   };
-
+  ``;
   return (
     <>
       <Card

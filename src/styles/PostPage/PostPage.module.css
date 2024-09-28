@@ -1,0 +1,49 @@
+.wrapper {
+  width: 1160px;
+  margin: 0px auto;
+}
+
+.wrapper > header {
+  display: flex;
+  justify-content: center;
+}
+
+.main {
+  margin-top: 70px;
+  display: flex;
+}
+
+.content {
+  width: 688px;
+}
+
+.sidebar {
+  width: 472px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-left: 1px solid #cac4d0;
+  position: sticky;
+  padding: 10px;
+}
+
+.title {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: normal;
+}
+
+.divider {
+  width: 100%;
+  border: 1px solid #cac4d0;
+}
+
+.buttonBox {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
