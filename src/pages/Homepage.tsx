@@ -1,11 +1,13 @@
-import styles from 'styles/homePage/HomePage.module.css';
 import PostList from 'components/homePage/PostList';
 import PostInfo from 'components/homePage/PostInfo';
 import ServiceInfo from 'components/homePage/ServiceInfo';
+import Header from 'components/common/Header';
+import Footer from "components/common/Footer"
 
 const Homepage = () => {
   return (
     <>
+    <Header/>
       <div>
         <PostList />
       </div>
@@ -15,6 +17,7 @@ const Homepage = () => {
       <div>
         <PostInfo />
       </div>
+      <Footer/>
     </>
   );
 };

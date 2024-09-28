@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import styles from 'styles/Footer.module.css';
+import styles from 'styles/common/Footer.module.css';
 
 function Home() {
   const navigate = useNavigate();

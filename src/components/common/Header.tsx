@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import styles from 'styles/Header.module.css';
+import styles from 'styles/common/Header.module.css';
 
 function Header() {
   const navigate = useNavigate();
