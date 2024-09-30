@@ -1,4 +1,4 @@
-import style from 'styles/PostListPage/PostList.module.css';
+import style from 'styles/PostListPage/Postlist.module.css';
 import PostCard, { PostCardProps } from 'components/common/PostCard';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
