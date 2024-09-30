@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import ToastUiEdit from 'component/ToastUi';
+import ToastUiEdit from 'components/toastUI/ToastUi';
 import styles from 'styles/CreatePage/sections/story.module.css';
 // import camera from'assets/cameraIcon.png';
 
