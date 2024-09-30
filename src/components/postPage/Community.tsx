@@ -1,31 +1,32 @@
 import style from 'styles/PostPage/Community.module.css';
-import QuestionCardList from './community/QuestionCardList';
+import Button from 'components/common/Button';
+import CreateIcon from '@mui/icons-material/Create';
+import QuestionCard from './community/QuestionCard';
 import WriteQuestion from './community/WriteQuestion';
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 
 const Community = () => {
-  //slider 제어부분
-  const [showQuestion, setShowQuestion] = useState<boolean>(false);
-  const slide_1 = useRef<HTMLDivElement>(null);
-  const slide_2 = useRef<HTMLDivElement>(null);
 
-  const handleToggle = () => {
-    setShowQuestion(!showQuestion);
-    if (!slide_1.current || !slide_2.current) return;
-    if (showQuestion) {
-      slide_1.current.setAttribute('style', `left: ${-680}px`);
-      slide_2.current.setAttribute('style', `left: ${-680}px`);
-    } else {
-      slide_1.current.setAttribute('style', `left: ${0}px`);
-      slide_2.current.setAttribute('style', `left: ${0}px`);
-    }
-  };
+
+  //글쓰기 버튼
+  const [showWriteModal,setShowWriteModal] = useState<boolean>(false);
+  const handleCommentToggle = () =>{
+    setShowWriteModal(!showWriteModal);
+  }
 
   return (
     <>
       <div className={style.wrapper}>
-        <QuestionCardList ref={slide_1} handleShow={handleToggle} />
-        <WriteQuestion ref={slide_2} handleShow={handleToggle} />
+        {<WriteQuestion/>}
+        <header>
+          <Button style={{ padding: '20px 30px' }} onClick={handleCommentToggle}>
+            <CreateIcon /> 글쓰기
+          </Button>
+        </header>
+        <div className={style.divider} />
+        <main>
+          <QuestionCard />
+        </main>
       </div>
     </>
   );
