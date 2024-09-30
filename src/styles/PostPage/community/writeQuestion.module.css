@@ -1,0 +1,70 @@
+.flexEnd {
+  align-self: flex-end;
+}
+.divider {
+  border: 1px solid gray;
+}
+
+.wrapper {
+  /* position - 버튼 클릭시 left offset값을 적용시키기 위해 */
+  position: relative;
+  left: 0px;
+
+  /* size */
+  width: 100%;
+  flex-shrink: 0;
+
+  /* transition */
+  transition: left 0.15s;
+}
+
+.wrapper > header {
+  display: flex;
+  flex-direction: column;
+}
+
+.titleBox {
+  margin-top: 20px;
+  height: 48px;
+  font-size: 18px;
+}
+
+.titleBox > input {
+  margin-left: 20px;
+  width: 400px;
+  height: 38px;
+  font-size: 18px;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.textBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  margin-left: 55px;
+}
+
+.textBox textarea {
+  width: 500px;
+  min-height: 200px;
+  resize: none;
+  overflow: hidden;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.textBox button {
+  width: 55px;
+  height: 40px;
+  padding: 3px 6px;
+  background-color: inherit;
+  border-radius: 20px;
+}
+
+.textBox button:hover {
+  background-color: rgba(125, 125, 125, 0.2);
+}
