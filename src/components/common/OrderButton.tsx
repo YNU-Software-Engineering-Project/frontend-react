@@ -1,4 +1,4 @@
-import Button, { ButtonProps } from './Button';
+import Button from './Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 

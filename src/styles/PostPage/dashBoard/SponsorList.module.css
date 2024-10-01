@@ -1,0 +1,9 @@
+.header {
+  font-size: 24px;
+}
+
+.filterBox {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px 0px;
+}
