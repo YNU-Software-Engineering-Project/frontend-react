@@ -12,16 +12,12 @@ const TermsOfService =() => {
   const initialSection = location.state?.section || 'ServiceInfo';
   const [selectedSection, setSelectedSection] = useState<string>(initialSection);
 
-  const handleSectionChange = (section: string) => {
-    setSelectedSection(section);
-  };
-
   const renderSectionContent = () =>{
     switch(selectedSection){
-      case 'ServiceInfo': return<ServiceInfo onSectionChange={handleSectionChange} />
+      case 'ServiceInfo': return<ServiceInfo/>
       case 'PolicyInfo': return<PolicyInfo/>
       case 'PaymentInfo': return<PaymentInfo/>
-      default: return<ServiceInfo onSectionChange={handleSectionChange}/>
+      default: return<ServiceInfo/>
     }
   };
   return(

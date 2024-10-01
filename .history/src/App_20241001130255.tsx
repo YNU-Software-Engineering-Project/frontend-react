@@ -7,6 +7,7 @@ function App() {
     <Routes>
       <Route path="/" element={<Homepage />} />
       <Route path="/termsOfService" element={<TermsOfService />} />
+      <Route path="/" element={<Homepage />} />
     </Routes>
   );
 }

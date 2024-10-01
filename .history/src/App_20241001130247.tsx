@@ -6,7 +6,8 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<Homepage />} />
-      <Route path="/termsOfService" element={<TermsOfService />} />
+      <Route path="/tos" element={<TermsOfService />} />
+      <Route path="/" element={<Homepage />} />
     </Routes>
   );
 }
