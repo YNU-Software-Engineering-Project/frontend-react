@@ -1,10 +1,12 @@
 import styles from "styles/termsOfService/serviceInfo.module.css";
+import { useNavigate } from "react-router-dom";
 
 interface ServiceInfoProps {
   onSectionChange: (section: string) => void; // 섹션 변경 핸들러의 타입
 }
 
 const ServiceInfo: React.FC<ServiceInfoProps> = ({ onSectionChange }) => {
+  const navigate = useNavigate();
 
   const imgClickHandle = function imgClickHandle() {
     window.open('https://www.wadiz.kr/web/wterms/funding_plan_policy/20210910', '_blank');
