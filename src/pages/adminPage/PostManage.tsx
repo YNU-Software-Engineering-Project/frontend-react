@@ -2,7 +2,7 @@ import { useState } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuBar from 'components/adminPage/menuBar';
-import styles from 'styles/adminPage/PostManage.module.css'; // Import CSS Module
+import styles from 'styles/adminPage/PostManage.module.css';
 
 function PostManage() {
   interface Card {

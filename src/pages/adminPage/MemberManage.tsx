@@ -4,7 +4,7 @@ import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutl
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import MenuBar from 'components/adminPage/menuBar';
 import PageManage from 'components/adminPage/pageManage';
-import styles from 'styles/adminPage/MemberManage.module.css'; // Import CSS Module
+import styles from 'styles/adminPage/MemberManage.module.css';
 
 type Member = {
   number: number;

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuBar from 'components/adminPage/menuBar';
-import styles from 'styles/adminPage/chat.module.css'; // Import CSS Module
+import styles from 'styles/adminPage/chat.module.css';
 
 function Chat() {
   const chat = Array(20).fill({ title: '상대방 이름', content: 'content', time: 'time' });
