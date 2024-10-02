@@ -22,13 +22,13 @@
     margin-right: 10px;
     height: 78px;
 }
-.waiting{
+.waiting, .card_status_waiting{
     color: #ff9052;
 }
-.done{
+.done, .card_status_done{
     color: #007a41;
 }
-.ing{
+.ing, .card_status_ing{
     color: #b3b3b3;
 }
 .posting_status_container{

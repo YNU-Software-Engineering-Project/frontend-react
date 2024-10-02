@@ -8,6 +8,20 @@
   text-align: center;
   margin-top: 7vh;
 }
+.horizontal_line_CAC4D0{
+  width: 100%;
+  border-bottom: 1px solid #CAC4D0;
+  line-height: 0.1em;
+  margin: 10px 0 7vh;
+}
+.horizontal_line{
+  width: 100%;
+  border-bottom: 1px solid #000;
+  line-height: 0.1em;
+  margin: 10px 0 10px;
+}
+
+
 
 .admin_container{
   display: flex;
@@ -37,21 +51,10 @@
   height: 533px;
   margin: 10px;
 }
-.horizontal_line_CAC4D0{
-  width: 100%;
-  border-bottom: 1px solid #CAC4D0;
-  line-height: 0.1em;
-  margin: 10px 0 7vh;
-}
-.horizontal_line{
-  width: 100%;
-  border-bottom: 1px solid #000;
-  line-height: 0.1em;
-  margin: 10px 0 10px;
-}
+
 hr{
   border: 0; 
-  height: 84px;/* 7vh; */
+  height: 84px;
   background-color: #000;
   width: 0.1px;
   margin-left: 10px;
