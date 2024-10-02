@@ -1,5 +1,11 @@
+import TuiViewer from 'components/common/TuiViewer';
+
 const Story = () => {
-  return <>토스트 모듈</>;
+  return (
+    <>
+      <TuiViewer content="## 테스트 내용입니다." />
+    </>
+  );
 };
 
 export default Story;
