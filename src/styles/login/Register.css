@@ -9,7 +9,7 @@ body, html {
 
 .register_container{
     width: 321px;
-    height: 425px;
+    height: 612px;
     padding: 24px;
     border: 1px solid #D9D9D9;
     border-radius: 10px;
@@ -17,11 +17,11 @@ body, html {
     box-sizing: border-box;
 }
 
-.email_text, .password_text, .confirmPassword_text{
+.email_text, .password_text, .confirmPassword_text, .phoneNumber_text, .code_text{
     width: 272px;
     height: 22px;
 }
-.confirm_email, .confirm_password, .confirm_confirmPassword{
+.confirm_email, .confirm_password, .confirm_confirmPassword, .confirm_phoneNumber, .confirm_code{
     width: 272px;
     height: 40px;
     border: 1px solid #D9D9D9;

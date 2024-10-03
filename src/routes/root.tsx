@@ -1,7 +1,7 @@
 import Home from "../home";
-import Login from "../Login";
-import Register from "../Register";
-import ForgotPassword from "../ForgotPassword";
+import Login from "../pages/login/Login";
+import Register from "../pages/login/Register";
+import ForgotPassword from "../pages/login/ForgotPassword";
 import Template from "../template";
 import { createBrowserRouter } from "react-router-dom";
 

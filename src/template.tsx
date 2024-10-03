@@ -1,7 +1,5 @@
 import React from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { FaRegBell } from "react-icons/fa6";
-import { CgProfile } from "react-icons/cg";
 import './template.css';
 
 function Home() {
@@ -13,8 +11,8 @@ function Home() {
         <div className='Header_left'>메뉴</div>
         <div className='Header_center' onClick={() =>{navigate('');}}>SPARK+SEED</div>
         <div className='Header_right'>
-          <div className='alarm_icon'><FaRegBell /></div>
-          <div className='profile_icon'><CgProfile /></div>
+          <div className='alarm_icon'>bell</div>
+          <div className='profile_icon'>profile</div>
           <div style={{
             borderLeft: '1px solid #000', 
             height: '20px',

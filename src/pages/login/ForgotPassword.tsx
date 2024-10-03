@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import './ForgotPassword.css';
+import 'styles/login/ForgotPassword.css';
 import { Link } from 'react-router-dom';
-import { CiMail } from "react-icons/ci";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
 
 function ForgotPassword() {
   const[email, setEmail]=useState('');
@@ -34,7 +34,7 @@ function ForgotPassword() {
       {showAlert && (
         <div className="alert">
           <div className="alert_header">
-            <CiMail className="mail_icon" /> 
+            <MailOutlineIcon className="mail_icon" /> 
             <span className="highlight">초기화 완료</span>
             {/* 이메일과 전화번호 에러날시 "초기화 실패"  #FF0101*/}
             <button className="alert_close" onClick={handleCloseAlert}>✖</button>
