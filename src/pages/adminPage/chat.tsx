@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuBar from 'components/adminPage/menuBar';
 import styles from 'styles/adminPage/chat.module.css';

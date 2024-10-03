@@ -1,10 +1,9 @@
-import React from 'react';
 import styles from 'styles/adminPage/Admin.module.css';
 import { PieChart } from '@mui/x-charts';
 import { useSpring } from '@react-spring/web';
 import MenuBar from 'components/adminPage/menuBar';
 
-function App() {
+function Admin() {
   const successFundingValue = 50;
   const fundingStatus = [
     { label: '성공', value: successFundingValue, color: '#1BD9C9', id: 0 },
@@ -138,4 +137,4 @@ function App() {
   );
 }
 
-export default App;
+export default Admin;
