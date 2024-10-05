@@ -9,14 +9,12 @@ import Chat from 'pages/adminPage/chat';
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Homepage />} />
+      <Route index element={<Homepage />} />
       <Route path="/termsOfService" element={<TermsOfService />} />
-      <Route path='/admin' element={<Admin />} />
-        <Route index element={<Admin />} />
-        <Route path='membermange' element={<MemberMange />} />
-        <Route path='postmanage' element={<PostManage />} />
-        <Route path='chat' element={<Chat />} />
-
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/membermange" element={<MemberMange />} />
+      <Route path="/postmanage" element={<PostManage />} />
+      <Route path="/chat" element={<Chat />} />
     </Routes>
   );
 }
