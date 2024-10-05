@@ -7,10 +7,7 @@ declare module '*.css' {
   export default content;
 }
 
-    const content: { [key: string]: string };
-    export = content;
-  }
-  declare module '*.png' {
-    const value: string;
-    export default value;
-  }
+declare module '*.png' {
+  const value: string;
+  export default value;
+}
