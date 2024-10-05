@@ -1,0 +1,69 @@
+.myfunding_card_container{
+    width: 841px;
+    height: 310px;
+    background-color: transparent;
+    margin: 15px;
+    border-radius: 10px;
+    border: 2px solid #b3b3b3;
+}
+.container_content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.card_container{
+    height: 269px;
+    width: 756px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 27px 0 17px;
+}
+.status_card{
+    width: 336px;
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: #ffffff;
+}
+.card_content{
+    display: flex;
+    flex-direction: row;
+}
+.card_img{
+    width:46px;
+    height: 46px;
+    background-color: #b3b3b3;
+    margin: 5px;
+}
+.card_text{
+    height: 46px;
+    margin: 5px;
+    font-size: 16px;
+}
+.card_title{
+    font-weight: bold;
+    height: 22px;
+    color: #757575;
+}
+.waiting, .card_status_waiting{
+    color: #ff9052;
+}
+.done, .card_status_done{
+    color: #007a41;
+}
+.ing, .card_status_ing{
+    color: #b3b3b3;
+}
+.left{
+    margin-right: 20px;
+}
+.right{
+    margin-left: 20px;
+}
