@@ -12,6 +12,7 @@ import Admin from 'pages/adminPage/Admin';
 import MemberMange from 'pages/adminPage/MemberManage';
 import PostManage from 'pages/adminPage/PostManage';
 import Chat from 'pages/adminPage/chat';
+import NotFound from 'pages/NotFound';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
       <Route path="/membermange" element={<MemberMange />} />
       <Route path="/postmanage" element={<PostManage />} />
       <Route path="/chat" element={<Chat />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }
