@@ -1,0 +1,50 @@
+a{
+    color: #000;
+    text-decoration: none;
+}
+
+.profile_menu_bar{
+    width: 275px;
+    height: 1268px;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+.profile_img{
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background-color: #f5eef7;
+    margin-top: 60px;
+}
+.profile_name{
+    width: 176px;
+    height: 57px;
+    font-size: 16px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.horizon_line2{
+    width: 86%;
+    border-bottom: 1px solid #cac4d0;
+    line-height: 0.1em;
+    margin: 35px 0 30px;
+}
+.horizon_line{
+    width: 100%;
+    border-bottom: 1px solid #000;
+    line-height: 0.1em;
+    margin: 10px 0 10px;
+}
+.profile_menu{
+    display: flex;
+    flex-direction: column;
+    /* width: 238px; */
+    width: 86%;
+    height: 325px;
+    font-size: 18px;
+}
+svg{
+    vertical-align: middle;
+}
