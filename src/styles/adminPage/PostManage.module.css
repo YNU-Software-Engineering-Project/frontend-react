@@ -1,0 +1,116 @@
+.admin_container{
+    display: flex;
+    flex-direction: row;
+}
+.posting_content{
+    background-color: #FAFAFA;
+}
+.posting_status{
+    display: flex;
+    flex-direction: row;
+    background-color: #ffffff;
+    margin: 15px;
+    height: 150px;
+    width: 865px;
+    justify-content: center;
+    align-items: center;
+}
+.title_verticle_line{
+    border-left: 1px solid #000;
+    margin-right: 10px;
+    height: 78px;
+}
+.verticle_line{
+    border-left: 1px solid #000;
+    margin-left: 10px;
+    margin-right: 10px;
+    height: 78px;
+}
+.waiting, .card_status_waiting{
+    color: #ff9052;
+}
+.done, .card_status_done{
+    color: #007a41;
+}
+.ing, .card_status_ing{
+    color: #b3b3b3;
+}
+.posting_status_container{
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+}
+.left{
+    margin-right: 20px;
+}
+.right{
+    margin-left: 20px;
+}
+
+.posting_status_title{
+    width: 71px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.posting_status_component{
+    display: flex;
+    justify-content: flex-end;
+    width: 760px;
+}
+.postmanage_container{
+    width: 865px;
+    height: 482px;
+    background-color: #ffffff;
+    margin: 15px;
+    border-radius: 10px;
+}
+.container_title{
+    font-size: 16px;
+    padding: 20px;
+}
+.container_content{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.card_container{
+    height: 400px;
+    width: 737px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.status_card{
+    width: 336px;
+    height: 120px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.card_content{
+    display: flex;
+    flex-direction: row;
+}
+.card_img{
+    width:46px;
+    height: 46px;
+    background-color: #b3b3b3;
+    margin: 5px;
+}
+.card_text{
+    height: 46px;
+    margin: 5px;
+    font-size: 16px;
+}
+.card_title{
+    font-weight: bold;
+    height: 22px;
+    color: #757575;
+}

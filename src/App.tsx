@@ -7,6 +7,11 @@ import Community from 'components/postPage/Community';
 import Refund from 'components/postPage/Refund';
 import RewardInfo from 'components/postPage/RewardInfo';
 import DashBoard from 'components/postPage/DashBoard';
+import TermsOfService from 'pages/TermsofService';
+import Admin from 'pages/adminPage/Admin';
+import MemberMange from 'pages/adminPage/MemberManage';
+import PostManage from 'pages/adminPage/PostManage';
+import Chat from 'pages/adminPage/chat';
 
 function App() {
   return (
@@ -21,6 +26,11 @@ function App() {
         <Route path="rewardInfo" element={<RewardInfo />} />
         <Route path="dashboard" element={<DashBoard />} />
       </Route>
+      <Route path="/termsOfService" element={<TermsOfService />} />
+      <Route path="/admin" element={<Admin />} />
+      <Route path="/membermange" element={<MemberMange />} />
+      <Route path="/postmanage" element={<PostManage />} />
+      <Route path="/chat" element={<Chat />} />
     </Routes>
   );
 }
