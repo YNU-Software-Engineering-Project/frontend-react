@@ -1,0 +1,51 @@
+.pagination {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    width: 507px;
+    height: 38px;
+}
+.page_number{
+    width: 278px;
+    height: 38px;
+    gap: 0.5rem;
+    display: flex;
+    justify-content: center;
+}
+.pagination_button{
+    border: none;
+    cursor: pointer;
+    width: 124px;
+    height: 32px;
+    background-color: transparent;
+    font-size: 16px;
+}
+
+button.active {
+    background-color: #2c2c2c;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    width: 32px;
+    height: 32px;
+}
+button.deactive {
+    background-color: transparent;
+    color: #2c2c2c;
+    border: none;
+    width: 32px;
+    height: 32px;
+}
+  
+button:disabled {
+    cursor: not-allowed;
+    border: none;
+    background-color: transparent;
+    /* width: 124px;
+    height: 32px; */
+}
+button.ellipsis {
+    width: 47px;
+    height: 38px;
+}
