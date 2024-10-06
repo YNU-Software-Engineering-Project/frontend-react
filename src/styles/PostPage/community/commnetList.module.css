@@ -1,0 +1,48 @@
+.flexEnd {
+  align-self: flex-start;
+}
+
+.wrapper {
+  padding: 5px;
+}
+
+.inputBox {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputBox form {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.inputBox form > textarea {
+  width: 500px;
+  min-height: 50px;
+  resize: none;
+  overflow: hidden;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
+.inputBox form > button {
+  width: 55px;
+  height: 40px;
+  padding: 3px 6px;
+  background-color: inherit;
+  border-radius: 20px;
+}
+
+.inputBox form > button:hover {
+  background-color: rgba(125, 125, 125, 0.2);
+}
+
+.commetBox {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

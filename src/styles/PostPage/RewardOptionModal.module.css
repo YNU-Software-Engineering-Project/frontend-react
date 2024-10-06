@@ -1,0 +1,41 @@
+.cotton {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.15);
+}
+
+.wrapper {
+  width: 650px;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px solid black;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: inset 0 0 4px;
+}
+
+.wrapper > header {
+  display: flex;
+  justify-content: space-between;
+  font-size: 24px;
+  padding: 10px 20px 10px 10px;
+  align-items: center;
+  border-bottom: 1px solid gray;
+}
+
+.wrapper > main {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+}
+
+.wrapper > footer {
+  padding: 10px;
+}

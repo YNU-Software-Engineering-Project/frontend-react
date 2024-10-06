@@ -1,10 +1,11 @@
 import MuiButton from '@mui/material/Button';
 
-type ButtonProps = {
-  children: string;
+export type ButtonProps = {
+  children: React.ReactNode;
   style?: React.CSSProperties;
   variant?: 'contained' | 'outlined';
   type?: 'black' | 'white';
+  onClick?: () => void;
 };
 
 const variantStyle = {
@@ -41,6 +42,7 @@ const Button: React.FC<ButtonProps> = ({
   style,
   variant = 'contained',
   type = 'black',
+  onClick,
 }) => {
   return (
     <>
@@ -53,9 +55,11 @@ const Button: React.FC<ButtonProps> = ({
           minWidth: '0px',
           fontWeight: 'normal',
           fontSize: '16px',
+          height: '32px',
           ...variantStyle[variant][type],
           ...style,
         }}
+        onClick={onClick}
       >
         {children}
       </MuiButton>

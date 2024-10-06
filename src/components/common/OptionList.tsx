@@ -3,9 +3,10 @@ import style from 'styles/common/OptionList.module.css';
 
 type OptionListProps = {
   items: string[];
+  onClick?: (e?: React.MouseEvent<HTMLLIElement>) => void;
 };
 
-const OptionList: React.FC<OptionListProps> = ({ items }) => {
+const OptionList: React.FC<OptionListProps> = ({ items, onClick }) => {
   const [nextRect, setNextRect] = useState<DOMRect | null>(null);
   const highlight = useRef<HTMLDivElement>(null);
   const initalLi = useRef<HTMLLIElement>(null);
@@ -13,6 +14,9 @@ const OptionList: React.FC<OptionListProps> = ({ items }) => {
   const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
     const rect = e.currentTarget.getBoundingClientRect();
     setNextRect(rect);
+    if (onClick !== undefined) {
+      onClick(e);
+    }
   };
 
   useEffect(() => {

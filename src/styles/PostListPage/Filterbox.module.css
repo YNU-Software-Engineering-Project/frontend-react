@@ -1,0 +1,55 @@
+.wrapper {
+  width: 240px;
+  height: 100%;
+  padding: 16px;
+  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  position: sticky;
+}
+
+.wrapper > header {
+  text-align: center;
+  font-size: 24px;
+}
+
+.categoryBox {
+  width: 208px;
+}
+
+.tagBox {
+  width: 208px;
+}
+
+.headerP {
+  font-size: 16px;
+  margin-bottom: 12px;
+}
+
+.inputBox {
+  text-align: center;
+  display: flex;
+  width: 240px;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputBox > input {
+  height: 32px;
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 8px;
+  border: 1px solid #79747e;
+}
+
+.inputBox > button {
+  display: inline-block;
+}
+
+.tagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}

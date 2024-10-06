@@ -1,0 +1,36 @@
+.underline{
+    font-size: 48px;
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-position: under;
+    text-underline-offset: 1px;
+    text-decoration-thickness : 1px;
+}
+.contentCenter{
+    display: flex;
+    justify-content: center; /* 수평 중앙 정렬 */
+    font-size: 18px;
+    font-weight: medium;
+    align-items: center;
+}
+.subTitle{
+    font-weight: bold; 
+    font-size: 18px;
+}
+.content{
+    font-size: 18px;
+    font-weight: medium;
+    white-space: pre-line;
+}
+.imageStyle{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.buttonComponent{
+    border: 0px solid black;
+    background-color: black;
+    color: white;
+    justify-items: flex-end;
+}

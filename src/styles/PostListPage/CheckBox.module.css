@@ -1,0 +1,24 @@
+.checkboxContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.checkbox {
+  accent-color: #002b4e; /* 체크박스 색상 */
+}
+
+.checkboxLabel {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+}
+
+.checkboxTitle {
+  font-size: 16px;
+}
+
+.checkboxDescription {
+  font-size: 16px;
+  font-weight: 300;
+}

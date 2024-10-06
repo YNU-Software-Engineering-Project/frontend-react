@@ -24,7 +24,7 @@ const PostCard: React.FC<PostCardProps> = props => {
   const handleLike = () => {
     setLiked(prev => !prev);
   };
-
+  ``;
   return (
     <>
       <Card
@@ -48,12 +48,15 @@ const PostCard: React.FC<PostCardProps> = props => {
           }
           subheader={props.tagList.map((tag, index) => (
             <span key={index} style={{ marginRight: '0.3rem' }}>
-              #{tag}
+              {`#${tag}`}
             </span>
           ))}
           action={
             <IconButton onClick={handleLike} aria-label="like">
-              <FavoriteIcon color={liked ? 'error' : 'inherit'} />
+              <FavoriteIcon
+                color={liked ? 'error' : 'inherit'}
+                sx={{ fontSize: '32px' }}
+              />
             </IconButton>
           }
         />
