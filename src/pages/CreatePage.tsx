@@ -12,14 +12,14 @@ const CreatePage: React.FC = () => {
     setSelectedSection(section);
   };
 
-  return <>
-    <Header/>
+  return (
+    <>
       <div className={styles.createPage}>
         <Sidebar setSelectedSection={handleSectionChange} />
         <SectionContent selectedSection={selectedSection} />
       </div>
-    <Footer/>
-  </>
+    </>
+  );
 };
 
 export default CreatePage;

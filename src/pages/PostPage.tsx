@@ -23,11 +23,12 @@ const PostPage = () => {
     { label: '리워드 정보', path: 'rewardInfo' },
     { label: '상황판', path: 'dashboard' },
   ];
-  const handleNav = (event: React.MouseEvent<HTMLLIElement> | undefined) => {
+  const handleNav = (
+    label: string,
+    event: React.MouseEvent<HTMLLIElement> | undefined,
+  ) => {
     if (event === undefined) return;
-    const textContent = event.currentTarget.textContent;
-    const link = navList.find(item => item.label === textContent);
-
+    const link = navList.find(item => item.label === label);
     if (link === undefined) return;
     navigate(`/post/${link.path}`);
   };

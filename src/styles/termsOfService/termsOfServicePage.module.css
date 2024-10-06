@@ -1,0 +1,35 @@
+* {
+  box-sizing: border-box;
+  font-family: GmarketSans;
+  line-height: 28px;
+}
+.wrapper {
+  display: flex;
+  flex-direction: column;
+}
+.topBar {
+  height: 240px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* 수평 중앙 정렬 */
+  align-items: center;
+}
+.body {
+  width: 1160px;
+  margin: 0 auto;
+  flex-direction: column;
+  display: flex;
+  place-content: start space-evenly;
+}
+.topBtn {
+  width: calc(100%);
+  height: fit-content;
+  margin-bottom: 20px;
+  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
