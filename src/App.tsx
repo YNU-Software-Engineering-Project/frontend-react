@@ -13,6 +13,7 @@ import MemberMange from 'pages/adminPage/MemberManage';
 import PostManage from 'pages/adminPage/PostManage';
 import Chat from 'pages/adminPage/chat';
 import NotFound from 'pages/NotFound';
+import CreatePage from 'pages/CreatePage';
 
 function App() {
   return (
@@ -33,6 +34,8 @@ function App() {
       <Route path="/postmanage" element={<PostManage />} />
       <Route path="/chat" element={<Chat />} />
       <Route path="*" element={<NotFound />} />
+      <Route path="/" element={<Homepage />} />
+      <Route path="/CreatePage" element={<CreatePage />} />
     </Routes>
   );
 }
