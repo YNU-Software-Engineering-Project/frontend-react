@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 const PolicyInfo: React.FC = () => {
@@ -7,12 +8,8 @@ const PolicyInfo: React.FC = () => {
     // 텍스트 파일을 불러오는 함수
     const fetchContent = async () => {
       try {
-        const response = await fetch('/policyInfo.txt'); // public 폴더 경로 기준으로 fetch
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const text = await response.text();
-        setContent(text);
+        const response = await axios.get('/policyInfo.txt'); // public 폴더 경로 기준으로 axios 요청
+        setContent(response.data); // response.data에 파일 내용이 들어있음
       } catch (error) {
         console.error('Error fetching the text file:', error);
       }
