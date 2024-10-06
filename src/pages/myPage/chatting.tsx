@@ -3,10 +3,14 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/chat.module.css';
 
-function Chat() {
-  const chat = Array(20).fill({ title: '상대방 이름', content: 'content', time: 'time' });
+function Chatting() {
+  const chat = Array(20).fill({
+    title: '상대방 이름',
+    content: 'content',
+    time: 'time',
+  });
   const [currentChatIndex, setCurrentChatIndex] = useState<number | null>(null);
-  const [newChat, setNewchat] = useState("");
+  const [newChat, setNewchat] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
@@ -16,13 +20,13 @@ function Chat() {
   }, []);
 
   const handleChatClick = (index: number) => {
-    setCurrentChatIndex(index); 
+    setCurrentChatIndex(index);
   };
 
   const sendChat = () => {
-    if (newChat === "") return;
+    if (newChat === '') return;
     // 서버에 보내기
-    setNewchat("");
+    setNewchat('');
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -32,20 +36,22 @@ function Chat() {
     <div className={styles.mypage_container}>
       <MenuBar />
 
-      <div className={styles.chat_content}> 
+      <div className={styles.chat_content}>
         <div className={styles.chat_room_list}>
           <div className={styles.chat_room_list_title}>대화방</div>
 
           {chat.map((room, index) => (
             <div
               key={index}
-              className={`${styles.chat_room_list_container} ${currentChatIndex === index ? styles.selected : ''}`} 
+              className={`${styles.chat_room_list_container} ${currentChatIndex === index ? styles.selected : ''}`}
               onClick={() => handleChatClick(index)}
             >
               <div className={styles.chat_room_list_profile}></div>
               <div className={styles.chat_room_list_content}>
                 <div>{room.title}</div>
-                <div className={styles.chat_room_list_preview}>{room.content}</div>
+                <div className={styles.chat_room_list_preview}>
+                  {room.content}
+                </div>
               </div>
               <div className={styles.chat_room_list_time}>{room.time}</div>
             </div>
@@ -54,28 +60,31 @@ function Chat() {
 
         <div className={styles.chat_room}>
           <div className={styles.chat_room_title}>
-            <AccountCircleIcon className={styles.profile_icon}/>
-            {currentChatIndex !== null && <div>{chat[currentChatIndex].title}</div>}
+            <AccountCircleIcon className={styles.profile_icon} />
+            {currentChatIndex !== null && (
+              <div>{chat[currentChatIndex].title}</div>
+            )}
           </div>
           <div className={styles.chat_room_content}>
-            <div className={styles.msg}>
-              내용 불러오기
-            </div>
+            <div className={styles.msg}>내용 불러오기</div>
           </div>
           <div className={styles.chat_room_input}>
             <button className={styles.plus_button}>+</button>
-            <input className={styles.chat_room_input_box}  
+            <input
+              className={styles.chat_room_input_box}
               ref={inputRef}
-              type="text" 
+              type="text"
               value={newChat}
-              onChange={(e) => setNewchat(e.target.value)}
+              onChange={e => setNewchat(e.target.value)}
             />
-            <button className={styles.send_button} onClick={sendChat}>전송</button>
+            <button className={styles.send_button} onClick={sendChat}>
+              전송
+            </button>
           </div>
         </div>
       </div>
-    </div>    
+    </div>
   );
 }
 
-export default Chat;
+export default Chatting;

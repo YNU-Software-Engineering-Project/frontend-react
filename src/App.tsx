@@ -32,6 +32,14 @@ import Reward from 'components/CreatePage/section/Reward';
 import Policy from 'components/CreatePage/section/Policy';
 import Setting from 'components/CreatePage/section/Setting';
 
+import MyPageTemplate from 'pages/MyPageTemplate';
+import Mypage from 'pages/myPage/mypage';
+import Alarm from 'pages/myPage/alarm';
+import Joined from 'pages/myPage/joined';
+import Myfunding from 'pages/myPage/myfunding';
+import WishList from 'pages/myPage/wishList';
+import Chatting from 'pages/myPage/chatting';
+
 function App() {
   return (
     <Routes>
@@ -42,9 +50,17 @@ function App() {
 
         <Route path="/login" element={<LoginPage />}>
           <Route index element={<Login />} />
-          <Route path="/login" element={<Login />} />
           <Route path="register" element={<ForgotPassword />} />
           <Route path="forgotpassword" element={<Register />} />
+        </Route>
+
+        <Route path="/mypage" element={<MyPageTemplate />}>
+          <Route index element={<Mypage />} />
+          <Route path="alarm" element={<Alarm />} />
+          <Route path="joined" element={<Joined />} />
+          <Route path="myfunding" element={<Myfunding />} />
+          <Route path="wishList" element={<WishList />} />
+          <Route path="chatting" element={<Chatting />} />
         </Route>
 
         <Route path="/post" element={<PostPage />}>
