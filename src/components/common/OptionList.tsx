@@ -39,7 +39,7 @@ const OptionList: React.FC<OptionListProps> = ({ items, onClick }) => {
         highlightEliment.style.transition = 'transform 0.5s ease';
         highlightEliment.style.height = `${nextRect.height}px`;
         highlightEliment.style.width = `${nextRect.width}px`;
-        highlightEliment.style.transform = `translate(${nextRect.left}px, ${nextRect.top}px)`;
+        highlightEliment.style.transform = `translate(${nextRect.left}px, ${nextRect.top + window.scrollY}px)`;
       });
     }
   }, [nextRect]);
