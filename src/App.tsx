@@ -13,13 +13,15 @@ import MemberMange from 'pages/adminPage/MemberManage';
 import PostManage from 'pages/adminPage/PostManage';
 import Chat from 'pages/adminPage/chat';
 import NotFound from 'pages/NotFound';
-import CreatePage from 'pages/CreatePage';
+import AdminPage from 'pages/AdminPage';
 
 function App() {
   return (
     <Routes>
       <Route index element={<Homepage />} />
+
       <Route path="/postList" element={<PostListPage />} />
+
       <Route path="/post" element={<PostPage />}>
         <Route index element={<Story />} />
         <Route path="story" element={<Story />} />
@@ -28,14 +30,18 @@ function App() {
         <Route path="rewardInfo" element={<RewardInfo />} />
         <Route path="dashboard" element={<DashBoard />} />
       </Route>
+
       <Route path="/termsOfService" element={<TermsOfService />} />
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/membermange" element={<MemberMange />} />
-      <Route path="/postmanage" element={<PostManage />} />
-      <Route path="/chat" element={<Chat />} />
+      {/* 여기까지 템플릿 하나 만들어야함. 메뉴 전용 */}
+
+      <Route path="/admin" element={<AdminPage />}>
+        <Route index element={<Admin />} />
+        <Route path="membermange" element={<MemberMange />} />
+        <Route path="postmanage" element={<PostManage />} />
+        <Route path="chat" element={<Chat />} />
+      </Route>
+
       <Route path="*" element={<NotFound />} />
-      <Route path="/" element={<Homepage />} />
-      <Route path="/CreatePage" element={<CreatePage />} />
     </Routes>
   );
 }
