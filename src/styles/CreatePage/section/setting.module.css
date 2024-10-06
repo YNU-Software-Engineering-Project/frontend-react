@@ -1,0 +1,61 @@
+.wrapper {
+    padding: 70px 20px;
+    margin: 0;
+    background-color: #FAFAFA;
+    max-width: 885px;
+    height: 100%;
+}
+.card{
+    width: 825px;
+    height: 80px;
+    background-color: white;
+    border-radius: 8px;
+    display: grid;
+    align-items: center;
+    font-size: 16px;
+    font-weight: lighter;
+    padding-left: 20px;;
+    margin-bottom: 20px;
+    position: relative;
+}
+.btn{
+    position: absolute;
+    height: 40px;
+    width: fit-content;
+    justify-self: end;
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    margin-right: 20px;
+}
+
+.modal{
+    display: grid;
+    gap: 20px;
+    padding: 10px;
+}
+.header{
+    font-size: 24px;
+}
+.buttonGroup{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 20px;
+}
+.confirmButton{
+    width: 50%;
+    font-size: 16px;
+    background-color: #D9D9D9;
+    border: 1px solid #767676;
+    border-radius: 8px;
+    padding: 8px;
+}
+.cancelButton{
+    width: 50%;
+    font-size: 16px;
+    background-color: black;
+    color: white;
+    border-radius: 8px;
+    padding: 8px;
+}
