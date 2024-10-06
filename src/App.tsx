@@ -10,6 +10,7 @@ import NotFoundPage from 'pages/NotFoundPage';
 import AdminPage from 'pages/AdminPage';
 import Template from 'pages/Template';
 import TermsOfServicePage from 'pages/TermsOfServicePage';
+import CreatePage from 'pages/CreatePage';
 
 import ServiceInfo from 'components/termsOfService/ServiceInfo';
 import PolicyInfo from 'components/termsOfService/PolicyInfo';
@@ -19,6 +20,13 @@ import Refund from 'components/postPage/Refund';
 import RewardInfo from 'components/postPage/RewardInfo';
 import DashBoard from 'components/postPage/DashBoard';
 import Story from 'components/postPage/Story';
+
+import Schedule from 'components/CreatePage/section/Schedule';
+import ProjectInfo from 'components/CreatePage/section/ProjectInfo';
+import SectionStory from 'components/CreatePage/section/Story';
+import Reward from 'components/CreatePage/section/Reward';
+import Policy from 'components/CreatePage/section/Policy';
+import Setting from 'components/CreatePage/section/Setting';
 
 function App() {
   return (
@@ -42,6 +50,16 @@ function App() {
           <Route path="ServiceInfo" element={<ServiceInfo />} />
           <Route path="PolicyInfo" element={<PolicyInfo />} />
           <Route path="PaymentInfo" element={<PaymentInfo />} />
+        </Route>
+
+        <Route path="/CreatePage" element={<CreatePage />}>
+          <Route index element={<Schedule />} />
+          <Route path="schedule" element={<Schedule />} />
+          <Route path="projectInfo" element={<ProjectInfo />} />
+          <Route path="story" element={<SectionStory />} />
+          <Route path="reward" element={<Reward />} />
+          <Route path="policy" element={<Policy />} />
+          <Route path="setting" element={<Setting />} />
         </Route>
       </Route>
 
