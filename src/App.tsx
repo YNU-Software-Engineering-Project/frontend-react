@@ -11,6 +11,10 @@ import AdminPage from 'pages/AdminPage';
 import Template from 'pages/Template';
 import TermsOfServicePage from 'pages/TermsOfServicePage';
 import CreatePage from 'pages/CreatePage';
+import Login from 'pages/login/Login';
+import ForgotPassword from 'pages/login/ForgotPassword';
+import Register from 'pages/login/Register';
+import LoginPage from 'pages/LoginPage';
 
 import ServiceInfo from 'components/termsOfService/ServiceInfo';
 import PolicyInfo from 'components/termsOfService/PolicyInfo';
@@ -35,6 +39,13 @@ function App() {
         <Route index element={<Homepage />} />
 
         <Route path="/postList" element={<PostListPage />} />
+
+        <Route path="/login" element={<LoginPage />}>
+          <Route index element={<Login />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="register" element={<ForgotPassword />} />
+          <Route path="forgotpassword" element={<Register />} />
+        </Route>
 
         <Route path="/post" element={<PostPage />}>
           <Route index element={<Story />} />
@@ -63,6 +74,8 @@ function App() {
         </Route>
       </Route>
 
+      <Route path="*" element={<NotFoundPage />} />
+
       {/* admin 페이지는 나중에 분리할 예정임. */}
       <Route element={<Template />}>
         <Route path="/admin" element={<AdminPage />}>
@@ -72,8 +85,6 @@ function App() {
           <Route path="chat" element={<Chat />} />
         </Route>
       </Route>
-
-      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
