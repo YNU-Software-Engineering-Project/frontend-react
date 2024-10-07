@@ -19,6 +19,7 @@
 .rewardList{
     display: grid;
     justify-content: center;
+    gap: 10px;
 }
 .addButton{
     cursor: pointer;

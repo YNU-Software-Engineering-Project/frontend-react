@@ -32,7 +32,7 @@ const SideBar: React.FC = () => {
           <Link to="/createPage/schedule">일정</Link>
         </button>
         <button>
-          <Link to="/">심사 정책 및 요금 안내</Link>
+          <Link to="/termsOfService/PolicyInfo">심사 정책 및 요금 안내</Link>
         </button>
         <button>
           <Link to="/createPage/projectInfo">프로젝트 정보 작성</Link>

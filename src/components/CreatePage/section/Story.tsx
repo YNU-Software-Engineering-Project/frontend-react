@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import ToastUi from 'components/toastUI/ToastUi';
-import ImageSave from 'components/common/ImageSave';
+import ImageSave from 'components/CreatePage/imageSave/ImageSave';
 import styles from 'styles/CreatePage/section/story.module.css';
 
 const Story = () => {
@@ -63,7 +63,7 @@ const Story = () => {
         </p>
         <div className={styles.grayBox}>
           <span
-            style={{ fontSize: '18px', fontWeight: 'lighter', padding: '10px' }}
+            style={{ fontSize: '18px', fontWeight: 'lighter' }}
           >
             {' '}
             • 10MB 이하의 JPG. JPEG, PNG 파일
@@ -98,7 +98,7 @@ const Story = () => {
         <div style={{ fontSize: '18px', margin: '0' }}>프로젝트 요약</div>
         <textarea
           className={styles.inputBox}
-          style={{ height: '120px', width: '845px' }}
+          style={{ height: '120px'}}
           value={projectSummary}
           onChange={handleSummaryChange}
           placeholder="프로젝트 내용 요약"
