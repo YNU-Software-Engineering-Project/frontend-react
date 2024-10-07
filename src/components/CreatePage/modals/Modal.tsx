@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from 'styles/Modal.module.css';
+import styles from 'styles/CreatePage/Modal.module.css';
 
 interface ModalProps {
   onClose: () => void;

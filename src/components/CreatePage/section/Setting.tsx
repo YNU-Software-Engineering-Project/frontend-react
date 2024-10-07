@@ -1,4 +1,4 @@
-import Modal from "components/modals/Modal";
+import Modal from "components/CreatePage/modals/Modal";
 import React, { useState } from "react";
 import styles from "styles/CreatePage/section/setting.module.css";
 
