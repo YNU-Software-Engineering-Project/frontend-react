@@ -20,6 +20,7 @@ const PostList = () => {
         'This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels',
       progressBarValue: 80,
       tagList: ['tag1', 'tag2', 'tag3'],
+      isExpired: false,
     },
     {
       avatarImgUrl: 'https://picsum.photos/id/3/200/300',
@@ -29,6 +30,7 @@ const PostList = () => {
       postSummary: '요약2',
       progressBarValue: 40,
       tagList: ['tag1', 'tag2', 'tag3'],
+      isExpired: false,
     },
     {
       avatarImgUrl: 'https://picsum.photos/id/5/200/300',
@@ -38,6 +40,7 @@ const PostList = () => {
       postSummary: '요약3',
       progressBarValue: 20,
       tagList: ['tag1', 'tag2', 'tag3'],
+      isExpired: true,
     },
   ];
 
@@ -62,7 +65,7 @@ const PostList = () => {
             marginTop: '20px',
           }}
         >
-          {cardInfo.map((info, index) => (
+          {cardInfo.map(info => (
             <PostCard
               avatarImgUrl={info.avatarImgUrl}
               postTitle={info.postTitle}
@@ -71,6 +74,7 @@ const PostList = () => {
               progressBarValue={info.progressBarValue}
               tagList={info.tagList}
               key={`${info.postTitle} - ${info.postSummary}`}
+              isExpired={info.isExpired}
             />
           ))}
         </div>

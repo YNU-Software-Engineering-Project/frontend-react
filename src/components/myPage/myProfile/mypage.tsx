@@ -1,8 +1,6 @@
 import ProfileMenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/mypage.module.css'; 
 import { useState } from 'react';
-import Chip from 'components/common/Chip';
-import OrderButton from 'components/common/OrderButton';
 import Button from 'components/common/Button';
 
 function Mypage() {
@@ -37,7 +35,8 @@ function Mypage() {
           <div className={styles.my_profile_img}></div>
           <div className={styles.my_profile_img_button}>
             <Button style={{ width: 112, height: 40, borderRadius: 2}}>바꾸기</Button>
-            <button className={styles.img_del_button}>삭제</button>
+            <Button style={{ width: 112, height: 40, borderRadius: 2}}
+            type='white'>삭제</Button>
           </div>
         </div>
         <div className={styles.my_profile_change_container}>
@@ -78,7 +77,8 @@ function Mypage() {
             <div>주소</div>
             <input className={styles.my_profile_change_input} type='text' placeholder='우편번호' value={postalCode}></input>
           </div>
-          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}>우편번호 찾기</Button>
+          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}
+          onClick={openPostcode}>우편번호 찾기</Button>
         </div>
         <div className={styles.address}>
           <input className={styles.my_profile_change_input} type='text' placeholder='도로명 주소' value={roadAddress}></input>

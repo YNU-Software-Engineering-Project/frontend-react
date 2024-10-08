@@ -16,8 +16,9 @@ const ImageSave = ({ maxImageCount, onImagesChange }: ImageSaveProps) => {
             let imageUrlLists = [...showImages];
     
             for (let i = 0; i < imageLists.length; i++) {
+                // 이미지 파일의 URL 생성
                 const currentImageUrl = URL.createObjectURL(imageLists[i]);
-                imageUrlLists.push(currentImageUrl);
+                imageUrlLists.push(currentImageUrl); // 생성된 URL을 배열에 추가
             }
             if (imageUrlLists.length > maxImageCount) {
                 imageUrlLists = imageUrlLists.slice(0, maxImageCount);
@@ -36,9 +37,11 @@ const ImageSave = ({ maxImageCount, onImagesChange }: ImageSaveProps) => {
   
     return (
         <div className="addPicture" style={{display:'gird'}}>
-            <label htmlFor="input-file" className="addButton" style={{maxWidth:'73px',display:'grid', padding:'10px 0', fontFamily:'GmarketSans'}}>
-                <input type="file" id="input-file" multiple className="addButton" onChange={handleAddImages} style={{width:'73px'}}/>
+            <label htmlFor="input-file" className="addButton" style={{maxWidth:'73px',display:'grid', padding:'10px 0'}}>
+                <div className="addButton" style={{ borderRadius:'8px', backgroundColor:'#D9D9D9',alignSelf:'center',justifySelf:'center', padding:'0 5px', fontSize:'14px'}}>사진 선택</div>
             </label>
+            <input type="file" id="input-file" multiple className="addButton" onChange={handleAddImages} style={{display:'none'}}/>
+             
             <div style={{display:'flex', flexWrap:'wrap', gap:'20px'}}>
                 {showImages.map((image, id) => (
                     <div className="imageContainer" key={id} style={{position:'relative', display:'grid'}}>

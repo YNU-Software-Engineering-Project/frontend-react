@@ -1,6 +1,5 @@
-import axios from 'axios';
-import React, { useState } from 'react';
-import styles from 'styles/rewardCard.module.css';
+import { useState } from 'react';
+import styles from 'styles/CreatePage/rewardCard.module.css';
 
 interface Reward {
   id: number; // 리워드 ID
@@ -35,6 +34,18 @@ const RewardCard = ({ reward, onDelete, onSave, onClose }: {
     }
   };
 
+  // 글자 수 조정
+  const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.value.length <= 30) {
+      setName(event.target.value);
+    }
+  };
+  const handleDescriptionChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    if (event.target.value.length <= 300) {
+      setDescription(event.target.value);
+    }
+  };
+
   return (
     <div className={styles.rewardCard}>
       {reward ? (
@@ -57,7 +68,8 @@ const RewardCard = ({ reward, onDelete, onSave, onClose }: {
           <h3 style={{fontSize:'24px'}}>리워드 정보 입력</h3>
           <div className={styles.content}>
             <label>리워드 이름</label>
-            <input className={styles.inputBox} type="text" value={name} onChange={(e) => setName(e.target.value)}/>
+            <input className={styles.inputBox} type="text" value={name} onChange={handleNameChange}/>
+            <div style={{alignSelf:'end'}}>{name.length}/30자</div>
           </div>
           <div className={styles.content}>
             <label>리워드 금액</label>
@@ -65,7 +77,8 @@ const RewardCard = ({ reward, onDelete, onSave, onClose }: {
           </div>
           <div className={styles.content}>
             <label>리워드 설명</label>
-            <textarea className={styles.inputBox} value={description} onChange={(e) => setDescription(e.target.value)} style={{resize:'none'}}/>
+            <textarea className={styles.inputBox} value={description} onChange={(e) => handleDescriptionChange(e)} style={{resize:'none', height:'100px'}}/>
+            <div style={{alignSelf:'end'}}>{description.length}/300자</div>
           </div>
           <div className={styles.content}>
             <label>리워드 수량</label>

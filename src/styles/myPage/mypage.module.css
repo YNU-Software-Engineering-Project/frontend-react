@@ -35,15 +35,7 @@
   margin-left: 70px;
 }
 
-.img_del_button{
-  border-radius: 10px;
-  background-color: #e3e3e3;
-  color: #000;
-  height: 40px;
-  width: 112px;
-  border: 1px solid #cac4d0;
-  cursor: pointer;
-}
+
 .my_profile_change_container{
   width: 272px;
   height: 70px;

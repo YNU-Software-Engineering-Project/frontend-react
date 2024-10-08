@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuBar from 'components/adminPage/menuBar';
 import styles from 'styles/adminPage/chat.module.css';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 function Chat() {
   const chat = Array(20).fill({ title: '상대방 이름', content: 'content', time: 'time' });
@@ -63,7 +64,9 @@ function Chat() {
             </div>
           </div>
           <div className={styles.chat_room_input}>
-            <button className={styles.plus_button}>+</button>
+            <div className={styles.plus_button}>
+              <AddCircleOutlineIcon />
+            </div>
             <input className={styles.chat_room_input_box}  
               ref={inputRef}
               type="text" 

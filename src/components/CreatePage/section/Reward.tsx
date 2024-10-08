@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styles from 'styles/CreatePage/section/reward.module.css';
-import Modal from 'components/modals/Modal'; // Modal 컴포넌트 import
-import RewardCard from 'components/rewardCard/rewardCard'; // 리워드 카드 import
+import Modal from 'components/CreatePage/modals/Modal'; // Modal 컴포넌트 import
+import RewardCard from 'components/CreatePage/rewardCard/rewardCard'; // 리워드 카드 import
 import rewardImage from 'assets/rewardCard.png'; // 리워드 입력 전 표시할 이미지
 
 interface Reward {
@@ -33,6 +33,7 @@ const Reward = () => {
     const newReward = { name, amount, description, quantity};
     addReward(newReward);
     closeModal(); // 모달 닫기
+    alert('저장됨');
   };
 
   // 리워드 삭제

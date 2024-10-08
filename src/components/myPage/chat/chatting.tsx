@@ -1,7 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import MenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/chat.module.css';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 
 function Chatting() {
   const chat = Array(20).fill({
@@ -69,7 +70,10 @@ function Chatting() {
             <div className={styles.msg}>내용 불러오기</div>
           </div>
           <div className={styles.chat_room_input}>
-            <button className={styles.plus_button}>+</button>
+            <div className={styles.plus_button}>
+              <AddCircleOutlineIcon />
+            </div>
+            
             <input
               className={styles.chat_room_input_box}
               ref={inputRef}

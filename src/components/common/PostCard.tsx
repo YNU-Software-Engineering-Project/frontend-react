@@ -9,6 +9,36 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import LinearProgressWithLabel from './ProgressLineBar';
 import { useState } from 'react';
 
+type ExpiredOverlayProps = {
+  children?: string;
+};
+
+const ExpiredOverlay: React.FC<ExpiredOverlayProps> = ({ children }) => {
+  return (
+    <>
+      <div
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.5)',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          color: 'red',
+          fontSize: '24px',
+          fontWeight: 'bold',
+          zIndex: 99999,
+          pointerEvents: 'none',
+          backdropFilter: 'blur(3px)',
+        }}
+      >
+        {children}
+      </div>
+    </>
+  );
+};
+
 export type PostCardProps = {
   avatarImgUrl: String;
   postTitle: String;
@@ -16,15 +46,25 @@ export type PostCardProps = {
   postSummary: String;
   progressBarValue: number;
   tagList: String[];
+  isExpired?: boolean;
 };
 
-const PostCard: React.FC<PostCardProps> = props => {
+const PostCard: React.FC<PostCardProps> = ({
+  avatarImgUrl,
+  postTitle,
+  postImgUrl,
+  postSummary,
+  progressBarValue,
+  tagList,
+  isExpired = false,
+}) => {
   const [liked, setLiked] = useState<boolean>(false);
 
   const handleLike = () => {
     setLiked(prev => !prev);
+    console.log(isExpired);
   };
-  ``;
+
   return (
     <>
       <Card
@@ -33,20 +73,22 @@ const PostCard: React.FC<PostCardProps> = props => {
           height: 470,
           transition: 'transform 0.3s ease, box-shadow 0.3s ease',
           ':hover': {
-            transform: 'translateY(-5px,-5px)' /* 위로 5px 이동 */,
-            boxShadow: ' 0 4px 8px rgba(0, 0, 0, 0.2)' /* 그림자 추가 */,
+            transform: 'translateY(-5px,-5px)',
+            boxShadow: ' 0 4px 8px rgba(0, 0, 0, 0.2)',
           },
           cursor: 'pointer',
+          position: 'relative',
         }}
       >
+        {isExpired && <ExpiredOverlay>종료되었습니다</ExpiredOverlay>}
         <CardHeader
-          avatar={<Avatar alt="avator Img" src={`${props.avatarImgUrl}`} />}
+          avatar={<Avatar alt="avator Img" src={`${avatarImgUrl}`} />}
           title={
             <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              {props.postTitle}
+              {postTitle}
             </div>
           }
-          subheader={props.tagList.map((tag, index) => (
+          subheader={tagList.map((tag, index) => (
             <span key={index} style={{ marginRight: '0.3rem' }}>
               {`#${tag}`}
             </span>
@@ -62,7 +104,7 @@ const PostCard: React.FC<PostCardProps> = props => {
         />
         <CardMedia
           component="img"
-          src={`${props.postImgUrl}`}
+          src={`${postImgUrl}`}
           height="250px"
           alt="product image"
         />
@@ -73,12 +115,12 @@ const PostCard: React.FC<PostCardProps> = props => {
             component="p"
             style={{ height: '60px' }}
           >
-            {props.postSummary}
+            {postSummary}
           </Typography>
           <Typography sx={{ marginTop: '5px' }}>목표 펀딩 달성률</Typography>
           <LinearProgressWithLabel
             variant="determinate"
-            value={props.progressBarValue}
+            value={progressBarValue}
           />
         </CardContent>
       </Card>
