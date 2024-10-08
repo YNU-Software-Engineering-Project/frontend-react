@@ -1,0 +1,47 @@
+.wrapper {
+  display: flex;
+  justify-content: space-around;
+  height: 240px;
+  margin-top: 90px;
+  margin-bottom: 70px;
+}
+
+.leftMenu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  gap: 20px;
+}
+
+.leftMenu > div {
+  cursor: pointer;
+}
+
+.menuBtn {
+  font-size: 24px;
+}
+
+.titleBox > a {
+  font-size: 140px;
+  letter-spacing: -15px;
+  font-weight: bold;
+  color: #666666;
+  line-height: 1.2;
+}
+
+.etcBtn {
+  display: flex;
+  gap: 10px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+}
+
+.etcBtn > div {
+  display: inline;
+}
+
+.etcBtn > div:nth-last-of-type(1) {
+  font-size: 24px;
+}
