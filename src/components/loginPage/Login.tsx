@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import styles from 'styles/login/Login.module.css';
 import { Link } from 'react-router-dom';
+import Button from 'components/common/Button';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -30,7 +31,7 @@ function Login() {
         ></input>
         <div style={{ height: 19 }}></div>
 
-        <button className={styles.signIn_button}>Sign in</button>
+        <Button style={{  width: 352, height: 40, borderRadius: 2}}>Sign in</Button>
         <div style={{ height: 19 }}></div>
 
         <div className={styles.api_login}>

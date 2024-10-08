@@ -9,10 +9,10 @@ function Header() {
   return (
       <div className={styles.Header}>
         <div className={styles.Header_left}>메뉴</div>
-        <div className={styles.Header_center} onClick={() =>{navigate('homepage');}}>SPARK+SEED</div>
+        <div className={styles.Header_center} onClick={() =>{navigate('');}}>SPARK+SEED</div>
         <div className={styles.Header_right}>
           <div className={styles.alarm_icon}><NotificationsNoneIcon fontSize='large' /></div>
-          <div className={styles.profile_icon}><AccountCircleOutlinedIcon fontSize='large' /></div>
+          <div className={styles.profile_icon} onClick={() =>{navigate('/login');}}><AccountCircleOutlinedIcon fontSize='large' /></div>
           <div style={{
             borderLeft: '1px solid #000', 
             height: '45px',
