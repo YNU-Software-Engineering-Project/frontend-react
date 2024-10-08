@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from 'styles/login/ForgotPassword.module.css';
 import { Link } from 'react-router-dom';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import Button from 'components/common/Button';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
@@ -43,9 +44,8 @@ function ForgotPassword() {
           <button className={styles.cancel_button}>
             <Link to="/login">Cancel</Link>
           </button>
-          <button className={styles.reset_button} onClick={handleResetPassword}>
-            Reset Password
-          </button>
+          <Button style={{  width: 166, height: 40, borderRadius: 2}}
+          onClick={handleResetPassword}>Reset</Button>
         </div>
 
         {showAlert && (

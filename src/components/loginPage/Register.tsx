@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from 'styles/login/Register.module.css';
 import { useNavigate } from 'react-router-dom';
+import Button from 'components/common/Button';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -77,9 +78,8 @@ function Register() {
         ></input>
         <div style={{ height: 24 }}></div>
 
-        <button className={styles.register_button} onClick={handleRegister}>
-          Register
-        </button>
+        <Button style={{  width: 272, height: 40, borderRadius: 2}}
+          onClick={handleRegister}>Register</Button>
         <div style={{ height: 24 }}></div>
 
         <div className={styles.api_login}>

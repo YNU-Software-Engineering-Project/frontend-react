@@ -1,6 +1,9 @@
 import ProfileMenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/mypage.module.css'; 
 import { useState } from 'react';
+import Chip from 'components/common/Chip';
+import OrderButton from 'components/common/OrderButton';
+import Button from 'components/common/Button';
 
 function Mypage() {
   const [nickname, setNickname] = useState('');
@@ -33,7 +36,7 @@ function Mypage() {
         <div className={styles.my_profile_img_container}>
           <div className={styles.my_profile_img}></div>
           <div className={styles.my_profile_img_button}>
-            <button className={styles.img_change_button}>바꾸기</button>
+            <Button style={{ width: 112, height: 40, borderRadius: 2}}>바꾸기</Button>
             <button className={styles.img_del_button}>삭제</button>
           </div>
         </div>
@@ -60,28 +63,31 @@ function Mypage() {
             <div>전화번호</div>
             <input className={styles.my_profile_change_input} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}></input>
           </div>
-          <button className={styles.my_profile_button}>수정하기</button>
+          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}>수정하기</Button>
+          
         </div>
         <div className={styles.school_email_change_container}>
           <div className={styles.my_profile_change_container}>
             <div>학교 이메일</div>
             <input className={styles.my_profile_change_input} value={schoolEmail} onChange={(e) => setSchoolEmail(e.target.value)}></input>
           </div>
-          <button className={styles.my_profile_button}>확인</button>
+          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}>확인</Button>
         </div>
         <div className={styles.adress_change_container}>
           <div className={styles.my_profile_address_change_container}>
             <div>주소</div>
             <input className={styles.my_profile_change_input} type='text' placeholder='우편번호' value={postalCode}></input>
           </div>
-          <button className={styles.my_profile_button} onClick={openPostcode}>우편번호 찾기</button>
+          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}>우편번호 찾기</Button>
         </div>
         <div className={styles.address}>
           <input className={styles.my_profile_change_input} type='text' placeholder='도로명 주소' value={roadAddress}></input>
           <input className={styles.my_profile_change_input} type='text' placeholder='지번 주소' value={jibunAddress}></input>
         </div>
         <input className={styles.detail_address} type='text' placeholder='상세주소' value={detailedAddress} onChange={(e) => setDetailedAddress(e.target.value)}></input>
-        <div className={styles.save_button_container}><button className={styles.save_button}>submit</button></div>
+        <div className={styles.save_button_container}>
+          <Button style={{ width: 272, height: 40, borderRadius: 2,}}>submit</Button>
+        </div>
       </div>
     </div>
   );
