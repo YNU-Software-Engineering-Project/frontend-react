@@ -33,7 +33,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "swagger-typescript-api": "swagger-typescript-api -p http://localhost:8080/v3/api-docs -r -o ./src/apiTypes --modular -d --extract-request-body --extract-response-body --extract-response-error --axios"
   },
   "browserslist": {
     "production": [
