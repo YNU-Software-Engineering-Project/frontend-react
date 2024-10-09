@@ -21,7 +21,7 @@ const Template = () => {
   return (
     <>
       <div className={style.wrapper}>
-        <SideNav isOpen = {openSideNav} onToogle = {handleSideNavToogle}/>
+        <SideNav isOpen={openSideNav} onToogle={handleSideNavToogle} />
         <main>
           <Header />
           <Outlet />

@@ -1,14 +1,7 @@
 .wrapper {
   display: flex;
-  padding: 20px;
 }
 
-.wrapper > header {
-}
-
-.wrapper > ul {
-}
-
-.wrapper > ul > li {
-  list-style: none;
+.wrapper > main {
+  flex-grow: 1;
 }

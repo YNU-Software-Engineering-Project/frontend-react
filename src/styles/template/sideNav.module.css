@@ -2,3 +2,12 @@
   width: 260px;
   background-color: #fafafa;
 }
+.wrapper > header {
+}
+
+.wrapper > ul {
+}
+
+.wrapper > ul > li {
+  list-style: none;
+}
