@@ -2,31 +2,34 @@ import { useState } from 'react';
 import styles from 'styles/login/Login.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/common/Button';
-import { Api } from 'apiTypes/Api'; 
-import { LoginRequestDto } from 'apiTypes/data-contracts';
+import { Api } from 'apiTypes/Api';
+import { LoginRequestDto, LoginData } from 'apiTypes/data-contracts';
+import { AxiosResponse } from 'axios';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const api = new Api();
- 
+
   const handleLogin = () => {
     const requestData: LoginRequestDto = {
       email,
       password,
     };
-        
-    api.login(requestData)
-      .then(response => { // 로그인 성공
-        console.log(response.data);
+
+    api
+      .login(requestData)
+      .then((response: AxiosResponse<LoginData>) => {
+        // 로그인 성공
+        const token = response.data.accessToken;
+        if (token) localStorage.setItem('accessToken', token);
         alert('로그인 성공!');
-        // localStorage.setItem('accessToken', response.data.accessToken);
-        // localStorage.setItem('refreshToken', response.data.refreshToken);
         navigate('/');
       })
-      .catch(error => { // 로그인 실패
-        
+      .catch(error => {
+        // 로그인 실패
+
         console.error('로그인 실패:', error);
         if (error.response) {
           alert(`로그인 실패: ${error.response.data.message}`);
@@ -60,7 +63,12 @@ function Login() {
         ></input>
         <div style={{ height: 19 }}></div>
 
-        <Button style={{  width: 352, height: 40, borderRadius: 2}} onClick={handleLogin}>Sign in</Button>
+        <Button
+          style={{ width: 352, height: 40, borderRadius: 2 }}
+          onClick={handleLogin}
+        >
+          Sign in
+        </Button>
         <div style={{ height: 19 }}></div>
 
         <div className={styles.api_login}>

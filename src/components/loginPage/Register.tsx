@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from 'styles/login/Register.module.css';
 import { useNavigate } from 'react-router-dom';
 import Button from 'components/common/Button';
-import { Api } from 'apiTypes/Api'; 
+import { Api } from 'apiTypes/Api';
 import { SignUpRequestDto } from 'apiTypes/data-contracts';
 
 function Register() {
@@ -14,7 +14,7 @@ function Register() {
   const navigate = useNavigate();
   const api = new Api();
 
-  const handleSignUP = async() => {
+  const handleSignUP = async () => {
     if (!email || !password || !passwordConfirm || !phoneNumber) {
       alert('초대코드를 제외한 모든 필드를 입력해주세요.');
       return;
@@ -32,21 +32,22 @@ function Register() {
       phoneNumber,
       inviteCode: inviteCode === 'XJ7dH9kL3tZ2' ? 'admin' : 'user',
     };
-        
-    api.signup(requestData)
-    .then((response) => {
-      console.log(response);
-      alert('회원가입 성공!');
-      navigate('/login');
-    })
-    .catch((error) => {
-      console.error('회원가입 실패:', error);
-      if (error.response) {
-        alert(`회원가입 실패: ${error.response.data.message}`);
-      } else {
-        alert('회원가입 실패: 네트워크 오류');
-      }
-    });
+
+    api
+      .signup(requestData)
+      .then(response => {
+        console.log(response.data.accessToken);
+        alert('회원가입 성공!');
+        navigate('/login');
+      })
+      .catch(error => {
+        console.error('회원가입 실패:', error);
+        if (error.response) {
+          alert(`회원가입 실패: ${error.response.data.message}`);
+        } else {
+          alert('회원가입 실패: 네트워크 오류');
+        }
+      });
   };
 
   return (
@@ -103,8 +104,12 @@ function Register() {
         ></input>
         <div style={{ height: 24 }}></div>
 
-        <Button style={{  width: 272, height: 40, borderRadius: 2}}
-          onClick={handleSignUP}>Register</Button>
+        <Button
+          style={{ width: 272, height: 40, borderRadius: 2 }}
+          onClick={handleSignUP}
+        >
+          Register
+        </Button>
         <div style={{ height: 24 }}></div>
 
         <div className={styles.api_login}>

@@ -761,7 +761,8 @@ export type SignupData = SignUpResponseDto;
 
 export type SignupError = ResponseDto;
 
-export type LoginData = LoginRequestDto;
+// export type LoginData = LoginRequestDto;
+export type LoginData = SignUpResponseDto;
 
 export type LoginError = ResponseDto;
 
