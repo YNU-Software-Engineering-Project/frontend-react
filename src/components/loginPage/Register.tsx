@@ -1,27 +1,52 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from 'styles/login/Register.module.css';
 import { useNavigate } from 'react-router-dom';
 import Button from 'components/common/Button';
+import { Api } from 'apiTypes/Api'; 
+import { SignUpRequestDto } from 'apiTypes/data-contracts';
 
 function Register() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [passwordConfirm, setPasswordConfirm] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [code, setCode] = useState('');
-  const [role, setRole] = useState('user');
+  const [inviteCode, setInviteCode] = useState('');
   const navigate = useNavigate();
+  const api = new Api();
 
-  const handleRegister = () => {
-    if (code === 'XJ7dH9kL3tZ2') {
-      setRole('admin');
-    } else {
-      setRole('user');
+  const handleSignUP = async() => {
+    if (!email || !password || !passwordConfirm || !phoneNumber) {
+      alert('초대코드를 제외한 모든 필드를 입력해주세요.');
+      return;
     }
 
-    console.log(code);
-    console.log(`Registered as: ${role}`);
-    navigate('/login');
+    if (password !== passwordConfirm) {
+      alert('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    const requestData: SignUpRequestDto = {
+      email,
+      password,
+      passwordConfirm,
+      phoneNumber,
+      inviteCode: inviteCode === 'XJ7dH9kL3tZ2' ? 'admin' : 'user',
+    };
+        
+    api.signup(requestData)
+    .then((response) => {
+      console.log(response);
+      alert('회원가입 성공!');
+      navigate('/login');
+    })
+    .catch((error) => {
+      console.error('회원가입 실패:', error);
+      if (error.response) {
+        alert(`회원가입 실패: ${error.response.data.message}`);
+      } else {
+        alert('회원가입 실패: 네트워크 오류');
+      }
+    });
   };
 
   return (
@@ -53,8 +78,8 @@ function Register() {
           className={styles.confirm_confirmPassword}
           type="text"
           placeholder="value"
-          value={confirmPassword}
-          onChange={e => setConfirmPassword(e.target.value)}
+          value={passwordConfirm}
+          onChange={e => setPasswordConfirm(e.target.value)}
         ></input>
         <div style={{ height: 24 }}></div>
         <div className={styles.phoneNumber_text}>전화번호</div>
@@ -73,13 +98,13 @@ function Register() {
           className={styles.confirm_code}
           type="text"
           placeholder="value"
-          value={code}
-          onChange={e => setCode(e.target.value)}
+          value={inviteCode}
+          onChange={e => setInviteCode(e.target.value)}
         ></input>
         <div style={{ height: 24 }}></div>
 
         <Button style={{  width: 272, height: 40, borderRadius: 2}}
-          onClick={handleRegister}>Register</Button>
+          onClick={handleSignUP}>Register</Button>
         <div style={{ height: 24 }}></div>
 
         <div className={styles.api_login}>
