@@ -1,11 +1,9 @@
-* {
-  box-sizing: border-box;
-  font-family: GmarketSans;
-  line-height: 28px;
-}
 .wrapper {
   display: flex;
   flex-direction: column;
+  box-sizing: border-box;
+  font-family: GmarketSans;
+  line-height: 28px;
 }
 .topBar {
   height: 240px;
