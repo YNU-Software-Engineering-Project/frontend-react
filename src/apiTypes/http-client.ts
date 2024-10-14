@@ -73,6 +73,7 @@ export class HttpClient<SecurityDataType = unknown> {
     this.instance = axios.create({
       ...axiosConfig,
       baseURL: axiosConfig.baseURL || 'http://localhost:8080',
+      withCredentials: true,
     });
     this.secure = secure;
     this.format = format;
