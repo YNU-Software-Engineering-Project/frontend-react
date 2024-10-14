@@ -4,7 +4,12 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import styles from 'styles/template/Header.module.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-function Header() {
+type HeaderProps = {
+  isOpen: boolean;
+  onToogle: () => void;
+};
+
+const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,7 +26,7 @@ function Header() {
               <ArrowBackIcon sx={{ fontSize: '48px' }} />
             </div>
           )}
-          <div className={styles.menuBtn}>
+          <div className={styles.menuBtn} onClick={onToogle}>
             <span>메뉴</span>
           </div>
         </div>
@@ -48,6 +53,6 @@ function Header() {
       </header>
     </>
   );
-}
+};
 
 export default Header;

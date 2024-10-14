@@ -32,7 +32,6 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onToogle }) => {
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
