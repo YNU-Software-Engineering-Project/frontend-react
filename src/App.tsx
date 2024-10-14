@@ -2,18 +2,18 @@ import { Route, Routes } from 'react-router-dom';
 import Homepage from 'pages/Homepage';
 import PostListPage from 'pages/PostListPage';
 import PostPage from 'pages/PostPage';
-import Admin from 'pages/adminPage/Admin';
-import MemberMange from 'pages/adminPage/MemberManage';
-import PostManage from 'pages/adminPage/PostManage';
-import Chat from 'pages/adminPage/chat';
+import Admin from 'components/adminPage/summary/Admin';
+import MemberMange from 'components/adminPage/memberManage/MemberManage';
+import PostManage from 'components/adminPage/postManage/PostManage';
+import Chat from 'components/adminPage/chat/chat';
 import NotFoundPage from 'pages/NotFoundPage';
 import AdminPage from 'pages/AdminPage';
 import Template from 'pages/Template';
 import TermsOfServicePage from 'pages/TermsOfServicePage';
 import CreatePage from 'pages/CreatePage';
-import Login from 'pages/login/Login';
-import ForgotPassword from 'pages/login/ForgotPassword';
-import Register from 'pages/login/Register';
+import Login from 'components/loginPage/Login';
+import ForgotPassword from 'components/loginPage/ForgotPassword';
+import Register from 'components/loginPage/Register';
 import LoginPage from 'pages/LoginPage';
 
 import ServiceInfo from 'components/termsOfService/ServiceInfo';
@@ -33,12 +33,12 @@ import Policy from 'components/CreatePage/section/Policy';
 import Setting from 'components/CreatePage/section/Setting';
 
 import MyPageTemplate from 'pages/MyPageTemplate';
-import Mypage from 'pages/myPage/mypage';
-import Alarm from 'pages/myPage/alarm';
-import Joined from 'pages/myPage/joined';
-import Myfunding from 'pages/myPage/myfunding';
-import WishList from 'pages/myPage/wishList';
-import Chatting from 'pages/myPage/chatting';
+import Mypage from 'components/myPage/myProfile/mypage';
+import Alarm from 'components/myPage/alarm/alarm';
+import Joined from 'components/myPage/joined/joined';
+import Myfunding from 'components/myPage/myfunding/myfunding';
+import WishList from 'components/myPage/wishList/wishList';
+import Chatting from 'components/myPage/chat/chatting';
 
 function App() {
   return (
@@ -50,8 +50,8 @@ function App() {
 
         <Route path="/login" element={<LoginPage />}>
           <Route index element={<Login />} />
-          <Route path="register" element={<ForgotPassword />} />
-          <Route path="forgotpassword" element={<Register />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgotpassword" element={<ForgotPassword />} />
         </Route>
 
         <Route path="/mypage" element={<MyPageTemplate />}>

@@ -2,6 +2,7 @@ import styles from 'styles/adminPage/Admin.module.css';
 import { PieChart } from '@mui/x-charts';
 import { useSpring } from '@react-spring/web';
 import MenuBar from 'components/adminPage/menuBar';
+import PieChart2 from 'components/common/PieChart';
 
 function Admin() {
   const successFundingValue = 50;
@@ -111,7 +112,7 @@ function Admin() {
                 </text>
               </PieChart>
             </div>
-            
+
             <div className={styles.funding_status_bottom}>
               <div className={styles.funding_status_container}>
                 <div className={styles.funding_success}>성공 펀딩 수</div>  
