@@ -36,7 +36,6 @@ function Register() {
     api
       .signup(requestData)
       .then(response => {
-        console.log(response.data.accessToken);
         alert('회원가입 성공!');
         navigate('/login');
       })

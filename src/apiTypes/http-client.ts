@@ -73,7 +73,7 @@ export class HttpClient<SecurityDataType = unknown> {
     this.instance = axios.create({
       ...axiosConfig,
       baseURL: axiosConfig.baseURL || 'http://localhost:8080',
-      withCredentials: true,
+      // withCredentials: true, 나중에 cros 관련 리프레쉬 토큰 일있으면 그때 하는걸로
     });
     this.secure = secure;
     this.format = format;

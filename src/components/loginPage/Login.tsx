@@ -5,10 +5,7 @@ import Button from 'components/common/Button';
 import { Api } from 'apiTypes/Api';
 import { LoginRequestDto, LoginData } from 'apiTypes/data-contracts';
 import { AxiosResponse } from 'axios';
-
-//test
-import { EmailSendTokenRequestDto } from 'apiTypes/data-contracts';
-const EE = 'lappel1004@yu.ac.kr';
+import { Token } from 'apiTypes/Token';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -27,10 +24,7 @@ function Login() {
       .then((response: AxiosResponse<LoginData>) => {
         // 로그인 성공
         const token = response.data.accessToken;
-        const now = new Date();
-        const expirationTime = now.getTime() + 2 * 60 * 60 * 1000 * 1.8; // 1시간 50분 유효
-        const expires = new Date(expirationTime).toUTCString();
-        document.cookie = `Authorization=Bearer ${token}; path=/; expires=${expires};`;
+        if (token) Token.setToken = token;
         alert('로그인 성공!');
         navigate('/');
       })
@@ -42,24 +36,6 @@ function Login() {
         } else {
           alert('로그인 실패: 네트워크 오류');
         }
-      });
-  };
-
-  //test
-  const chekHandle = async () => {
-    const data: EmailSendTokenRequestDto = {
-      email: EE,
-    };
-    await api
-      .sendEmailToken(data)
-      .then(response => {
-        // 로그인 성공
-        console.log(response);
-      })
-      .catch(error => {
-        // 로그인 실패
-        console.error('asdasdasd:', error);
-        console.log(data);
       });
   };
 
@@ -90,7 +66,6 @@ function Login() {
         <Button
           style={{ width: 352, height: 40, borderRadius: 2 }}
           onClick={handleLogin}
-          // onClick={chekHandle}
         >
           Sign in
         </Button>
