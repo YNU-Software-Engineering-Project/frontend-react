@@ -26,14 +26,17 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
               <ArrowBackIcon sx={{ fontSize: '48px' }} />
             </div>
           )}
-          <div className={styles.menuBtn} onClick={onToogle}>
+          <div
+            className={`${styles.menuBtn} ${isOpen ? styles.fade : ''}`}
+            onClick={onToogle}
+          >
             <span>메뉴</span>
           </div>
         </div>
         <div className={styles.titleBox}>
           <Link to="/">SPARK+SEED</Link>
         </div>
-        <div className={styles.etcBtn}>
+        <div className={`${styles.etcBtn} ${isOpen ? styles.fade : ''}`}>
           <div>
             <Link to="/mypage/alarm">
               <NotificationsNoneIcon sx={{ fontSize: '48px' }} />

@@ -1,9 +1,14 @@
+.fade {
+  opacity: 0;
+}
+
 .wrapper {
   display: flex;
   justify-content: space-around;
   height: 240px;
   margin-top: 90px;
   margin-bottom: 70px;
+  min-width: 1280px;
 }
 
 .leftMenu {
@@ -20,6 +25,11 @@
 
 .menuBtn {
   font-size: 24px;
+  transition: opacity 0.2s ease-in;
+}
+
+.titleBox {
+  margin: 0px auto;
 }
 
 .titleBox > a {
@@ -36,6 +46,7 @@
   height: 50px;
   align-items: center;
   justify-content: center;
+  transition: opacity 0.2s ease-in;
 }
 
 .etcBtn > div {

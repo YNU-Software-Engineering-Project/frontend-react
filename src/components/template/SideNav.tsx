@@ -38,7 +38,7 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onToogle }) => {
   }, []);
 
   return (
-    <div>
+    <div className={`${style.container} ${isOpen ? style.expandedMenu : ''}`}>
       <div
         className={style.wrapper}
         style={{
