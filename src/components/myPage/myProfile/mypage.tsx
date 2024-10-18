@@ -22,6 +22,10 @@ function Mypage() {
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const api = new Api();
 
+  useEffect(() => {
+    handleGetUser();
+  }, []);
+
   const openPostcode = () => { //주소 입력
     new window.daum.Postcode({
       oncomplete: (data: { zonecode: string; roadAddress: string; jibunAddress: string }) => {
@@ -31,7 +35,7 @@ function Mypage() {
       }
     }).open();
   };
-  const handleCheckUser = () => { //마이페이지 정보 가져오기
+  const handleGetUser = () => { //마이페이지 정보 가져오기
     const params = Token.getHeaderParms;
     console.log(params);
 

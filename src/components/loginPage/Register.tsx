@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import Button from 'components/common/Button';
 import { Api } from 'apiTypes/Api';
 import { SignUpRequestDto } from 'apiTypes/data-contracts';
+import naver from 'assets/naver.png';
+import google from 'assets/google.png';
+import kakao from 'assets/kakao.png';
 
 function Register() {
   const [email, setEmail] = useState('');
@@ -113,13 +116,13 @@ function Register() {
 
         <div className={styles.api_login}>
           <button>
-            <img src="/naver.png"></img>
+            <img src={naver}></img>
           </button>
           <button>
-            <img src="/google.png"></img>
+            <img src={google}></img>
           </button>
           <button>
-            <img src="/kakao.png"></img>
+            <img src={kakao}></img>
           </button>
         </div>
       </div>
