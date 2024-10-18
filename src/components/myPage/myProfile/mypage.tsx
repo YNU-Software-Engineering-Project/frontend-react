@@ -7,6 +7,7 @@ import { GetUserProfileResponseDto, EmailSendTokenRequestDto, ModifyProfilePaylo
 import { Token } from 'apiTypes/Token';
 import { AxiosResponse } from 'axios';
 import defaultProfileImage from 'assets/purple-circle.png';
+import { FileApi } from 'apiTypes/File';
 
 function Mypage() {
   const [nickname, setNickname] = useState('');
@@ -21,6 +22,7 @@ function Mypage() {
   const [detailAddress, setDetailAddress] = useState('');
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const api = new Api();
+  const fileApi = new FileApi();
 
   useEffect(() => {
     handleGetUser();
@@ -44,9 +46,23 @@ function Mypage() {
       if (response.data && response.data.data) {
         // 로그인되어 있을 경우, 마이페이지 정보 가져오기
         const userData = response.data.data;
+        const fileName = userData.profileImage || defaultProfileImage; 
+        const fileType = userData.profileImage?.endsWith('.png') ? 'image/png' : 'image/jpeg';
 
         // 상태 설정
-        setProfileImage(userData.profileImage ? new File([], userData.profileImage) : null);
+        if (userData.profileImage) {
+          fileApi.getImage(userData.profileImage)
+            .then(imageResponse => {
+              const file = new File([imageResponse.data], fileName, {
+                type: fileType, 
+              });
+              setProfileImage(file);
+            })
+            .catch(error => {
+              console.error('이미지 로드 실패:', error);
+            });
+        }
+        // setProfileImage(userData.profileImage ? new File([], userData.profileImage) : null);
         setNickname(userData.nickname || ''); 
         setUserId(userData.id || ''); 
         setPhoneNumber(userData.phoneNumber || ''); 
@@ -69,6 +85,34 @@ function Mypage() {
         }
     });
     
+  };
+
+  const handleChangeProfileImage = (event: React.ChangeEvent<HTMLInputElement>) => { //이미지 변경; 바꾸기 버튼 누를 시
+    const fileInput = event.target;
+    if (fileInput.files && fileInput.files.length > 0) {
+      const file = fileInput.files[0];
+      setProfileImage(file); // Set the selected file to state
+    }
+  };
+
+  const handleDeleteProfileImage = () => { //이미지 초기화; 삭제 버튼 누를 시
+    if (profileImage) {
+      const fileName = profileImage.name;
+
+      fileApi.deleteImage(fileName)
+        .then(() => {
+          alert('프로필 이미지가 삭제되었습니다.');
+          setProfileImage(null);
+        })
+        .catch(error => {
+          console.error('이미지 삭제 실패:', error);
+          if (error.response) {
+            alert(`이미지 삭제 실패: ${error.response.data.message}`);
+          } else {
+            alert('이미지 삭제 실패: 네트워크 오류');
+          }
+        });
+    }
   };
 
   const handleMypage = () => { //마이페이지 수정; susbit버튼 누를 시
@@ -166,9 +210,17 @@ function Mypage() {
             }}/>
           </div>
           <div className={styles.my_profile_img_button}>
-            <Button style={{ width: 112, height: 40, borderRadius: 2}}>바꾸기</Button>
             <Button style={{ width: 112, height: 40, borderRadius: 2}}
-            type='white' onClick={()=>setProfileImage(null)}>삭제</Button>
+            onClick={() => document.getElementById('fileInput')?.click()}>바꾸기</Button>
+            <input 
+            id="fileInput" 
+            type="file" 
+            accept="image/png, image/jpeg" 
+            style={{ display: 'none' }} // Hide the file input
+            onChange={handleChangeProfileImage} 
+          />
+            <Button style={{ width: 112, height: 40, borderRadius: 2}}
+            type='white' onClick={handleDeleteProfileImage}>삭제</Button>
           </div>
         </div>
         <div className={styles.my_profile_change_container}>
