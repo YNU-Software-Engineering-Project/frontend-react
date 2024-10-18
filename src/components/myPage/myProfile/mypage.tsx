@@ -1,7 +1,12 @@
 import ProfileMenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/mypage.module.css'; 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Button from 'components/common/Button';
+import { Api } from 'apiTypes/Api';
+import { GetUserProfileResponseDto, EmailSendTokenRequestDto, ModifyProfilePayload, PatchPhoneNumberRequestDto } from 'apiTypes/data-contracts';
+import { Token } from 'apiTypes/Token';
+import { AxiosResponse } from 'axios';
+import defaultProfileImage from 'assets/purple-circle.png';
 
 function Mypage() {
   const [nickname, setNickname] = useState('');
@@ -13,9 +18,11 @@ function Mypage() {
   const [postalCode, setPostalCode] = useState('');
   const [roadAddress, setRoadAddress] = useState('');
   const [jibunAddress, setJibunAddress] = useState('');
-  const [detailedAddress, setDetailedAddress] = useState('');
+  const [detailAddress, setDetailAddress] = useState('');
+  const [profileImage, setProfileImage] = useState<File | null>(null);
+  const api = new Api();
 
-  const openPostcode = () => {
+  const openPostcode = () => { //주소 입력
     new window.daum.Postcode({
       oncomplete: (data: { zonecode: string; roadAddress: string; jibunAddress: string }) => {
         setPostalCode(data.zonecode);
@@ -23,6 +30,120 @@ function Mypage() {
         setJibunAddress(data.jibunAddress);
       }
     }).open();
+  };
+  const handleCheckUser = () => { //마이페이지 정보 가져오기
+    const params = Token.getHeaderParms;
+    console.log(params);
+
+    api.getUserProfile(params)
+    .then((response: AxiosResponse<GetUserProfileResponseDto>)=>{
+      if (response.data && response.data.data) {
+        // 로그인되어 있을 경우, 마이페이지 정보 가져오기
+        const userData = response.data.data;
+
+        // 상태 설정
+        setProfileImage(userData.profileImage ? new File([], userData.profileImage) : null);
+        setNickname(userData.nickname || ''); 
+        setUserId(userData.id || ''); 
+        setPhoneNumber(userData.phoneNumber || ''); 
+        setSchoolEmail(userData.schoolEmail || ''); 
+        setPostalCode(userData.postalCode || ''); 
+        setRoadAddress(userData.roadAddress || ''); 
+        setJibunAddress(userData.landLotAddress || ''); 
+        setDetailAddress(userData.detailAddress || ''); 
+      } else {
+        alert('사용자 정보를 찾을 수 없습니다.');
+      }
+    })
+    .catch(error=>{
+      // 로그인되어 있지 않을 경우
+      console.error('로그인 필요:', error);
+        if (error.response) {
+          alert(`로그인 필요: ${error.response.data.message}`);
+        } else {
+          alert('로그인 필요: 네트워크 오류');
+        }
+    });
+    
+  };
+
+  const handleMypage = () => { //마이페이지 수정; susbit버튼 누를 시
+    const formData = new FormData();
+    if (profileImage) {
+      formData.append('profileImage', profileImage);
+    }
+    const requestData: ModifyProfilePayload = {
+      profileImage: profileImage ?? undefined, 
+      userInfo: {
+        nickname,
+        password,
+        confirmPassword,
+        postalCode,
+        roadAddress,
+        landLotAddress: jibunAddress,
+        detailAddress,
+      }
+    };
+    const params = Token.getHeaderParms;
+    api
+      .modifyProfile(requestData, params)
+      .then((response) => {
+        //프로필 수정
+        alert('프로필 수정 완료');
+      })
+      .catch(error => {
+        //프로필 수정 실패
+        console.error('프로필 수정 실패:', error);
+        if (error.response) {
+          alert(`프로필 수정 실패: ${error.response.data.message}`);
+        } else {
+          alert('프로필 수정 실패: 네트워크 오류');
+        }
+      });
+  };
+
+  const handleShoolEmailCheck = () => { //학교 이메일 인증; 이메일 확인 버튼 누를 시
+    const requestData: EmailSendTokenRequestDto = {
+      email: schoolEmail,
+    };
+    const params = Token.getHeaderParms;
+    api
+      .sendEmailToken(requestData, params)
+      .then((response) => {
+        //학교메일 인증
+        alert('인증 이메일이 발송되었습니다. 이메일을 확인해 주세요.');
+      })
+      .catch(error => {
+        //학교메일 인증 실패
+        console.error('학교메일 인증 실패:', error);
+        if (error.response) {
+          alert(`학교메일 인증 실패: ${error.response.data.message}`);
+        } else {
+          alert('학교메일 인증 실패: 네트워크 오류');
+        }
+      });
+  };
+
+  const handlePhoneNumberChange = () => { //전화번호 변경; 전화번호 수정 버튼 누를 시
+    const requestData: PatchPhoneNumberRequestDto = {
+      phoneNumber,
+    };
+    const params = Token.getHeaderParms;
+    api
+      .modifyPhoneNumber(requestData, params)
+      .then((response) => {
+        //전화번호 변경
+        alert('전화번호가 변경되었습니다.');
+      })
+      .catch(error => {
+        //전화번호 변경 실패
+        console.error('전화번호 변경 실패:', error);
+        if (error.response) {
+          alert(`전화번호 변경 실패: ${error.response.data.message}`);
+        } else {
+          alert('전화번호 변경 실패: 네트워크 오류');
+        }
+      });
   };
 
   return (
@@ -32,11 +153,18 @@ function Mypage() {
 
       <div className={styles.my_profile}>
         <div className={styles.my_profile_img_container}>
-          <div className={styles.my_profile_img}></div>
+          <div className={styles.my_profile_img}>
+            <img src={profileImage ? URL.createObjectURL(profileImage) : defaultProfileImage} 
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+            }}/>
+          </div>
           <div className={styles.my_profile_img_button}>
             <Button style={{ width: 112, height: 40, borderRadius: 2}}>바꾸기</Button>
             <Button style={{ width: 112, height: 40, borderRadius: 2}}
-            type='white'>삭제</Button>
+            type='white' onClick={()=>setProfileImage(null)}>삭제</Button>
           </div>
         </div>
         <div className={styles.my_profile_change_container}>
@@ -62,7 +190,8 @@ function Mypage() {
             <div>전화번호</div>
             <input className={styles.my_profile_change_input} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)}></input>
           </div>
-          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}>수정하기</Button>
+          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}
+          onClick={handlePhoneNumberChange}>수정하기</Button>
           
         </div>
         <div className={styles.school_email_change_container}>
@@ -70,7 +199,8 @@ function Mypage() {
             <div>학교 이메일</div>
             <input className={styles.my_profile_change_input} value={schoolEmail} onChange={(e) => setSchoolEmail(e.target.value)}></input>
           </div>
-          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}>확인</Button>
+          <Button style={{ width: 117, height: 40, borderRadius: 2, marginLeft:7.5, marginTop:3.5}}
+          onClick={handleShoolEmailCheck}>확인</Button>
         </div>
         <div className={styles.adress_change_container}>
           <div className={styles.my_profile_address_change_container}>
@@ -84,9 +214,9 @@ function Mypage() {
           <input className={styles.my_profile_change_input} type='text' placeholder='도로명 주소' value={roadAddress}></input>
           <input className={styles.my_profile_change_input} type='text' placeholder='지번 주소' value={jibunAddress}></input>
         </div>
-        <input className={styles.detail_address} type='text' placeholder='상세주소' value={detailedAddress} onChange={(e) => setDetailedAddress(e.target.value)}></input>
+        <input className={styles.detail_address} type='text' placeholder='상세주소' value={detailAddress} onChange={(e) => setDetailAddress(e.target.value)}></input>
         <div className={styles.save_button_container}>
-          <Button style={{ width: 272, height: 40, borderRadius: 2,}}>submit</Button>
+          <Button style={{ width: 272, height: 40, borderRadius: 2,}} onClick={handleMypage}>submit</Button>
         </div>
       </div>
     </div>

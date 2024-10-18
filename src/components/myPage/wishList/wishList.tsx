@@ -3,6 +3,8 @@ import ProfileMenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/cardList.module.css';
 import Pagination from 'components/myPage/Pagination';
 import PostCard from 'components/common/PostCard';
+import { Api } from 'apiTypes/Api';
+import { Token } from 'apiTypes/Token';
 
 const WishList = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +63,30 @@ const WishList = () => {
 
   const startIndex = (currentPage - 1) * cardsPerPage;
   const endIndex = Math.min(startIndex + cardsPerPage, totalFundingCards);
+
+  const api = new Api();
+  // const handleShowWishList = () => {
+  //   const query = {
+  //     page,
+  //     size
+  //   };
+  //   const params = Token.getHeaderParms;
+  //   api
+  //     .getWishList(query, params)
+  //     .then((response) => {
+  //       //위시리스트 조회
+  //       alert('위시리스트 조회');
+  //     })
+  //     .catch(error => {
+  //       //위시리스트 조회 실패
+  //       console.error('위시리스트 조회 실패:', error);
+  //       if (error.response) {
+  //         alert(`위시리스트 조회 실패: ${error.response.data.message}`);
+  //       } else {
+  //         alert('위시리스트 조회 실패: 네트워크 오류');
+  //       }
+  //     });
+  // };
 
   return (
     <div className={styles.wishList_container}>
