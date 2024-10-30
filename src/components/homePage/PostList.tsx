@@ -1,6 +1,7 @@
 import Button from 'components/common/Button';
 import OptionList from 'components/common/OptionList';
 import PostCard, { PostCardProps } from 'components/common/PostCard';
+import { Link } from 'react-router-dom';
 
 const PostList = () => {
   const optionsItems = [
@@ -54,9 +55,11 @@ const PostList = () => {
           }}
         >
           <OptionList items={optionsItems} />
-          <Button variant="contained" type="black">
-            더보기
-          </Button>
+          <Link to="/postList">
+            <Button variant="contained" type="black">
+              더보기
+            </Button>
+          </Link>
         </div>
         <div
           style={{
