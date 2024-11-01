@@ -1,5 +1,5 @@
 import style from 'styles/PostListPage/Postlist.module.css';
-import PostCard, { PostCardProps } from 'components/common/PostCard';
+import PostCard from 'components/common/PostCard';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import OrderButton from 'components/common/OrderButton';
@@ -8,49 +8,7 @@ import { useState } from 'react';
 
 const PostList = () => {
   // 테스트용 더미 데이터
-  const cardInfo: PostCardProps[] = [
-    {
-      avatarImgUrl: 'https://picsum.photos/id/1/200/300',
-      postTitle: '가벼운 노트북',
-      postImgUrl: 'https://picsum.photos/id/2/200/300',
-      postSummary:
-        'This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels',
-      progressBarValue: 80,
-      tagList: ['tag1', 'tag2', 'tag3'],
-    },
-    {
-      avatarImgUrl: 'https://picsum.photos/id/3/200/300',
-      postTitle: '제목2',
-      postImgUrl: 'https://picsum.photos/id/4/200/300',
-      postSummary: '요약2',
-      progressBarValue: 40,
-      tagList: ['tag1', 'tag2', 'tag3'],
-    },
-    {
-      avatarImgUrl: 'https://picsum.photos/id/5/200/300',
-      postTitle: '제목3',
-      postImgUrl: 'https://picsum.photos/id/6/200/300',
-      postSummary: '요약3',
-      progressBarValue: 20,
-      tagList: ['tag1', 'tag2', 'tag3'],
-    },
-    {
-      avatarImgUrl: 'https://picsum.photos/id/5/200/300',
-      postTitle: '제목3',
-      postImgUrl: 'https://picsum.photos/id/6/200/300',
-      postSummary: '요약3',
-      progressBarValue: 20,
-      tagList: ['tag1', 'tag2', 'tag3'],
-    },
-    {
-      avatarImgUrl: 'https://picsum.photos/id/5/200/300',
-      postTitle: '제목3',
-      postImgUrl: 'https://picsum.photos/id/6/200/300',
-      postSummary: '요약3',
-      progressBarValue: 20,
-      tagList: ['tag1', 'tag2', 'tag3'],
-    },
-  ];
+  const cardInfo = [];
 
   // 정렬 컨트롤 부분
   const orderOptions = ['최신순', '가격순', '추천순'];
@@ -124,7 +82,7 @@ const PostList = () => {
               height: '40px !important',
               '& .MuiInputBase-root': {
                 borderRadius: '999px',
-              }
+              },
             }}
             onKeyDown={handleKeyPress}
             value={searchTerm} // 상태값을 TextField에 반영
@@ -141,17 +99,9 @@ const PostList = () => {
           />
         </div>
         <div className={style.main}>
-          {cardInfo.map((info, index) => (
-            <PostCard
-              avatarImgUrl={info.avatarImgUrl}
-              postTitle={info.postTitle}
-              postImgUrl={info.postImgUrl}
-              postSummary={info.postSummary}
-              progressBarValue={info.progressBarValue}
-              tagList={info.tagList}
-              key={`${index} - ${info.postTitle}`}
-            />
-          ))}
+          {/* {cardInfo.map((info, index) => (
+            <PostCard />
+          ))} */}
         </div>
         <div className={style.footer}>
           <Pagination

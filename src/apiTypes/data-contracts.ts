@@ -875,13 +875,13 @@ export type GetfundPolicyData = FundingDetailsResponseDto;
 
 export type GetfundPolicyError = ResponseDto;
 
-export type GetTop3PopularFundingsData = FundingSortResponseDto;
+export type GetTop3PopularFundingsData = FundingSortResponseDto[];
 
-export type GetSmallFundingsData = FundingSortResponseDto;
+export type GetSmallFundingsData = FundingSortResponseDto[];
 
-export type GetNewFundingsData = FundingSortResponseDto;
+export type GetNewFundingsData = FundingSortResponseDto[];
 
-export type GetHighAchievementFundingsData = FundingSortResponseDto;
+export type GetHighAchievementFundingsData = FundingSortResponseDto[];
 
 export type GetRewardListData = GetRewardListResponseDto;
 

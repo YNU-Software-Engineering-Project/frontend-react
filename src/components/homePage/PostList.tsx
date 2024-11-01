@@ -1,7 +1,14 @@
 import Button from 'components/common/Button';
 import OptionList from 'components/common/OptionList';
-import PostCard, { PostCardProps } from 'components/common/PostCard';
+import PostCard from 'components/common/PostCard';
 import { Link } from 'react-router-dom';
+import { useAtom } from 'jotai';
+import { FundingSortResponseDto } from 'apiTypes/data-contracts';
+import { fetchTop3PopularFundings } from 'atoms/getTop3PopularFundings';
+import { fetchHighAchievementFundings } from 'atoms/getHighAchievementFundingsData';
+import { fetchNewFundings } from 'atoms/getNewFundingsData';
+import { fetchSmallFundings } from 'atoms/getSmallFundingsData';
+import { useEffect, useState } from 'react';
 
 const PostList = () => {
   const optionsItems = [
@@ -10,40 +17,36 @@ const PostList = () => {
     '소액 펀딩',
     '목표달성률',
   ];
+  const [option, setOption] = useState<number>(0);
+  const onClick = (label: string) => {
+    const idx = optionsItems.findIndex(x => x == label);
+    setOption(idx);
+  };
 
-  const cardInfo: PostCardProps[] = [
-    {
-      avatarImgUrl: 'https://picsum.photos/id/1/200/300',
-      postTitle: '가벼운 노트북',
+  const [top3PopularFundings] = useAtom(fetchTop3PopularFundings);
+  const [highAchievementFundings] = useAtom(fetchHighAchievementFundings);
+  const [newFundings] = useAtom(fetchNewFundings);
+  const [smallFundings] = useAtom(fetchSmallFundings);
+  const [cardInfo, setCardInfo] = useState<FundingSortResponseDto[]>();
 
-      postImgUrl: 'https://picsum.photos/id/2/200/300',
-      postSummary:
-        'This impressive paella is a perfect party dish and a fun meal to cook together with your guests. Add 1 cup of frozen peas along with the mussels',
-      progressBarValue: 80,
-      tagList: ['tag1', 'tag2', 'tag3'],
-      isExpired: false,
-    },
-    {
-      avatarImgUrl: 'https://picsum.photos/id/3/200/300',
-      postTitle: '제목2',
+  console.log(newFundings);
 
-      postImgUrl: 'https://picsum.photos/id/4/200/300',
-      postSummary: '요약2',
-      progressBarValue: 40,
-      tagList: ['tag1', 'tag2', 'tag3'],
-      isExpired: false,
-    },
-    {
-      avatarImgUrl: 'https://picsum.photos/id/5/200/300',
-      postTitle: '제목3',
-
-      postImgUrl: 'https://picsum.photos/id/6/200/300',
-      postSummary: '요약3',
-      progressBarValue: 20,
-      tagList: ['tag1', 'tag2', 'tag3'],
-      isExpired: true,
-    },
-  ];
+  useEffect(() => {
+    switch (option) {
+      case 0:
+        setCardInfo(newFundings);
+        break;
+      case 1:
+        setCardInfo(top3PopularFundings);
+        break;
+      case 2:
+        setCardInfo(smallFundings);
+        break;
+      case 3:
+        setCardInfo(highAchievementFundings);
+        break;
+    }
+  }, [option]);
 
   return (
     <>
@@ -54,7 +57,7 @@ const PostList = () => {
             justifyContent: 'space-between',
           }}
         >
-          <OptionList items={optionsItems} />
+          <OptionList items={optionsItems} onClick={onClick} />
           <Link to="/postList">
             <Button variant="contained" type="black">
               더보기
@@ -68,18 +71,8 @@ const PostList = () => {
             marginTop: '20px',
           }}
         >
-          {cardInfo.map(info => (
-            <PostCard
-              avatarImgUrl={info.avatarImgUrl}
-              postTitle={info.postTitle}
-              postImgUrl={info.postImgUrl}
-              postSummary={info.postSummary}
-              progressBarValue={info.progressBarValue}
-              tagList={info.tagList}
-              key={`${info.postTitle} - ${info.postSummary}`}
-              isExpired={info.isExpired}
-            />
-          ))}
+          {cardInfo &&
+            cardInfo.map(info => <PostCard key={info.fundingId} {...info} />)}
         </div>
       </div>
     </>
