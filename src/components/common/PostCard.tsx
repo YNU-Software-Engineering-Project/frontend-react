@@ -49,7 +49,7 @@ const PostCard: React.FC<FundingSortResponseDto> = ({
   createdAt,
   current,
   details,
-  tags = [],
+  tag = [],
   likedByCurrentUser = false,
 }) => {
   const [liked, setLiked] = useState<boolean>(likedByCurrentUser);
@@ -60,8 +60,8 @@ const PostCard: React.FC<FundingSortResponseDto> = ({
 
   const [tagJoin, setTagJoin] = useState<String>('');
   useEffect(() => {
-    setTagJoin(tags.map(item => '#' + item).join(' '));
-  }, [tags]);
+    setTagJoin(tag.map(item => '#' + item).join(' '));
+  }, [tag]);
 
   return (
     <>

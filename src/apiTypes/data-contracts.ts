@@ -468,7 +468,7 @@ export interface FundingSortResponseDto {
   createdAt?: string;
   current?: 'DRAFT' | 'REVIEW' | 'REVIEW_COMPLETED' | 'ONGOING' | 'CLOSED';
   details?: string;
-  tags?: string[];
+  tag?: string[];
   likedByCurrentUser?: boolean;
 }
 
