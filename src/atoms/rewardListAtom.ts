@@ -1,8 +1,8 @@
 import { Api } from 'apiTypes/Api';
 import { atom } from 'jotai';
-import { GetRewardListData } from 'apiTypes/data-contracts';
+import { RewardDataDto } from 'apiTypes/data-contracts';
 
-export const rewardListAtom = atom<GetRewardListData | []>([]);
+export const rewardListAtom = atom<RewardDataDto[] | []>([]);
 
 export const fetchRewardListAtom = atom(
   null,
@@ -11,7 +11,7 @@ export const fetchRewardListAtom = atom(
     try {
       const response = await api.getRewardList(fundingId);
       if (response.status === 200) {
-        set(rewardListAtom, response.data);
+        set(rewardListAtom, response.data.data as RewardDataDto[]);
       } else {
         throw new Error(`Failed to fetch: Status code ${response.status}`);
       }

@@ -160,7 +160,7 @@ export class Api<
    * No description
    *
    * @tags funding-story-controller
-   * @name ModifyProject
+   * @name ModifyProjnpmect
    * @summary 프로젝트 제목, 요약 작성
    * @request POST:/api/user/fundings/{funding_id}/story/modify
    * @response `200` `ModifyProjectData` 작성 성공
