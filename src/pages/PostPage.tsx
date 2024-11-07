@@ -1,7 +1,7 @@
 import style from 'styles/PostPage/PostPage.module.css';
 import OptionList from 'components/common/OptionList';
 import Button from 'components/common/Button';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import {
   ChatBubbleOutline,
   FavoriteBorder,
@@ -10,10 +10,21 @@ import {
 import RewardOptionModal from 'components/postPage/RewardOptionModal';
 import { useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { fundingInfoAtom } from 'atoms/fundingInfo';
+import { useAtomValue } from 'jotai';
+import { FundingDetailsResponseDto } from 'apiTypes/data-contracts';
 
 const PostPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
+  const data = useAtomValue(
+    fundingInfoAtom(Number(id)),
+  ) as FundingDetailsResponseDto;
+
+  if (Object.keys(data).includes('code')) {
+    navigate('*');
+  }
 
   // 네비 버튼 부분
   const navList = [
@@ -30,7 +41,7 @@ const PostPage = () => {
     if (event === undefined) return;
     const link = navList.find(item => item.label === label);
     if (link === undefined) return;
-    navigate(`/post/${link.path}`);
+    navigate(`/post/${id}/${link.path}`);
   };
 
   // 버튼 부분
@@ -63,20 +74,24 @@ const PostPage = () => {
         </header>
         <div className={style.main}>
           <div className={style.content}>
-            <Outlet />
+            <Outlet context={id} />
           </div>
-          {location.pathname === '/post/dashboard' || (
+          {location.pathname.split('/')[3] === 'dashboard' || (
             <div className={style.sidebar}>
               <div className={style.title}>목표 금액</div>
-              <div className={style.price}>500,000원</div>
+              <div
+                className={style.price}
+              >{`${data.targetAmount?.toLocaleString('ko-KR')}원`}</div>
               <div className={style.title}>모인 금액</div>
-              <div className={style.price}>90,686,700원</div>
+              <div
+                className={style.price}
+              >{`${data.currentAmount?.toLocaleString('ko-KR')}원`}</div>
               <div className={style.title}>달성률</div>
-              <div className={style.price}>1000%</div>
+              <div className={style.price}>{`${data.achievementRate}%`}</div>
               <div className={style.title}>남은 시간</div>
-              <div className={style.price}>17일</div>
+              <div className={style.price}>{`${data.remainingDays}일`}</div>
               <div className={style.title}>후원자</div>
-              <div className={style.price}>1,264</div>
+              <div className={style.price}>{`${data.supporterCount}명`}</div>
               <div className={style.divider}></div>
               <div className={style.buttonBox}>
                 <Button variant="outlined" onClick={handleChatButton}>

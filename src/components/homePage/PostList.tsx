@@ -23,14 +23,12 @@ const PostList = () => {
     setOption(idx);
   };
 
-  const [top3PopularFundings] = useAtom(fetchTop3PopularFundings);
-  const [highAchievementFundings] = useAtom(fetchHighAchievementFundings);
-  const [newFundings] = useAtom(fetchNewFundings);
-  const [smallFundings] = useAtom(fetchSmallFundings);
   const [cardInfo, setCardInfo] = useState<FundingSortResponseDto[]>();
 
-  console.log(newFundings);
-
+  const [highAchievementFundings] = useAtom(fetchHighAchievementFundings);
+  const [smallFundings] = useAtom(fetchSmallFundings);
+  const [top3PopularFundings] = useAtom(fetchTop3PopularFundings);
+  const [newFundings] = useAtom(fetchNewFundings);
   useEffect(() => {
     switch (option) {
       case 0:
@@ -46,7 +44,7 @@ const PostList = () => {
         setCardInfo(highAchievementFundings);
         break;
     }
-  }, [option]);
+  }, [option, cardInfo]);
 
   return (
     <>

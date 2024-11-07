@@ -63,7 +63,7 @@ function App() {
           <Route path="chatting" element={<Chatting />} />
         </Route>
 
-        <Route path="/post" element={<PostPage />}>
+        <Route path="/post/:id" element={<PostPage />}>
           <Route index element={<Story />} />
           <Route path="story" element={<Story />} />
           <Route path="comunity" element={<Community />} />

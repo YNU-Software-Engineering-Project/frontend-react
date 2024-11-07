@@ -71,8 +71,6 @@ export const searchFundings = atom(async get => {
   try {
     const api = new Api();
     const response = await api.searchFunding(get(searchFundingQueryAtom));
-    console.log(get(searchFundingQueryAtom));
-    console.log(response.data);
     return response.data;
   } catch (error) {
     alert(error);

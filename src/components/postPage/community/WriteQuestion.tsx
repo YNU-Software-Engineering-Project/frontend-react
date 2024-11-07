@@ -1,12 +1,15 @@
 import style from 'styles/PostPage/community/writeQuestion.module.css';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Close } from '@mui/icons-material';
+import { createQuestion } from 'api/createQuestion';
+import { useParams } from 'react-router-dom';
 
 type WriteQuestionPorps = {
   handleShow: () => void;
 };
 const WriteQuestion = forwardRef<HTMLDivElement, WriteQuestionPorps>(
   ({ handleShow }, ref) => {
+    const { id } = useParams();
     //제목 입력 부분
     const [title, setTitle] = useState<string>('');
     const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,8 +40,10 @@ const WriteQuestion = forwardRef<HTMLDivElement, WriteQuestionPorps>(
     }, [inputValue]);
 
     // 내용 입력 후 저장 버튼
-    const handleSave = () => {
+    const handleSave = async () => {
       handleShow();
+      const data = { content: inputValue };
+      const respone = await createQuestion(Number(id), data);
     };
 
     return (

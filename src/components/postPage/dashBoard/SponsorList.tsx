@@ -34,6 +34,7 @@ const data: DataType[] = Array.from({ length: 100 }, (_, index) => ({
   phone: '010-2914-4545',
   reward: '알뜰 선풍기 상품 오늘은 여기까지',
 }));
+
 type ButtonInfo = {
   label: string;
   key: string;
