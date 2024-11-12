@@ -2,9 +2,12 @@ import styles from 'styles/adminPage/Admin.module.css';
 import { PieChart } from '@mui/x-charts';
 import { useSpring } from '@react-spring/web';
 import MenuBar from 'components/adminPage/menuBar';
-import PieChart2 from 'components/common/PieChart';
+import { Admin } from 'apiTypes/Admin';
+import { Token } from 'apiTypes/Token';
+import { GetAdminSummaryData } from 'apiTypes/data-contracts';
+import { useState, useEffect } from 'react';
 
-function Admin() {
+function Summary() {
   const successFundingValue = 50;
   const fundingStatus = [
     { label: '성공', value: successFundingValue, color: '#1BD9C9', id: 0 },
@@ -23,6 +26,28 @@ function Admin() {
     innerRadius: 100,
     outerRadius: 150, 
   });
+//getAdminSummary - 나눠서 출력(회원이랑 펀딩이랑/둘 다 있기 때문에)
+  const adminApi = new Admin();
+  const [adminSummary, setAdminSummary] = useState<GetAdminSummaryData | null>(null);
+  
+  useEffect(() => {
+    handleAdminSummary();
+  }, []);
+
+  const handleAdminSummary = () => {
+    adminApi.getAdminSummary()
+    .then(response => {
+      setAdminSummary(response.data);
+    })
+    .catch(error => {
+      //요약본 조회 실패
+      console.error("요약본 조회 실패:",error);
+      if(error.response){
+        alert(`요약본 조회 실패: ${error.response}`);
+      }
+      else{alert(`요약본 조회 실패: 네트워크 오류`)}
+    })
+  }
 
   return (
     <div className={styles.admin_container}>
@@ -36,24 +61,24 @@ function Admin() {
             <div className={styles.customer_management_top}>
               <div className={styles.customer_management_container}>
                 <div>총 회원수</div> 
-                <div>-</div> 
+                <div>{adminSummary?.totalUsers || '-'}</div> 
               </div>
               <hr />
               <div className={styles.customer_management_container}>
                 <div>오늘 가입자 수</div> 
-                <div>-</div> 
+                <div>{adminSummary?.todayUsers || '-'}</div> 
               </div>
               <hr />
             </div>
             <div className={styles.customer_management_bottom}>
               <div className={styles.customer_management_container}>
                 <div>일인당 찜 개수</div> 
-                <div>-</div> 
+                <div>{adminSummary?.averageFundingLikes || '-'}</div> 
               </div>
               <hr />
               <div className={styles.customer_management_container}>
                 <div>일인당 평균 펀딩 금액</div> 
-                <div>-</div> 
+                <div>{adminSummary?.averageFundingAmount?.toLocaleString() || '-'}</div> 
               </div>
               <hr />
             </div>
@@ -67,12 +92,12 @@ function Admin() {
             <div className={styles.funding_status_top}>
               <div className={styles.funding_status_container}>
                 <div>전체 펀딩 수</div> 
-                <div>-</div> 
+                <div>{adminSummary?.totalFundings || '-'}</div> 
               </div>
               <hr />
               <div className={styles.funding_status_container}>
                 <div>종료된 펀딩</div> 
-                <div>-</div> 
+                <div>{adminSummary?.closedFundings || '-'}</div> 
               </div>
               <hr />
             </div>
@@ -107,7 +132,7 @@ function Admin() {
                 >
                   펀딩성공률
                   <tspan x="150" dy="20">
-                    {`${successFundingValue}%`}
+                    {`${adminSummary?.successRate || '0'}%`}
                   </tspan>
                 </text>
               </PieChart>
@@ -116,17 +141,17 @@ function Admin() {
             <div className={styles.funding_status_bottom}>
               <div className={styles.funding_status_container}>
                 <div className={styles.funding_success}>성공 펀딩 수</div>  
-                <div>-</div> 
+                <div>{adminSummary?.successfulFundings || '-'}</div> 
               </div>
               <hr />
               <div className={styles.funding_status_container}>
                 <div className={styles.funding_fail}>미달 펀딩 수</div> 
-                <div>-</div> 
+                <div>{adminSummary?.failedFundings || '-'}</div> 
               </div>
               <hr />
               <div className={styles.funding_status_container}>
                 <div className={styles.funding_running}>진행 중인 펀딩 수</div>
-                <div>-</div> 
+                <div>{adminSummary?.ongoingFundings || '-'}</div> 
               </div>
               <hr />
             </div>
@@ -138,4 +163,4 @@ function Admin() {
   );
 }
 
-export default Admin;
+export default Summary;
