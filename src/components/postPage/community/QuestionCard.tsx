@@ -15,6 +15,7 @@ import { deleteQuestion } from 'api/deleteQuestion';
 const QuestionCard: FC<QuestionResponseDto> = ({
   questionId,
   nickname,
+  profileImage,
   createdAt,
   commentCount,
   content,
@@ -38,7 +39,7 @@ const QuestionCard: FC<QuestionResponseDto> = ({
       <div className={style.wrapper}>
         <header>
           <div>
-            <Avatar sx={{ marginRight: '10px' }} />
+            <Avatar src={profileImage} sx={{ marginRight: '10px' }} />
             <span>{nickname}</span>
           </div>
           <div>

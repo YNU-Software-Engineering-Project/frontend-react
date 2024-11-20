@@ -1,10 +1,10 @@
 import { atom } from 'jotai';
 import { Api } from 'apiTypes/Api';
+import { Token } from 'apiTypes/Token';
 
 export const fetchHighAchievementFundings = atom(async () => {
   const api = new Api();
-  const query = { page: 1 };
-  const response = await api.getHighAchievementFundings(query);
+  const response = await api.getHighAchievementFundings(Token.getHeaderParms);
   const data = response.data;
   return data;
 });

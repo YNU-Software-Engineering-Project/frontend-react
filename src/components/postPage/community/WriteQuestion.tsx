@@ -11,12 +11,12 @@ const WriteQuestion = forwardRef<HTMLDivElement, WriteQuestionPorps>(
   ({ handleShow }, ref) => {
     const { id } = useParams();
     //제목 입력 부분
-    const [title, setTitle] = useState<string>('');
-    const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = e.target.value;
-      if (title === value.trim()) return;
-      setTitle(value);
-    };
+    // const [title, setTitle] = useState<string>('');
+    // const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    //   const value = e.target.value;
+    //   if (title === value.trim()) return;
+    //   setTitle(value);
+    // };
 
     //내용 입력 부분
     const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -43,7 +43,7 @@ const WriteQuestion = forwardRef<HTMLDivElement, WriteQuestionPorps>(
     const handleSave = async () => {
       handleShow();
       const data = { content: inputValue };
-      const respone = await createQuestion(Number(id), data);
+      await createQuestion(Number(id), data);
     };
 
     return (
@@ -56,7 +56,7 @@ const WriteQuestion = forwardRef<HTMLDivElement, WriteQuestionPorps>(
                 onClick={handleShow}
               />
             </div>
-            <div className={style.divider} />
+            {/* <div className={style.divider} />
             <div className={style.titleBox}>
               <span>제목:</span>
               <input
@@ -65,7 +65,7 @@ const WriteQuestion = forwardRef<HTMLDivElement, WriteQuestionPorps>(
                 onChange={handleTitleChange}
                 value={title}
               />
-            </div>
+            </div> */}
           </header>
 
           <div className={style.textBox}>

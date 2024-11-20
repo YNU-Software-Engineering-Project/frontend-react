@@ -143,8 +143,6 @@ export interface PasswordResetResponseDto {
 
 export interface FundingLikeRequestDto {
   /** @format int64 */
-  userId?: number;
-  /** @format int64 */
   fundingId?: number;
 }
 
@@ -406,6 +404,7 @@ export interface QuestionResponseDto {
   createdAt?: string;
   /** @format int32 */
   commentCount?: number;
+  profileImage?: string;
 }
 
 export interface GetNotificationsResponseDto {

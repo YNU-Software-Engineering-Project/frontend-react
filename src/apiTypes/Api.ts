@@ -1,14 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
-/*
- * ---------------------------------------------------------------
- * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
- * ##                                                           ##
- * ## AUTHOR: acacode                                           ##
- * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
- * ---------------------------------------------------------------
- */
-
 import {
   CommentRequestDto,
   ConfirmEmailData,
@@ -1128,17 +1117,10 @@ export class Api<
    * @request GET:/api/fundings/achievement
    * @response `200` `GetHighAchievementFundingsData` (현재금액/목표금액)이 높은 순으로 정렬
    */
-  getHighAchievementFundings = (
-    query: {
-      /** @format int32 */
-      page: number;
-    },
-    params: RequestParams = {},
-  ) =>
+  getHighAchievementFundings = (params: RequestParams = {}) =>
     this.request<GetHighAchievementFundingsData, any>({
       path: `/api/fundings/achievement`,
       method: 'GET',
-      query: query,
       ...params,
     });
   /**
@@ -1391,6 +1373,20 @@ export class Api<
     this.request<DeleteCommentData, any>({
       path: `/api/comments/${commentId}`,
       method: 'DELETE',
+      ...params,
+    });
+
+  /**
+   * No description
+   * @name checkPermission
+   * @summary 커뮤니티 댓글 삭제
+   * @request get:/api/funding/{fundingId}/check-permission
+   * @response `200` `true` 게시물에 대한 권한 확인
+   */
+  checkPermission = (fundingId: number, params: RequestParams = {}) =>
+    this.request<any, any>({
+      path: `/api/funding/${fundingId}/check-permission`,
+      method: 'GET',
       ...params,
     });
 }
