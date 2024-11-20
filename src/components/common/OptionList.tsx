@@ -3,7 +3,7 @@ import style from 'styles/common/OptionList.module.css';
 
 type OptionListProps = {
   items: string[];
-  onClick?: (e?: React.MouseEvent<HTMLLIElement>) => void;
+  onClick?: (label: string, e?: React.MouseEvent<HTMLLIElement>) => void;
 };
 
 const OptionList: React.FC<OptionListProps> = ({ items, onClick }) => {
@@ -11,13 +11,14 @@ const OptionList: React.FC<OptionListProps> = ({ items, onClick }) => {
   const highlight = useRef<HTMLDivElement>(null);
   const initalLi = useRef<HTMLLIElement>(null);
 
-  const handleClick = (e: React.MouseEvent<HTMLLIElement>) => {
-    const rect = e.currentTarget.getBoundingClientRect();
-    setNextRect(rect);
-    if (onClick !== undefined) {
-      onClick(e);
-    }
-  };
+  const handleClick =
+    (label: string) => (e: React.MouseEvent<HTMLLIElement>) => {
+      const rect = e.currentTarget.getBoundingClientRect();
+      setNextRect(rect);
+      if (onClick !== undefined) {
+        onClick(label, e);
+      }
+    };
 
   useEffect(() => {
     if (initalLi.current && highlight.current) {
@@ -38,7 +39,7 @@ const OptionList: React.FC<OptionListProps> = ({ items, onClick }) => {
         highlightEliment.style.transition = 'transform 0.5s ease';
         highlightEliment.style.height = `${nextRect.height}px`;
         highlightEliment.style.width = `${nextRect.width}px`;
-        highlightEliment.style.transform = `translate(${nextRect.left}px, ${nextRect.top}px)`;
+        highlightEliment.style.transform = `translate(${nextRect.left}px, ${nextRect.top + window.scrollY}px)`;
       });
     }
   }, [nextRect]);
@@ -47,13 +48,13 @@ const OptionList: React.FC<OptionListProps> = ({ items, onClick }) => {
     <>
       <div className={style.container}>
         <ul>
-          {items.map((item, index) => (
+          {items.map((label, index) => (
             <li
               key={index}
               ref={index === 0 ? initalLi : null}
-              onClick={handleClick}
+              onClick={handleClick(label)}
             >
-              <a>{item}</a>
+              <a>{label}</a>
             </li>
           ))}
         </ul>

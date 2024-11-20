@@ -1,23 +1,19 @@
 import style from 'styles/PostListPage/Filterbox.module.css';
 import AddIcon from '@mui/icons-material/Add';
 import Chip from 'components/common/Chip';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Slider from '@mui/material/Slider';
 import Checkbox from './Checkbox';
 import Category from './Category';
+import { useSetAtom } from 'jotai';
+import { searchFundingQueryAtom } from 'atoms/SearchFundingAtom';
 
 const FilterBox = () => {
+  const setQeury = useSetAtom(searchFundingQueryAtom);
+
   // 테그 설정 부분
   const [input, setInput] = useState<string>('');
-  const [tagList, setTagList] = useState<string[]>([
-    '프로그램',
-    '미술',
-    '디자인',
-    '컴퓨터그래픽',
-    '영상',
-    '영화',
-    'etc',
-  ]);
+  const [tagList, setTagList] = useState<string[]>([]);
   const addTag = () => {
     if (input.trim() !== '') setTagList([...tagList, input]);
     setInput('');
@@ -36,8 +32,15 @@ const FilterBox = () => {
     addTag();
   };
 
+  useEffect(() => {
+    setQeury(prev => ({
+      ...prev,
+      tags: tagList,
+    }));
+  }, [tagList]);
+
   // 최소 후원 금액 설정
-  const [priceRange, setPriceRange] = useState<number[]>([50, 60]);
+  const [priceRange, setPriceRange] = useState<number[]>([0, 100]);
   const handlePriceChange = (
     event: Event,
     newValue: number | number[],
@@ -61,25 +64,31 @@ const FilterBox = () => {
     }
   };
 
+  useEffect(() => {
+    setQeury(prev => ({
+      ...prev,
+      minRate: priceRange[0],
+      maxRate: priceRange[1],
+    }));
+  }, [priceRange]);
+
   // 옵션 체크박스 부분
   const [checkboxStates, setCheckboxStates] = useState<boolean[]>(
-    Array(10).fill(true),
+    Array(2).fill(true),
   );
   const handleCheckboxState = (target: number) => {
-    if (checkboxStates[target] === undefined) {
-      setCheckboxStates(
-        checkboxStates.map((value, index) =>
-          target === index ? !value : value,
-        ),
-      );
-    } else {
-      setCheckboxStates(
-        checkboxStates.map((value, index) =>
-          target === index ? !value : value,
-        ),
-      );
-    }
+    setCheckboxStates(
+      checkboxStates.map((value, index) => (target === index ? !value : value)),
+    );
   };
+
+  useEffect(() => {
+    setQeury(prev => ({
+      ...prev,
+      isClosed: checkboxStates[0],
+      isLiked: checkboxStates[1],
+    }));
+  }, [checkboxStates]);
 
   return (
     <>

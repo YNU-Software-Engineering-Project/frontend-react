@@ -1,0 +1,13 @@
+.wrapper{
+    max-width: 885px;
+    height: fit-content;
+    padding: 70px 20px;
+    gap: 20px;
+    background-color: #FAFAFA;
+}
+.subTitle{
+    font-size: 20px;
+}
+.text{
+    font-size: 18px;
+}

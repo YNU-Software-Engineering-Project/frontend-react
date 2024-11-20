@@ -2,7 +2,7 @@ import style from 'styles/PostPage/dashBoard/SponsorList.module.css';
 import { TextField, InputAdornment } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { FormControl, InputLabel, MenuItem, Select } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SelectChangeEvent } from '@mui/material';
 import {
   Table,
@@ -14,85 +14,91 @@ import {
   Paper,
   TablePagination,
 } from '@mui/material';
-
-type DataType = {
-  date: string;
-  id: string;
-  nickname: string;
-  email: string;
-  address: string;
-  phone: string;
-  reward: string;
-};
-
-const data: DataType[] = Array.from({ length: 100 }, (_, index) => ({
-  date: `2024-05-${103 - index}`,
-  id: 'admin',
-  nickname: 'spending',
-  email: 'spending@yu.ac.kr',
-  address: '대구광역시 달서구 조암로6길 율성푸르지오 스포츠센터',
-  phone: '010-2914-4545',
-  reward: '알뜰 선풍기 상품 오늘은 여기까지',
-}));
-type ButtonInfo = {
-  label: string;
-  key: string;
-};
-
-const buttons: ButtonInfo[] = [
-  { label: '구매일', key: 'date' },
-  { label: 'ID', key: 'id' },
-  { label: '닉네임', key: 'nickname' },
-  { label: '주소', key: 'adress' },
-  { label: '전화번호', key: 'telNumber' },
-];
+import { useParams } from 'react-router-dom';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  setfunderListQueryAtom,
+  funderListAtom,
+  fetchFunderListAtom,
+  funderListQueryAtom,
+  sortByEnum,
+} from 'atoms/funderListAtom';
+import { fetchRewardListAtom, rewardListAtom } from 'atoms/rewardListAtom';
 
 const SponsorList = () => {
-  ///리워드
-  const [reward, setReward] = useState('');
+  const { id: fundingId } = useParams();
+  const buttons = ['후원 날짜', 'ID', '닉네임', '이메일', '주소', '전화번호'];
 
+  //검색 파라미터 수정
+  const setQuery = useSetAtom(setfunderListQueryAtom);
+
+  ///리워드 파라미터 수정
+  const rewardList = useAtomValue(rewardListAtom);
+  const fetchRewardList = useSetAtom(fetchRewardListAtom);
+  const [reward, setReward] = useState('');
   const handleChange = (event: SelectChangeEvent<string>) => {
-    setReward(event.target.value as string);
+    const rewardNo = event.target.value;
+    setReward(rewardNo.toString());
+    setQuery({ rewardNo: Number(rewardNo) });
   };
 
+  useEffect(() => {
+    fetchRewardList(Number(fundingId));
+  }, [fetchRewardList]);
+
   //// 회원 정보 나열
+  const query = useAtomValue(funderListQueryAtom);
+  const funderListInfo = useAtomValue(funderListAtom);
+  const fetchFunder = useSetAtom(fetchFunderListAtom);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [orderBy, setOrderBy] = useState<keyof DataType>('date'); // 정렬할 기준 열
-  const [orderDirection, setOrderDirection] = useState<'asc' | 'desc'>('asc'); // 정렬 방향
+  useEffect(() => {
+    console.log(query);
+    fetchFunder(Number(fundingId));
+  }, [fetchFunder, query]);
 
-  // 정렬 로직
-  const sortedData = data.sort((a, b) => {
-    if (a[orderBy] < b[orderBy]) {
-      return orderDirection === 'asc' ? -1 : 1;
+  // 정렬 파라미터 수정
+  const [sortBy, setSortBy] = useState(0); // 정렬할 기준 열
+  const [sortDirection, setSortDirection] = useState(false); // 정렬 방향
+
+  const handleSort = (index: number) => {
+    if (sortBy == index) {
+      setSortDirection(!sortDirection);
+      setQuery({ sort: sortByEnum[sortBy * 2 + Number(!sortDirection)] });
+    } else {
+      setSortBy(index);
+      setSortDirection(false);
+      setQuery({ sort: sortByEnum[index * 2 + Number(sortDirection)] });
     }
-    if (a[orderBy] > b[orderBy]) {
-      return orderDirection === 'asc' ? 1 : -1;
-    }
-    return 0;
-  });
+  };
 
-  // 현재 페이지에 보여줄 데이터 계산
-  const currentData = sortedData.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage,
-  );
-
+  // 페이지 파라미터 수정
   const handleChangePage = (event: unknown, newPage: number) => {
+    setQuery({ page: newPage });
     setPage(newPage);
   };
 
+  const rowsPerPageOptions = [5, 10, 25];
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
+    const size = Number(event.target.value);
+    setRowsPerPage(size);
     setPage(0);
+    setQuery({ page: 0, size });
   };
 
-  const handleSort = (column: keyof DataType) => {
-    const isAsc = orderBy === column && orderDirection === 'asc';
-    setOrderDirection(isAsc ? 'desc' : 'asc');
-    setOrderBy(column);
+  //아이디 파라미터 수정
+  const [searchId, setSearchId] = useState('');
+  const handleSearchIdchange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const value = event.target.value;
+    setSearchId(value.trim());
+  };
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      setQuery({ id: searchId });
+      setSearchId('');
+    }
   };
 
   return (
@@ -105,7 +111,10 @@ const SponsorList = () => {
           <TextField
             sx={{ width: '30%' }}
             variant="outlined"
-            placeholder="Search..."
+            placeholder="아이디 검색"
+            value={searchId}
+            onChange={handleSearchIdchange}
+            onKeyDown={handleKeyPress}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -124,11 +133,11 @@ const SponsorList = () => {
               onChange={handleChange}
               label="리워드 선택"
             >
-              <MenuItem value="리워드 1">리워드 1</MenuItem>
-              <MenuItem value="리워드 2">리워드 2</MenuItem>
-              <MenuItem value="리워드 3">리워드 3</MenuItem>
-              <MenuItem value="리워드 4">리워드 4</MenuItem>
-              <MenuItem value="리워드 5">리워드 5</MenuItem>
+              {rewardList.map(item => (
+                <MenuItem key={item.no} value={item.no}>
+                  {item.rewardName}
+                </MenuItem>
+              ))}
             </Select>
           </FormControl>
         </div>
@@ -138,94 +147,39 @@ const SponsorList = () => {
               <Table stickyHeader>
                 <TableHead>
                   <TableRow>
-                    <TableCell
-                      onClick={() => handleSort('date')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      구매일
-                      {orderBy === 'date'
-                        ? orderDirection === 'asc'
-                          ? '▲'
-                          : '▼'
-                        : ''}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleSort('id')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      ID
-                      {orderBy === 'id'
-                        ? orderDirection === 'asc'
-                          ? '▲'
-                          : '▼'
-                        : ''}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleSort('nickname')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      닉네임
-                      {orderBy === 'nickname'
-                        ? orderDirection === 'asc'
-                          ? '▲'
-                          : '▼'
-                        : ''}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleSort('email')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      이메일
-                      {orderBy === 'email'
-                        ? orderDirection === 'asc'
-                          ? '▲'
-                          : '▼'
-                        : ''}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleSort('address')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      주소
-                      {orderBy === 'address'
-                        ? orderDirection === 'asc'
-                          ? '▲'
-                          : '▼'
-                        : ''}
-                    </TableCell>
-                    <TableCell
-                      onClick={() => handleSort('phone')}
-                      style={{ cursor: 'pointer' }}
-                    >
-                      전화번호
-                      {orderBy === 'phone'
-                        ? orderDirection === 'asc'
-                          ? '▲'
-                          : '▼'
-                        : ''}
-                    </TableCell>
+                    {buttons.map((info, index) => (
+                      <TableCell
+                        key={index}
+                        onClick={() => handleSort(index)}
+                        style={{ cursor: 'pointer' }}
+                      >
+                        {info}
+                        {index == sortBy ? (sortDirection ? '▲' : '▼') : ''}
+                      </TableCell>
+                    ))}
                     <TableCell>선택한 리워드</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {currentData.map((row, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{row.date}</TableCell>
-                      <TableCell>{row.id}</TableCell>
-                      <TableCell>{row.nickname}</TableCell>
-                      <TableCell>{row.email}</TableCell>
-                      <TableCell>{row.address}</TableCell>
-                      <TableCell>{row.phone}</TableCell>
-                      <TableCell>{row.reward}</TableCell>
-                    </TableRow>
-                  ))}
+                  {Array.isArray(funderListInfo?.data) &&
+                    funderListInfo?.data.map(funder => (
+                      <TableRow key={funder.id}>
+                        <TableCell>{funder.createdAt}</TableCell>
+                        <TableCell>{funder.id}</TableCell>
+                        <TableCell>{funder.nickname}</TableCell>
+                        <TableCell>{funder.email}</TableCell>
+                        <TableCell>{funder.address}</TableCell>
+                        <TableCell>{funder.phoneNumber}</TableCell>
+                        <TableCell>{funder.rewards}</TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
             <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
+              rowsPerPageOptions={rowsPerPageOptions}
               component="div"
-              count={data.length}
+              count={Number(funderListInfo?.totalElements) || 0}
               rowsPerPage={rowsPerPage}
               page={page}
               onPageChange={handleChangePage}

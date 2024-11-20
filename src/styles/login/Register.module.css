@@ -1,57 +1,55 @@
-body, html {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #FFFFFF
-  }
-
-.register_container{
-    width: 321px;
-    height: 612px;
-    padding: 24px;
-    border: 1px solid #D9D9D9;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    box-sizing: border-box;
+.wrapper {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
 }
 
-.email_text, .password_text, .confirmPassword_text, .phoneNumber_text, .code_text{
-    width: 272px;
-    height: 22px;
-}
-.confirm_email, .confirm_password, .confirm_confirmPassword, .confirm_phoneNumber, .confirm_code{
-    width: 272px;
-    height: 40px;
-    border: 1px solid #D9D9D9;
-    border-radius: 5px;
-    box-sizing: border-box;
+.register_container {
+  width: 321px;
+  height: 672px;
+  padding: 24px;
+  border: 1px solid #d9d9d9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  box-sizing: border-box;
 }
 
-.api_login{
-    display: flex;
-    justify-content: end;
+.email_text,
+.password_text,
+.confirmPassword_text,
+.phoneNumber_text,
+.code_text {
+  width: 272px;
+  height: 22px;
 }
-.api_login button{
-    background: none;
-    border: none;
-    cursor: pointer;
+.confirm_email,
+.confirm_password,
+.confirm_confirmPassword,
+.confirm_phoneNumber,
+.confirm_code {
+  width: 272px;
+  height: 40px;
+  border: 1px solid #d9d9d9;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.api_login {
+  display: flex;
+  justify-content: end;
+}
+.api_login button {
+  background: none;
+  border: none;
+  cursor: pointer;
 }
 .api_login img {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
 
-.register_button{
-    width: 272px;
-    height: 40px;
-    background-color: #2c2c2c;
-    border-radius: 10px;
-    color: #F5F5F5;
-    font-size: medium;
-    cursor: pointer;
-}
-.link_register{
-    color: #F5F5F5;
+.link_register {
+  color: #f5f5f5;
 }

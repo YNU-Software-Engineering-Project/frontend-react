@@ -1,0 +1,65 @@
+/* 생성된 리워드 */
+.card{
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 8px;
+    background-color: white;
+}
+.blackTop{
+    background-color: black;
+    height: 50px;
+    border-radius: 8px 8px 0 0;
+}
+.rewardText{
+    padding: 20px;
+    display: grid;
+    gap: 20px;
+    font-size: 16px;
+    box-shadow: 2px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 12px;
+}
+.rewardInfo{
+    border-bottom: 1px solid #d9d9d9;
+    line-height: 28px;
+}
+.rewardDeleteBtn{
+    border: none;
+    border-radius: 8px;
+    background-color: black;
+    color: white;
+    padding: 8px;
+    width: fit-content;
+    justify-self: end;
+}
+
+/* 리워드 모달 */
+.rewardContainer{
+    width: 600px;
+    display: grid;
+    gap: 20px;
+}
+.content{
+    font-size: 18px;
+    display: flex;
+    flex-direction: column;
+}
+.inputBox{
+    font-size: 18px;
+    border: 2px solid #d9d9d9;
+    height: 43px;
+}
+.buttonGroup{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+.btn{
+    width: 290px;
+    cursor: pointer;
+    font-size: 16px;
+    height: 40px;
+    border-radius: 8px;
+    border: 2px solid #767676;
+}
+

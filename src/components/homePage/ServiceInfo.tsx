@@ -1,4 +1,5 @@
 import Button from 'components/common/Button';
+import { Link } from 'react-router-dom';
 import style from 'styles/homePage/ServoceInfo.module.css';
 
 const ServiceInfo = () => {
@@ -44,7 +45,9 @@ const ServiceInfo = () => {
             alt="hiFive Img"
           />
         </div>
-        <Button>더보기</Button>
+        <Link to="/termsOfService/ServiceInfo">
+          <Button>더보기</Button>
+        </Link>
       </div>
     </>
   );

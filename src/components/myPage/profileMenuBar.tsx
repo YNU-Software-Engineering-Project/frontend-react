@@ -9,19 +9,49 @@ import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNone
 
 function ProfileMenuBar() {
   return (
-      <div className={styles.profile_menu_bar}>
-        <div className={styles.profile_img}></div>
-        <div className={styles.profile_name}>nickname</div>
-        <div className={styles.horizon_line2} />
-        <div className={styles.profile_menu}>
-          <div><Link to="/mypage"><SettingsOutlinedIcon /> 개인정보 수정</Link></div> <div className={styles.horizon_line} />
-          <div><Link to="/chatting"><ChatBubbleOutlineOutlinedIcon /> 채팅</Link></div> <div className={styles.horizon_line} />
-          <div><Link to="/wishlist"><FavoriteBorderOutlinedIcon /> 위시리스트</Link></div> <div className={styles.horizon_line} />
-          <div><Link to="/joined"><PaidOutlinedIcon /> 참여한 펀딩</Link></div> <div className={styles.horizon_line} />
-          <div><Link to="/myfunding"><FolderOutlinedIcon /> 내 펀딩 관리</Link></div> <div className={styles.horizon_line} />
-          <div><Link to="/alarm"><NotificationsNoneOutlinedIcon /> 알림</Link></div> <div className={styles.horizon_line} />
+    <div className={styles.profile_menu_bar}>
+      <div className={styles.profile_img}></div>
+      <div className={styles.profile_name}>nickname</div>
+      <div className={styles.horizon_line2} />
+      <div className={styles.profile_menu}>
+        <div>
+          <Link to="/mypage">
+            <SettingsOutlinedIcon /> 개인정보 수정
+          </Link>
         </div>
+        <div className={styles.horizon_line} />
+        <div>
+          <Link to="/mypage/chatting">
+            <ChatBubbleOutlineOutlinedIcon /> 채팅
+          </Link>
+        </div>
+        <div className={styles.horizon_line} />
+        <div>
+          <Link to="/mypage/wishlist">
+            <FavoriteBorderOutlinedIcon /> 위시리스트
+          </Link>
+        </div>
+        <div className={styles.horizon_line} />
+        <div>
+          <Link to="/mypage/joined">
+            <PaidOutlinedIcon /> 참여한 펀딩
+          </Link>
+        </div>
+        <div className={styles.horizon_line} />
+        <div>
+          <Link to="/mypage/myfunding">
+            <FolderOutlinedIcon /> 내 펀딩 관리
+          </Link>
+        </div>
+        <div className={styles.horizon_line} />
+        <div>
+          <Link to="/mypage/alarm">
+            <NotificationsNoneOutlinedIcon /> 알림
+          </Link>
+        </div>
+        <div className={styles.horizon_line} />
       </div>
+    </div>
   );
 }
 

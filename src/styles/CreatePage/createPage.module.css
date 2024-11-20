@@ -1,0 +1,17 @@
+.wrapper{
+    width: 100%;
+    height: fit-content;
+}
+.createPage{
+    width: 1160px;
+    display: flex;
+    flex-direction: row;
+    margin: auto;
+    justify-content: space-between;
+}
+.sideBar{
+    width: 275px;
+}
+.sectionContent{
+    max-width: 885px;
+}
