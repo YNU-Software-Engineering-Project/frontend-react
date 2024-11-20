@@ -19,7 +19,7 @@ import {
 } from './data-contracts';
 import { HttpClient, RequestParams } from './http-client';
 
-export class File<
+export class FileApi<
   SecurityDataType = unknown,
 > extends HttpClient<SecurityDataType> {
   /**
