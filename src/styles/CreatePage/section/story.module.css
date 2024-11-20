@@ -42,6 +42,9 @@
     height: fit-content;
     gap: 20px;
 }
+.cameraGroup{
+    padding: 20px;
+}
 .projectSum{
     width: calc(100%);
     height: fit-content;
