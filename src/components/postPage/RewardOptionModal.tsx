@@ -2,16 +2,36 @@ import style from 'styles/PostPage/RewardOptionModal.module.css';
 import RewardItem from './rewardModal/RewardItem';
 import Button from 'components/common/Button';
 import { CancelOutlined } from '@mui/icons-material';
+import { useAtomValue, useSetAtom } from 'jotai';
+import {
+  rewardsListAtom,
+  fetchRewardsListAtom,
+} from 'atoms/rewardOptionsListAtom';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+import { itemsAtom } from 'atoms/rewardItemsAtom';
 
 type rewardOptionModalProps = {
   onClick: () => void;
 };
 
 const RewardOptionModal: React.FC<rewardOptionModalProps> = ({ onClick }) => {
+  //주문 내용
+  const items = useAtomValue(itemsAtom);
+
   // 화인 버튼 부분
   const handleConfirmButton = () => {
     // PG모듈 연결 부분
   };
+
+  const { id: fundingId } = useParams();
+  const rewardList = useAtomValue(rewardsListAtom);
+  const fetchRewardList = useSetAtom(fetchRewardsListAtom);
+
+  useEffect(() => {
+    if (fundingId) fetchRewardList(parseInt(fundingId));
+    console.log(rewardList);
+  }, [fundingId, fetchRewardList]);
 
   return (
     <>
@@ -27,9 +47,9 @@ const RewardOptionModal: React.FC<rewardOptionModalProps> = ({ onClick }) => {
         </header>
 
         <main>
-          {/* 나중에 api 연겷할 부분 */}
-          <RewardItem />
-          <RewardItem />
+          {rewardList.map(info => (
+            <RewardItem key={info.rewardId} {...info} />
+          ))}
         </main>
 
         <footer>
