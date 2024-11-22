@@ -19,17 +19,17 @@ const RewardItem: FC<RewardListResponseDto> = ({
     if (counter + 1 > 10) return;
     setCounter(counter + 1);
     updateItems({
-      id: rewardId!,
-      amount: counter + 1,
-      price: amount,
+      id: rewardId?.toString()!,
+      amount: (counter + 1)?.toString(),
+      price: amount.toString(),
     });
   };
   const handleCountDown = () => {
     if (counter - 1 < 0) return;
     updateItems({
-      id: rewardId!,
-      amount: counter - 1,
-      price: amount,
+      id: rewardId?.toString()!,
+      amount: (counter + 1)?.toString(),
+      price: amount.toString(),
     });
     setCounter(counter - 1);
   };

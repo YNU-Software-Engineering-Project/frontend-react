@@ -20,19 +20,19 @@ const SuccessPage = () => {
         paymentKey: searchParams.get('paymentKey'),
       },
     };
-    console.log(params);
     const passData = async () => {
       const api = new Api();
       let response = null;
       if (id) {
         response = await api.paymentSucess(parseInt(id), params);
         setResponseData(response.data);
-        console.log('asdasd', response.data);
       }
     };
 
     passData();
   }, []);
+
+  console.log('log: ', responseData);
 
   return (
     <>

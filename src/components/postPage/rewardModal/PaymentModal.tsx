@@ -103,9 +103,10 @@ const PaymentModal: FC<PaymentModalProps> = ({ setOpenPaymentModal }) => {
         disabled={!paymentMethodsWidgetReady}
         onClick={async () => {
           try {
+            console.log(composeListInfo(items));
             /*orderid바꾸기*/
             await paymentWidget?.requestPayment({
-              orderId: 'asd2332124114',
+              orderId: 'addd3312312asasdadsasdda343',
               orderName: composeListInfo(items),
               customerName: userInfo?.nickname,
               customerEmail: userInfo?.schoolEmail,
