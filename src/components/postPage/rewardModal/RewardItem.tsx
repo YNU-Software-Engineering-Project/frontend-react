@@ -8,8 +8,8 @@ import { useSetAtom } from 'jotai';
 const RewardItem: FC<RewardListResponseDto> = ({
   rewardId,
   amount = 0,
-  rewardName,
-  rewardDescription,
+  rewardName = '',
+  rewardDescription = '',
   quantity = 0,
 }) => {
   const updateItems = useSetAtom(updateItemsAtom);
@@ -18,11 +18,19 @@ const RewardItem: FC<RewardListResponseDto> = ({
   const handleCountUp = () => {
     if (counter + 1 > 10) return;
     setCounter(counter + 1);
-    updateItems({ id: rewardId!, amount: counter + 1, price: amount });
+    updateItems({
+      id: rewardId!,
+      amount: counter + 1,
+      price: amount,
+    });
   };
   const handleCountDown = () => {
     if (counter - 1 < 0) return;
-    updateItems({ id: rewardId!, amount: counter - 1, price: amount });
+    updateItems({
+      id: rewardId!,
+      amount: counter - 1,
+      price: amount,
+    });
     setCounter(counter - 1);
   };
 

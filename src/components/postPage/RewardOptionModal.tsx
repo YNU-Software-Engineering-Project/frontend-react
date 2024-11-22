@@ -7,23 +7,17 @@ import {
   rewardsListAtom,
   fetchRewardsListAtom,
 } from 'atoms/rewardOptionsListAtom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { itemsAtom } from 'atoms/rewardItemsAtom';
+import PaymentModal from './rewardModal/PaymentModal';
+import { Api } from 'apiTypes/Api';
+import { Token } from 'apiTypes/Token';
 
 type rewardOptionModalProps = {
   onClick: () => void;
 };
 
 const RewardOptionModal: React.FC<rewardOptionModalProps> = ({ onClick }) => {
-  //주문 내용
-  const items = useAtomValue(itemsAtom);
-
-  // 화인 버튼 부분
-  const handleConfirmButton = () => {
-    // PG모듈 연결 부분
-  };
-
   const { id: fundingId } = useParams();
   const rewardList = useAtomValue(rewardsListAtom);
   const fetchRewardList = useSetAtom(fetchRewardsListAtom);
@@ -33,34 +27,48 @@ const RewardOptionModal: React.FC<rewardOptionModalProps> = ({ onClick }) => {
     console.log(rewardList);
   }, [fundingId, fetchRewardList]);
 
+  const [openPaymentModal, setOpenPaymentModal] = useState(false);
+  // 화인 버튼 부분
+  const handleConfirmButton = async () => {
+    Token.getToken;
+    const api = new Api();
+    const data = await api.checkBeforePayment(Token.getHeaderParms);
+    setOpenPaymentModal(!openPaymentModal);
+  };
   return (
     <>
       <div className={style.cotton} onClick={onClick}></div>
       <div className={style.wrapper}>
-        <header>
-          <div>
-            <span>리워드 옵션</span>
-          </div>
-          <div onClick={onClick}>
-            <CancelOutlined sx={{ fontSize: '48px', cursor: 'pointer' }} />
-          </div>
-        </header>
+        {openPaymentModal ? (
+          <PaymentModal setOpenPaymentModal={setOpenPaymentModal} />
+        ) : (
+          <>
+            <header>
+              <div>
+                <span>리워드 옵션</span>
+              </div>
+              <div onClick={onClick}>
+                <CancelOutlined sx={{ fontSize: '48px', cursor: 'pointer' }} />
+              </div>
+            </header>
 
-        <main>
-          {rewardList.map(info => (
-            <RewardItem key={info.rewardId} {...info} />
-          ))}
-        </main>
+            <main>
+              {rewardList.map(info => (
+                <RewardItem key={info.rewardId} {...info} />
+              ))}
+            </main>
 
-        <footer>
-          <Button
-            onClick={handleConfirmButton}
-            type="white"
-            style={{ width: '100%' }}
-          >
-            확인
-          </Button>
-        </footer>
+            <footer>
+              <Button
+                onClick={() => handleConfirmButton()}
+                type="white"
+                style={{ width: '100%' }}
+              >
+                확인
+              </Button>
+            </footer>
+          </>
+        )}
       </div>
     </>
   );

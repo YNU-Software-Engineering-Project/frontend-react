@@ -1,10 +1,5 @@
 import { atom } from 'jotai';
-
-type Item = {
-  id: number;
-  amount: number;
-  price: number;
-};
+import { Item } from 'types/atomTypes';
 
 export const itemsAtom = atom<Record<number, Item>>({});
 
