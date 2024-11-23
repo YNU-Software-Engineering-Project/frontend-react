@@ -92,7 +92,7 @@ function App() {
 
       <Route path="*" element={<NotFoundPage />} />
 
-      {/* admin 페이지는 나중에 분리할 예정임. template에 맞춰서 디자인 수정 및 페이지 link 작업 */}
+      {/* */}
       <Route element={<Template />}>
         <Route path="/admin" element={<AdminPage />}>
           <Route index element={<Admin />} />
