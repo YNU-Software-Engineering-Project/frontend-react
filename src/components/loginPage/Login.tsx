@@ -9,6 +9,11 @@ import { Token } from 'apiTypes/Token';
 import naver from 'assets/naver.png';
 import google from 'assets/google.png';
 import kakao from 'assets/kakao.png';
+import { GoogleLogin } from '@react-oauth/google';
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { atom } from 'jotai';
+
+export const userRoleAtom = atom<string | null>(null);
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -27,7 +32,12 @@ function Login() {
       .then((response: AxiosResponse<LoginData>) => {
         // 로그인 성공
         const token = response.data.accessToken;
+        const role = response.data.role ?? null;
+        console.log("role",role);
         if (token) Token.setToken = token;
+        if (role) {
+          localStorage.setItem('userRole', role);
+        }
         alert('로그인 성공!');
         console.log('Token set:', token);
         navigate('/');
@@ -41,6 +51,53 @@ function Login() {
           alert('로그인 실패: 네트워크 오류');
         }
       });
+  };
+
+  // const socialLogin = (provider: string, code: string) => {
+  //   api.processSocialLogin(provider, code)
+  //   .then(response => {
+  //     console.log(`${provider} 로그인 성공`)
+  //   })
+  //   .catch(error => {
+  //     console.error(`${provider} 로그인 실패:`, error);
+  //   })
+  // };
+
+  const KAKAO_CLIENT_ID = '01e7cf94f07adb9cc7246060a593d230';
+  const kakao_REDIRECT_URI = `http://localhost:3000/oauth/redirected/kakao`;
+  const kakaoLogin = () => {
+    window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${kakao_REDIRECT_URI}&response_type=code`;
+  };
+
+  const NAVER_CLIENT_ID = 'N65tRClTU5Wvgtuc8dJn';
+  const NAVER_REDIRECT_URI = 'http://localhost:3000/oauth/redirected/naver';
+  const NAVER_STATE = "flase";
+  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${NAVER_STATE}&redirect_uri=${NAVER_REDIRECT_URI}`;
+  const naverLogin = () => {
+    window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${NAVER_STATE}&redirect_uri=${NAVER_REDIRECT_URI}`;
+  };
+
+  const GOOGLE_CLIENT_ID='450717577604-0fmr7vtconoiv2tmhuj9brqm6kmv8ks8.apps.googleusercontent.com';
+  const GOOGLE_REDIRECT_URI = 'http://localhost:3000/oauth/redirected/google';
+  const googleLoginReact = () => {
+    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+        <GoogleLogin
+          // buttonText="google login"
+          onSuccess={(credentialResponse) => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
+      </GoogleOAuthProvider>
+  };
+  const googleLogin = () => {
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
+		client_id=${GOOGLE_CLIENT_ID}
+		&redirect_uri=${GOOGLE_REDIRECT_URI}
+		&response_type=code
+		&scope=email profile`;
   };
 
   return (
@@ -60,7 +117,7 @@ function Login() {
         <div style={{ height: 8 }}></div>
         <input
           className={styles.input_password}
-          type="text"
+          type="password"
           placeholder="value"
           value={password}
           onChange={e => setPassword(e.target.value)}
@@ -77,13 +134,16 @@ function Login() {
 
         <div className={styles.api_login}>
           <button>
-            <img src={naver}></img>
+            <img src={naver} 
+            // onClick={() => socialLogin('naver')}
+            onClick={naverLogin}
+            ></img>
           </button>
           <button>
-            <img src={google}></img>
+            <img src={google} onClick={googleLogin}></img>
           </button>
           <button>
-            <img src={kakao}></img>
+            <img src={kakao} onClick={kakaoLogin}></img>
           </button>
         </div>
         <div style={{ height: 19 }}></div>

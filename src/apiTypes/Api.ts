@@ -602,6 +602,24 @@ export class Api<
   /**
    * No description
    *
+   * @tags SocialAuthController
+   * @name kakaoLogin
+   * @summary 소셜 로그인
+   * @request POST:/api/auth/oauth/{provider}
+   * @response `200` `LoginData` 카카오 로그인 성공
+   * @response `400` `ResponseDto` Login information mismatch
+   */
+  processSocialLogin = (provider:string, code: string, params: RequestParams = {}) =>
+    this.request<any, any>({
+      path: `/api/auth/oauth/${provider}`,
+      method: 'POST',
+      body: { code },
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
    * @tags user-controller
    * @name ModifyProfile
    * @summary 사용자 프로필 수정

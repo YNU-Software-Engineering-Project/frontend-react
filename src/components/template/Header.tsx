@@ -4,6 +4,9 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import styles from 'styles/template/Header.module.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Token } from 'apiTypes/Token';
+import { atom } from 'jotai';
+
+export const userRoleAtom = atom<string | null>(null);
 
 type HeaderProps = {
   isOpen: boolean;
@@ -19,15 +22,23 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
   };
   const handleProfileIcon = () => {
     const token = Token.getToken;
-    console.log(token);
-    if (token) {
-      // 로그인되어 있을 경우, 마이페이지로 이동
-      navigate('/mypage'); 
-    } else {
-      // 로그인되어 있지 않을 경우, 로그인 페이지로 이동
-      navigate('/login'); 
+    if (token){
+      //role 확인
+      const storedRole = localStorage.getItem('userRole');
+
+      if (storedRole === 'USER') {
+        navigate('/mypage');
+      } else if (storedRole === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/login');
+      }
+    }else {
+      localStorage.removeItem('userRole');
+      navigate('/login');
     }
   };
+  const handleAlarmIcon = () => {};
 
   return (
     <>

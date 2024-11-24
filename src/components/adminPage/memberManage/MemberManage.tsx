@@ -95,6 +95,7 @@ function MemberMange() {
     .then((response) =>{
       if (response.data && response.data.data) {
         setSelectedMember(response.data.data);
+        console.log(response.data);
         // console.log('Selected Member:', response.data.data);
       } else {
         setUserList([]);
