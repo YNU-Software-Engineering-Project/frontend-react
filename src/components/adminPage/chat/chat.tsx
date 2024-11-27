@@ -83,21 +83,6 @@ function Chat() {
       <div className={styles.chat_content}> 
         <div className={styles.chat_room_list}>
           <div className={styles.chat_room_list_title}>대화방</div>
-
-          {/* {chat.map((room, index) => (
-            <div
-              key={index}
-              className={`${styles.chat_room_list_container} ${currentChatIndex === index ? styles.selected : ''}`} 
-              onClick={() => handleChatClick(index)}
-            >
-              <div className={styles.chat_room_list_profile}></div>
-              <div className={styles.chat_room_list_content}>
-                <div>{room.title}</div>
-                <div className={styles.chat_room_list_preview}>{room.content}</div>
-              </div>
-              <div className={styles.chat_room_list_time}>{room.time}</div>
-            </div>
-          ))} */}
           {chat.map((room) => (
             <div
               key={room.chatRoomId}
