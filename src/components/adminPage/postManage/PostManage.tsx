@@ -54,17 +54,22 @@ function PostManage() {
     { title: '펀딩 제목 38', status: '심사 완료' },
     { title: '펀딩 제목 39', status: '펀딩 진행 중' },
   ]);
+  const [waitingCards, setWaitingCards] = useState<Card[]>([]);
+  const [doneCards, setDoneCards] = useState<Card[]>([]);
+  const [inProgressCards, setInProgressCards] = useState<Card[]>([]);
 
   const [currentPageWaiting, setCurrentPageWaiting] = useState(1);
   const [currentPageDone, setCurrentPageDone] = useState(1);
   const [currentPageInProgress, setCurrentPageInProgress] = useState(1);
   const cardsPerPage = 6;
 
-  const totalPagesWaiting = Math.ceil(cards.filter(card => card.status === '심사 중').length / cardsPerPage);
-  const totalPagesDone = Math.ceil(cards.filter(card => card.status === '심사 완료').length / cardsPerPage);
-  const totalPagesInProgress = Math.ceil(cards.filter(card => card.status === '펀딩 진행 중').length / cardsPerPage);
+  // const totalPagesWaiting = Math.ceil(cards.filter(card => card.status === '심사 중').length / cardsPerPage);
+  // const totalPagesDone = Math.ceil(cards.filter(card => card.status === '심사 완료').length / cardsPerPage);
+  // const totalPagesInProgress = Math.ceil(cards.filter(card => card.status === '펀딩 진행 중').length / cardsPerPage);
+  const totalPagesWaiting = Math.ceil(waitingCards.length / cardsPerPage);
+  const totalPagesDone = Math.ceil(doneCards.length / cardsPerPage);
+  const totalPagesInProgress = Math.ceil(inProgressCards.length / cardsPerPage);
 
-  // Helper function to get the sliced cards for each page
   const getSlicedCards = (filteredCards: Card[], currentPage: number) => {
     const indexOfLastCard = currentPage * cardsPerPage;
     const indexOfFirstCard = indexOfLastCard - cardsPerPage;
@@ -72,9 +77,12 @@ function PostManage() {
   };
 
   // Filtered cards for each status
-  const waitingCards = getSlicedCards(cards.filter(card => card.status === '심사 중'), currentPageWaiting);
-  const doneCards = getSlicedCards(cards.filter(card => card.status === '심사 완료'), currentPageDone);
-  const inProgressCards = getSlicedCards(cards.filter(card => card.status === '펀딩 진행 중'), currentPageInProgress);
+  // const waitingCards = getSlicedCards(cards.filter(card => card.status === '심사 중'), currentPageWaiting);
+  // const doneCards = getSlicedCards(cards.filter(card => card.status === '심사 완료'), currentPageDone);
+  // const inProgressCards = getSlicedCards(cards.filter(card => card.status === '펀딩 진행 중'), currentPageInProgress);
+  const slicedWaitingCards = getSlicedCards(waitingCards, currentPageWaiting);
+  const slicedDoneCards = getSlicedCards(doneCards, currentPageDone);
+  const slicedInProgressCards = getSlicedCards(inProgressCards, currentPageInProgress);
 
   const adminApi = new Admin();
   const [fundingStateCount, setFundingStateCount] = useState({
@@ -85,6 +93,9 @@ function PostManage() {
 
   useEffect(() => {
     handleFundingStateCount();
+    handleFundingByState('REVIEW');
+    handleFundingByState('REVIEW_COMPLETED');
+    handleFundingByState('ONGOING');
   }, []);
   //펀딩 상태에 해당하는 개수 출력
   const handleFundingStateCount = () => {
@@ -127,6 +138,37 @@ function PostManage() {
     .then(response =>{
       if (response.data && response.data.data) {
         console.log('펀딩 상태에 따른 게시물 리스트:', response.data.data);
+        const fetchedCards = response.data.data.map((funding: any) => {
+          let status: '펀딩 진행 중' | '심사 중' | '심사 완료';
+          
+          // Map the API state to the correct status
+          switch (funding.state) {
+            case 'REVIEW':
+              status = '심사 중';
+              break;
+            case 'REVIEW_COMPLETED':
+              status = '심사 완료';
+              break;
+            case 'ONGOING':
+              status = '펀딩 진행 중';
+              break;
+            default:
+              throw new Error(`Unknown funding state: ${funding.state}`);
+          }
+
+          return {
+            title: funding.title,
+            status
+          };
+        });
+
+        if (state === 'REVIEW') {
+          setWaitingCards(fetchedCards);
+        } else if (state === 'REVIEW_COMPLETED') {
+          setDoneCards(fetchedCards);
+        } else if (state === 'ONGOING') {
+          setInProgressCards(fetchedCards);
+        }
       } else {
         console.log('No fundings found for this state');
       }
@@ -196,7 +238,8 @@ function PostManage() {
             <ChevronLeftIcon className={styles.left} onClick={() => setCurrentPageWaiting(currentPageWaiting > 1 ? currentPageWaiting - 1 : currentPageWaiting)} />
             
             <div className={styles.card_container}>
-              {waitingCards.map((card, index) => (
+              {/* {waitingCards.map((card, index) => ( */}
+              {slicedWaitingCards.map((card, index) => (
                 <div key={index} className={styles.status_card}>
                   <div className={styles.card_content}>
                     <div className={styles.card_img}></div>

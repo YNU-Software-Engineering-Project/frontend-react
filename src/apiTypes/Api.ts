@@ -123,6 +123,11 @@ import {
   UploadMainData,
   UploadMainError,
   UploadMainPayload,
+  GetChatRoomListDto, 
+  GetChatRoomListError,
+  GetChatMessagesResponse,
+  GetChatMessagesError,
+  ChatMessageRequest,
 } from './data-contracts';
 import { ContentType, HttpClient, RequestParams } from './http-client';
 
@@ -605,16 +610,15 @@ export class Api<
    * @tags SocialAuthController
    * @name kakaoLogin
    * @summary 소셜 로그인
-   * @request POST:/api/auth/oauth/{provider}
+   * @request POST:/api/auth/oauth/kakao
    * @response `200` `LoginData` 카카오 로그인 성공
    * @response `400` `ResponseDto` Login information mismatch
    */
-  processSocialLogin = (provider:string, code: string, params: RequestParams = {}) =>
-    this.request<any, any>({
-      path: `/api/auth/oauth/${provider}`,
+  kakaoLogin = (code: string, params: RequestParams = {}) =>
+    this.request<LoginData, LoginError>({
+      path: `/api/auth/oauth/kakao`,
       method: 'POST',
-      body: { code },
-      type: ContentType.Json,
+      query: { code },
       ...params,
     });
   /**
@@ -1407,4 +1411,98 @@ export class Api<
       method: 'GET',
       ...params,
     });
+
+  /** 채팅 관련 api
+   * No description
+   *
+   * @tags chat-room-controller
+   * @name GetChatRoomList
+   * @summary 채팅방 조회(사용자 - 관리자와의 채팅방을 가져옴, 관리자 - 메시지가 존재하는 사용자들에 대해 채팅방을 가져옴)
+   * @request GET:/api/v1/rooms
+   * @response `200` `GetChatRoomListDto` 채팅방 조회 성공
+   * @response `400` `ResponseDto` 접근 권한 없음 또는 잘못된 요청
+   */
+  getChatRoomList = (
+    query?:{ page?: number; size?: number }, 
+    params: RequestParams = {}
+  ) =>
+    this.request<GetChatRoomListDto, GetChatRoomListError>({
+      path: `/api/v1/rooms`,
+      method: 'GET',
+      secure: true,
+      query: query,
+      ...params,
+    });
+
+/**
+ * No description
+ *
+ * @tags chat-message-controller
+ * @name GetChatMessages
+ * @summary 특정 채팅방의 메시지 목록을 불러오기
+ * @request GET:/api/v1/rooms/{chatRoomId}/messages
+ * @response `200` `GetChatMessagesResponse` 특정 채팅방에 대한 메시지 가져오기 성공
+ * @response `400` `ResponseDto` 접근 권한 없음 또는 잘못된 요청
+ */
+getChatMessages = (
+  chatRoomId: number,
+  query?:{
+    page?: number; 
+    size?: number;
+  },
+  params: RequestParams = {}
+) =>
+  this.request<GetChatMessagesResponse, GetChatMessagesError>({
+    path: `/api/v1/rooms/${chatRoomId}/messages`,
+    method: 'GET',
+    secure: true,
+    query: query,
+    ...params,
+  });
+
+  private socket: WebSocket | null = null;
+  /**
+   * No description
+   *
+   * @tags chat-controller
+   * @name SendMessage
+   * @summary 채팅방에 메시지를 전송
+   * @request MESSAGE:/chat/rooms/{roomId}/send
+   * @response `200` `ChatMessageResponse` 메시지 전송 성공
+   */
+  sendMessage = (roomId: number, chatMessageRequest: ChatMessageRequest) => {
+    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
+      throw new Error('WebSocket is not open');
+    }
+
+    // WebSocket으로 메시지 전송
+    const message = {
+      roomId,
+      ...chatMessageRequest,
+    };
+    this.socket.send(JSON.stringify(message));
+  };
+
+  // WebSocket 초기화
+  initializeWebSocket = () => {
+    this.socket = new WebSocket('ws://localhost:8080/chat');
+
+    this.socket.onopen = () => {
+      console.log('WebSocket 연결 성공');
+    };
+
+    this.socket.onmessage = (event) => {
+      const message = JSON.parse(event.data);
+      console.log('새 메시지 수신:', message);
+    };
+
+    this.socket.onclose = () => {
+      console.log('WebSocket 연결이 종료되었습니다');
+    };
+
+    this.socket.onerror = (error) => {
+      console.error('WebSocket 에러:', error);
+    };
+  };
+
 }

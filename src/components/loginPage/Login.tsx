@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import styles from 'styles/login/Login.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from 'components/common/Button';
@@ -53,16 +53,6 @@ function Login() {
       });
   };
 
-  // const socialLogin = (provider: string, code: string) => {
-  //   api.processSocialLogin(provider, code)
-  //   .then(response => {
-  //     console.log(`${provider} 로그인 성공`)
-  //   })
-  //   .catch(error => {
-  //     console.error(`${provider} 로그인 실패:`, error);
-  //   })
-  // };
-
   const KAKAO_CLIENT_ID = '01e7cf94f07adb9cc7246060a593d230';
   const kakao_REDIRECT_URI = `http://localhost:3000/oauth/redirected/kakao`;
   const kakaoLogin = () => {
@@ -72,17 +62,22 @@ function Login() {
   const NAVER_CLIENT_ID = 'N65tRClTU5Wvgtuc8dJn';
   const NAVER_REDIRECT_URI = 'http://localhost:3000/oauth/redirected/naver';
   const NAVER_STATE = "flase";
-  const NAVER_AUTH_URL = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${NAVER_STATE}&redirect_uri=${NAVER_REDIRECT_URI}`;
   const naverLogin = () => {
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${NAVER_STATE}&redirect_uri=${NAVER_REDIRECT_URI}`;
   };
 
   const GOOGLE_CLIENT_ID='450717577604-0fmr7vtconoiv2tmhuj9brqm6kmv8ks8.apps.googleusercontent.com';
   const GOOGLE_REDIRECT_URI = 'http://localhost:3000/oauth/redirected/google';
+  const googleLogin = () => {
+    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
+		client_id=${GOOGLE_CLIENT_ID}
+		&redirect_uri=${GOOGLE_REDIRECT_URI}
+		&response_type=code
+		&scope=email profile`;
+  };
   const googleLoginReact = () => {
     <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
         <GoogleLogin
-          // buttonText="google login"
           onSuccess={(credentialResponse) => {
             console.log(credentialResponse);
           }}
@@ -92,13 +87,51 @@ function Login() {
         />
       </GoogleOAuthProvider>
   };
-  const googleLogin = () => {
-    window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?
-		client_id=${GOOGLE_CLIENT_ID}
-		&redirect_uri=${GOOGLE_REDIRECT_URI}
-		&response_type=code
-		&scope=email profile`;
-  };
+
+  useEffect(() => {
+    // 콜백 URL에서 code를 추출하여 카카오 로그인 처리
+    const params = new URLSearchParams(location.search);
+    console.log(params);
+    const code = params.get('code');
+
+    // 인증 코드가 있고, 경로가 콜백 경로일 때만 카카오 로그인 API를 호출
+    if (code && location.pathname === '/oauth/redirected/kakao') {
+      api.kakaoLogin(code)
+        .then((response: AxiosResponse<LoginData>) => {
+          console.log('API 응답:', response); 
+          const token = response.data.accessToken;
+          const role = response.data.role ?? null;
+
+          if (token) {
+            Token.setToken = token;
+            console.log('Access Token:', token);
+          } else {
+            console.error('Access Token이 없습니다.');
+          }
+  
+          if (role) {
+            localStorage.setItem('userRole', role);
+            console.log('Role:', role);
+          } else {
+            console.error('Role 정보가 없습니다.');
+          }
+
+          alert('카카오 로그인 성공!');
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error('카카오 로그인 실패:', error);
+          if (error.response) {
+            alert(`카카오 로그인 실패: ${error.response.data.message}`);
+          } else {
+            alert('카카오 로그인 실패: 네트워크 오류');
+          }
+          navigate('/login');
+        });
+    } else {
+      console.error("인증 코드가 없습니다. 또는 경로가 올바르지 않습니다.");
+    }
+  }, [location, api, navigate]);
 
   return (
     <div className={styles.wrapper}>

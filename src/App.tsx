@@ -60,7 +60,8 @@ function App() {
           <Route path="joined" element={<Joined />} />
           <Route path="myfunding" element={<Myfunding />} />
           <Route path="wishList" element={<WishList />} />
-          <Route path="chatting" element={<Chatting />} />
+          <Route path="chatting" element={<Chat />} />
+          {/* <Route path="chatting" element={<Chatting />} /> */}
         </Route>
 
         <Route path="/post/:id" element={<PostPage />}>
