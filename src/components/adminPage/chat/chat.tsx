@@ -5,6 +5,7 @@ import styles from 'styles/adminPage/chat.module.css';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
+import WebSocketService from 'components/adminPage/chat/WebsocketService';
 
 function Chat() {
   // const chat = Array(20).fill({ title: '상대방 이름', content: 'content', time: 'time' });
@@ -14,6 +15,9 @@ function Chat() {
   const inputRef = useRef<HTMLInputElement>(null);
   const [messages, setMessages] = useState<any[]>([]);
   const api = new Api();
+  const currentChatRoom = chat.find(room => room.chatRoomId === currentChatIndex);
+  const [isWebSocketOpen, setIsWebSocketOpen] = useState(false);
+  const webSocketService = WebSocketService.getInstance();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -39,10 +43,34 @@ function Chat() {
       });
   }, []);
 
+  // WebSocket 초기화
   useEffect(() => {
-    // WebSocket 초기화
-    api.initializeWebSocket();
-  }, []);
+    webSocketService.initializeWebSocket();
+    const socket = webSocketService.getSocket();
+
+    console.log("useEffect 초기화 시점 WebSocket 객체 확인:", socket);
+
+    if (socket) {
+      setIsWebSocketOpen(socket.readyState === WebSocket.OPEN);
+
+      socket.addEventListener('open', () => {
+        setIsWebSocketOpen(true);
+        console.log('WebSocket 연결 성공(handler)');
+      });
+
+      socket.addEventListener('close', () => {
+        setIsWebSocketOpen(false);
+        console.log('WebSocket 연결 종료(handler)');
+      });
+
+      socket.addEventListener('error', () => {
+        setIsWebSocketOpen(false);
+        console.error('WebSocket 에러 발생(handler)');
+      });
+    } else {
+      console.error('WebSocket 초기화 실패(handler)');
+    }
+  }, [webSocketService]);
 
   const handleChatRoomClick = (chatRoomId: number) => {
     setCurrentChatIndex(chatRoomId);
@@ -57,9 +85,27 @@ function Chat() {
       });
   };
 
+  //메세지 전송
   const handleSendMessage = () => {
     console.log("handleSendMessage start")
-    if (newMessage.trim() === '' || currentChatIndex === null) return;
+    if (newMessage.trim() === '' || currentChatIndex === null) {
+      console.error("메시지가 비어있거나 채팅방이 선택되지 않았습니다.");
+      return;
+    }
+    console.log(isWebSocketOpen);
+  if (!isWebSocketOpen) {
+    console.error('WebSocket is not open(handle error)');
+    return;
+  }
+
+  // const socket = api.getSocket();
+  const socket = webSocketService.getSocket();
+  console.log("handleSendMessage socket",socket);
+  if (!socket || socket.readyState !== WebSocket.OPEN) {
+    console.error('WebSocket is not open (소켓 에러)');
+    alert('WebSocket 연결이 열려 있지 않습니다. 잠시 후 다시 시도하세요.');
+    return;
+  }
 
     const chatMessageRequest = {
       content: newMessage,
@@ -67,10 +113,13 @@ function Chat() {
     };
 
     try {
-      api.sendMessage(currentChatIndex, chatMessageRequest);
+      console.log("보낼 메세지",newMessage);
+      console.log("이전 메세지",messages);
+      // api.sendMessage(currentChatIndex, chatMessageRequest);
+      webSocketService.sendMessage(currentChatIndex, newMessage);
       setMessages((prevMessages) => [...prevMessages, chatMessageRequest]);
       setNewMessage('');
-      console.log("메세지",messages);
+      console.log("메시지 전송 완료:", chatMessageRequest);
     } catch (error) {
       console.error('Error sending message:', error);
     }
@@ -106,16 +155,14 @@ function Chat() {
         <div className={styles.chat_room}>
           <div className={styles.chat_room_title}>
             <AccountCircleIcon className={styles.profile_icon}/>
-            {currentChatIndex !== null && chat.find(room => room.chatRoomId === currentChatIndex) ? (
-              <div>{chat.find(room => room.chatRoomId === currentChatIndex)?.senderId}</div>
+            {currentChatRoom ? (
+              <div>{currentChatRoom.senderId}</div>
             ) : (
               <div>채팅방 제목을 찾을 수 없습니다</div>
             )}
           </div>
-          <div className={styles.chat_room_content}>
-            <div className={styles.msg}>
-              내용 불러오기
-            </div>
+          {/* admin과 user 채팅 구분 필요 */}
+          <div className={styles.chat_room_content}> 
             {messages.map((msg, index) => (
               <div key={index} className={styles.msg}>
                 {msg.content}

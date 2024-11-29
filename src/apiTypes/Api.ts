@@ -614,13 +614,26 @@ export class Api<
    * @response `200` `LoginData` 카카오 로그인 성공
    * @response `400` `ResponseDto` Login information mismatch
    */
-  kakaoLogin = (code: string, params: RequestParams = {}) =>
+  kakaoLogin = (code: string) =>
     this.request<LoginData, LoginError>({
       path: `/api/auth/oauth/kakao`,
       method: 'POST',
       query: { code },
-      ...params,
     });
+  naverLogin = (code: string, params: RequestParams = {}) =>
+    this.request<LoginData, LoginError>({
+      path: `/api/auth/oauth/naver`,
+      method: 'POST',
+      query: { code },
+      ...params,
+    });    
+  goolgeLogin = (code: string, params: RequestParams = {}) =>
+    this.request<LoginData, LoginError>({
+      path: `/api/auth/oauth/naver`,
+      method: 'POST',
+      query: { code },
+      ...params,
+    });  
   /**
    * No description
    *
@@ -1461,6 +1474,7 @@ getChatMessages = (
   });
 
   private socket: WebSocket | null = null;
+  private isWebSocketOpen = false;
   /**
    * No description
    *
@@ -1471,8 +1485,8 @@ getChatMessages = (
    * @response `200` `ChatMessageResponse` 메시지 전송 성공
    */
   sendMessage = (roomId: number, chatMessageRequest: ChatMessageRequest) => {
-    if (!this.socket || this.socket.readyState !== WebSocket.OPEN) {
-      throw new Error('WebSocket is not open');
+    if (!this.socket || !this.isWebSocketOpen || this.socket.readyState !== WebSocket.OPEN) {
+      throw new Error('WebSocket is not open(sendMessage error)');
     }
 
     // WebSocket으로 메시지 전송
@@ -1485,24 +1499,51 @@ getChatMessages = (
 
   // WebSocket 초기화
   initializeWebSocket = () => {
-    this.socket = new WebSocket('ws://localhost:8080/chat');
+    if (this.socket && (this.socket.readyState === WebSocket.OPEN || this.socket.readyState === WebSocket.CONNECTING)) {
+      console.log('WebSocket이 이미 연결되어 있습니다.');
+      return;
+    }
+    
+    
+    try {
+      this.socket = new WebSocket('ws://localhost:8080/chat');
 
-    this.socket.onopen = () => {
-      console.log('WebSocket 연결 성공');
-    };
+      this.socket.onopen = () => {
+        console.log('WebSocket 연결 성공(api)');
+        this.isWebSocketOpen = true; 
+      };
 
-    this.socket.onmessage = (event) => {
-      const message = JSON.parse(event.data);
-      console.log('새 메시지 수신:', message);
-    };
+      this.socket.onmessage = (event) => {
+        const message = JSON.parse(event.data);
+        console.log('새 메시지 수신:', message);
+      };
 
-    this.socket.onclose = () => {
-      console.log('WebSocket 연결이 종료되었습니다');
-    };
+      this.socket.onclose = () => {
+        console.log('WebSocket 연결이 종료되었습니다');
+        this.isWebSocketOpen = false;
+        this.socket = null;
+      };
 
-    this.socket.onerror = (error) => {
-      console.error('WebSocket 에러:', error);
+      this.socket.onerror = (error) => {
+        console.error('WebSocket 에러:', error);
+        this.isWebSocketOpen = false;
+        this.socket = null;
+      };
+    } catch (error) {
+      console.error('WebSocket 초기화 중 오류 발생:', error);
+      this.socket = null;
     };
   };
 
+  getWebSocketState() {
+    // if (this.socket) {
+    //   return this.socket.readyState;
+    // }
+    // return WebSocket.CLOSED;
+    return this.isWebSocketOpen;
+  };
+
+  getSocket() {
+    return this.socket;
+  };
 }

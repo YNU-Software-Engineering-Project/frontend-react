@@ -39,6 +39,9 @@ import Joined from 'components/myPage/joined/joined';
 import Myfunding from 'components/myPage/myfunding/myfunding';
 import WishList from 'components/myPage/wishList/wishList';
 import Chatting from 'components/myPage/chat/chatting';
+import KakaoLoginCallback from 'components/loginPage/social/KakaoLoginCallback';
+import GoogleLoginPage from 'components/loginPage/social/GoogleLoginPage';
+import NaverLoginCallback from 'components/loginPage/social/NaverLoginCallback';
 
 function App() {
   return (
@@ -52,7 +55,11 @@ function App() {
           <Route index element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="forgotpassword" element={<ForgotPassword />} />
+          <Route path="google" element={<GoogleLoginPage />} />
         </Route>
+
+        <Route path="/oauth/redirected/kakao" element={<KakaoLoginCallback />} />
+        <Route path="/oauth/redirected/naver" element={<NaverLoginCallback />} />
 
         <Route path="/mypage" element={<MyPageTemplate />}>
           <Route index element={<Mypage />} />

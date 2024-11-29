@@ -9,9 +9,11 @@ import { Token } from 'apiTypes/Token';
 import naver from 'assets/naver.png';
 import google from 'assets/google.png';
 import kakao from 'assets/kakao.png';
-import { GoogleLogin } from '@react-oauth/google';
-import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { atom } from 'jotai';
+import axios from 'axios';
+import * as jwt_decode from "jwt-decode";
+
 
 export const userRoleAtom = atom<string | null>(null);
 
@@ -20,6 +22,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const api = new Api();
+  const jwt_decode = require("jwt-decode");
 
   const handleLogin = async () => {
     const requestData: LoginRequestDto = {
@@ -76,62 +79,9 @@ function Login() {
 		&scope=email profile`;
   };
   const googleLoginReact = () => {
-    <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-        <GoogleLogin
-          onSuccess={(credentialResponse) => {
-            console.log(credentialResponse);
-          }}
-          onError={() => {
-            console.log('Login Failed');
-          }}
-        />
-      </GoogleOAuthProvider>
+    console.log("google");
+    navigate("/login/google");
   };
-
-  useEffect(() => {
-    // 콜백 URL에서 code를 추출하여 카카오 로그인 처리
-    const params = new URLSearchParams(location.search);
-    console.log(params);
-    const code = params.get('code');
-
-    // 인증 코드가 있고, 경로가 콜백 경로일 때만 카카오 로그인 API를 호출
-    if (code && location.pathname === '/oauth/redirected/kakao') {
-      api.kakaoLogin(code)
-        .then((response: AxiosResponse<LoginData>) => {
-          console.log('API 응답:', response); 
-          const token = response.data.accessToken;
-          const role = response.data.role ?? null;
-
-          if (token) {
-            Token.setToken = token;
-            console.log('Access Token:', token);
-          } else {
-            console.error('Access Token이 없습니다.');
-          }
-  
-          if (role) {
-            localStorage.setItem('userRole', role);
-            console.log('Role:', role);
-          } else {
-            console.error('Role 정보가 없습니다.');
-          }
-
-          alert('카카오 로그인 성공!');
-          navigate('/');
-        })
-        .catch((error) => {
-          console.error('카카오 로그인 실패:', error);
-          if (error.response) {
-            alert(`카카오 로그인 실패: ${error.response.data.message}`);
-          } else {
-            alert('카카오 로그인 실패: 네트워크 오류');
-          }
-          navigate('/login');
-        });
-    } else {
-      console.error("인증 코드가 없습니다. 또는 경로가 올바르지 않습니다.");
-    }
-  }, [location, api, navigate]);
 
   return (
     <div className={styles.wrapper}>
@@ -173,7 +123,10 @@ function Login() {
             ></img>
           </button>
           <button>
-            <img src={google} onClick={googleLogin}></img>
+            <img src={google} 
+            onClick={googleLogin}
+            // onClick={googleLoginReact}
+            ></img>
           </button>
           <button>
             <img src={kakao} onClick={kakaoLogin}></img>
