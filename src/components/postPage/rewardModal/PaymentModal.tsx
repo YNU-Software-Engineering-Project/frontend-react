@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
 import { UserProfileDataDto } from 'apiTypes/data-contracts';
+import { nanoid } from 'nanoid';
 
 type PaymentModalProps = {
   setOpenPaymentModal: React.Dispatch<React.SetStateAction<boolean>>;
@@ -97,31 +98,38 @@ const PaymentModal: FC<PaymentModalProps> = ({ setOpenPaymentModal }) => {
     <>
       <div id="payment-widget" />
       <div id="agreement" />
-      <button
-        className="button"
-        style={{ marginTop: '30px' }}
-        disabled={!paymentMethodsWidgetReady}
-        onClick={async () => {
-          try {
-            console.log(composeListInfo(items));
-            /*orderid바꾸기*/
-            await paymentWidget?.requestPayment({
-              orderId: 'addd3312312asasdadsasdda343',
-              orderName: composeListInfo(items),
-              customerName: userInfo?.nickname,
-              customerEmail: userInfo?.schoolEmail,
-              customerMobilePhone: userInfo?.phoneNumber,
-              successUrl: `${window.location.origin}/payment/${id}/success`,
-              failUrl: `${window.location.origin}/payment/${id}/fail`,
-            });
-          } catch (error) {
-            // 에러 처리하기
-            console.error(error);
-          }
-        }}
-      >
-        결제하기
-      </button>
+      <div style={{ textAlign: 'center' }}>
+        <button
+          className="button"
+          style={{
+            padding: '15px 30px',
+            borderRadius: '50px',
+            margin: '15px 0px',
+            backgroundColor: 'rgb(72,128,238)',
+            border: 'none',
+            color: 'white',
+            fontWeight: '800',
+          }}
+          disabled={!paymentMethodsWidgetReady}
+          onClick={async () => {
+            try {
+              await paymentWidget?.requestPayment({
+                orderId: nanoid(),
+                orderName: composeListInfo(items),
+                customerName: userInfo?.nickname,
+                customerEmail: userInfo?.schoolEmail,
+                customerMobilePhone: userInfo?.phoneNumber,
+                successUrl: `${window.location.origin}/payment/${id}/success`,
+                failUrl: `${window.location.origin}/payment/${id}/fail`,
+              });
+            } catch (error) {
+              console.error(error);
+            }
+          }}
+        >
+          결제하기
+        </button>
+      </div>
     </>
   );
 };

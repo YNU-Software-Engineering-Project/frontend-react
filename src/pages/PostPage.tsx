@@ -33,10 +33,14 @@ const PostPage = () => {
     const checkAuth = async () => {
       const api = new Api();
       if (!id) return;
-      const response = (
-        await api.checkPermission(parseInt(id), Token.getHeaderParms)
-      ).data;
-      setAuthentic(response);
+      try {
+        const response = (
+          await api.checkPermission(parseInt(id), Token.getHeaderParms)
+        ).data;
+        setAuthentic(response);
+      } catch (e) {
+        setAuthentic(false);
+      }
     };
     checkAuth();
   }, []);

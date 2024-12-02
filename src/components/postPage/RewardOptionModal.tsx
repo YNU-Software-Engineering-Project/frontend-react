@@ -12,6 +12,7 @@ import { useParams } from 'react-router-dom';
 import PaymentModal from './rewardModal/PaymentModal';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
+import { useNavigate } from 'react-router-dom';
 
 type rewardOptionModalProps = {
   onClick: () => void;
@@ -21,6 +22,7 @@ const RewardOptionModal: React.FC<rewardOptionModalProps> = ({ onClick }) => {
   const { id: fundingId } = useParams();
   const rewardList = useAtomValue(rewardsListAtom);
   const fetchRewardList = useSetAtom(fetchRewardsListAtom);
+  const nav = useNavigate();
 
   useEffect(() => {
     if (fundingId) fetchRewardList(parseInt(fundingId));
@@ -32,8 +34,18 @@ const RewardOptionModal: React.FC<rewardOptionModalProps> = ({ onClick }) => {
   const handleConfirmButton = async () => {
     Token.getToken;
     const api = new Api();
-    const data = await api.checkBeforePayment(Token.getHeaderParms);
-    setOpenPaymentModal(!openPaymentModal);
+    try {
+      const data = await api.checkBeforePayment(Token.getHeaderParms);
+      setOpenPaymentModal(!openPaymentModal);
+    } catch (e) {
+      if (Token.getToken) {
+        alert('회원 정보가 없습니다. 회원 정보를 입력해주세요.');
+        nav('/mypage');
+      } else {
+        alert('로그인되어 있지 않습니다.');
+        nav('/login');
+      }
+    }
   };
   return (
     <>
