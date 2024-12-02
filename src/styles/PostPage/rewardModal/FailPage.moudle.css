@@ -1,0 +1,28 @@
+/* FailPage.module.css */
+.boxSection {
+  width: 600px;
+}
+
+.image {
+  width: 100px;
+}
+
+.grid {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 50px;
+}
+
+.gridSmall {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.textLeft {
+  font-weight: bold;
+}
+
+.textRight {
+  text-align: right;
+}

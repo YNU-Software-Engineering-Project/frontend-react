@@ -1389,4 +1389,33 @@ export class Api<
       method: 'GET',
       ...params,
     });
+
+  /**
+   * No description
+   * @name checkBeforePayment
+   * @summary 결제버튼 누르기
+   * @request post: /api/funding/pay
+   * @response `200` `true` 게시물에 대한 권한 확인
+   */
+  checkBeforePayment = (params: RequestParams = {}) =>
+    this.request<any, any>({
+      path: `/api/funding/pay`,
+      method: 'POST',
+      ...params,
+    });
+
+  /**
+   * No description
+   * @name paymentSucess
+   * @summary 결제버튼 누르기
+   * @request post: /api/funding/funding_Id/pay/success
+   * @response `200` `true` 게시물에 대한 권한 확인
+   */
+  paymentSucess = (fundingId: number, params: RequestParams = {}) =>
+    this.request<any, any>({
+      path: `/api/funding/${fundingId}/pay/success`,
+      type: ContentType.Json,
+      method: 'POST',
+      ...params,
+    });
 }

@@ -16,8 +16,11 @@ import { useAtomValue } from 'jotai';
 import { likeToggle } from 'api/likeToggle';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
+import { useSetAtom } from 'jotai';
+import { resetItemsAtom } from 'atoms/rewardItemsAtom';
 
 const PostPage = () => {
+  const resetItems = useSetAtom(resetItemsAtom);
   const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams();
@@ -30,10 +33,14 @@ const PostPage = () => {
     const checkAuth = async () => {
       const api = new Api();
       if (!id) return;
-      const response = (
-        await api.checkPermission(parseInt(id), Token.getHeaderParms)
-      ).data;
-      setAuthentic(response);
+      try {
+        const response = (
+          await api.checkPermission(parseInt(id), Token.getHeaderParms)
+        ).data;
+        setAuthentic(response);
+      } catch (e) {
+        setAuthentic(false);
+      }
     };
     checkAuth();
   }, []);
@@ -78,6 +85,7 @@ const PostPage = () => {
   // - 후원 버튼
   const [donateModalOpen, setDonateModalOpen] = useState<boolean>(false);
   const handleDonateModalToogle = () => {
+    resetItems();
     setDonateModalOpen(!donateModalOpen);
   };
 

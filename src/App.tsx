@@ -40,6 +40,9 @@ import Myfunding from 'components/myPage/myfunding/myfunding';
 import WishList from 'components/myPage/wishList/wishList';
 import Chatting from 'components/myPage/chat/chatting';
 
+import SuccessPage from 'components/postPage/rewardModal/paymentSucess';
+import FailPage from 'components/postPage/rewardModal/paymentFail';
+
 function App() {
   return (
     <Routes>
@@ -87,6 +90,11 @@ function App() {
           <Route path="reward" element={<Reward />} />
           <Route path="policy" element={<Policy />} />
           <Route path="setting" element={<Setting />} />
+        </Route>
+
+        <Route path="/payment/:id">
+          <Route path="success" element={<SuccessPage />} />
+          <Route path="fail" element={<FailPage />} />
         </Route>
       </Route>
 
