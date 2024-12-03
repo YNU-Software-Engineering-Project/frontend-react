@@ -56,20 +56,20 @@ function Login() {
       });
   };
 
-  const KAKAO_CLIENT_ID = '';
+  const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID;
   const kakao_REDIRECT_URI = `http://localhost:3000/oauth/redirected/kakao`;
   const kakaoLogin = () => {
     window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${kakao_REDIRECT_URI}&response_type=code`;
   };
 
-  const NAVER_CLIENT_ID = '';
+  const NAVER_CLIENT_ID = process.env.NAVER_CLIENT_ID;
   const NAVER_REDIRECT_URI = 'http://localhost:3000/oauth/redirected/naver';
   const NAVER_STATE = "flase";
   const naverLogin = () => {
     window.location.href = `https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=${NAVER_CLIENT_ID}&state=${NAVER_STATE}&redirect_uri=${NAVER_REDIRECT_URI}`;
   };
 
-  const GOOGLE_CLIENT_ID='';
+  const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID;
   const GOOGLE_REDIRECT_URI = 'http://localhost:3000/oauth/redirected/google';
   const googleLogin = () => {
     window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?

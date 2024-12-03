@@ -33,7 +33,7 @@ function Register() {
       password,
       passwordConfirm,
       phoneNumber,
-      inviteCode: inviteCode === 'XJ7dH9kL3tZ2' ? 'XJ7dH9kL3tZ2' : '', //admin : user
+      inviteCode: inviteCode === process.env.ADMIN_INVITE_CODE ? process.env.ADMIN_INVITE_CODE : '', //admin : user
     };
 
     api

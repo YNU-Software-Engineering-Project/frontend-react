@@ -38,7 +38,24 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
       navigate('/login');
     }
   };
-  const handleAlarmIcon = () => {};
+  const handleAlarmIcon = () => {
+    const token = Token.getToken;
+    if (token){
+      //role 확인
+      const storedRole = localStorage.getItem('userRole');
+
+      if (storedRole === 'USER') {
+        navigate('/mypage/alarm');
+      } else if (storedRole === 'ADMIN') {
+        navigate('/admin/chat');
+      } else {
+        navigate('/login');
+      }
+    }else {
+      localStorage.removeItem('userRole');
+      navigate('/login');
+    }
+  };
 
   return (
     <>
@@ -60,13 +77,11 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
           <Link to="/">SPARK+SEED</Link>
         </div>
         <div className={`${styles.etcBtn} ${isOpen ? styles.fade : ''}`}>
-          <div>
-            <Link to="/mypage/alarm">
-              <NotificationsNoneIcon sx={{ fontSize: '48px' }} />
-            </Link>
+          <div style={{cursor:'pointer'}} onClick={handleAlarmIcon}>
+            <NotificationsNoneIcon sx={{ fontSize: '48px' }} />
           </div>
           <div style={{cursor:'pointer'}} onClick={handleProfileIcon}>
-            {/* 로그인 확인되면 라우팅 경로가 mypage로 바뀌어야함. */}
+            
             
               <AccountCircleOutlinedIcon sx={{ fontSize: '48px' }} />
             
