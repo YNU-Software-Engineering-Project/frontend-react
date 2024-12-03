@@ -94,8 +94,31 @@
     overflow-y: auto;
     display: flex;
     align-items: flex-end;
+    display: flex;
+    flex-direction: column; 
+    gap: 8px;
+    justify-content: flex-end;
 }
-
+.sent_message {
+    background-color: #625b72;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    max-width: 70%;
+    align-self: flex-end; /* 메시지를 오른쪽으로 정렬 */
+}
+  
+.received_message {
+    background-color: #ece6f0;
+    color: black;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 5px;
+    max-width: 70%;
+    align-self: flex-start; /* 상대방 메시지를 왼쪽으로 정렬 */
+}
+  
 .chat_room_input{
     height: 95px;
     background-color: #ded8e2;

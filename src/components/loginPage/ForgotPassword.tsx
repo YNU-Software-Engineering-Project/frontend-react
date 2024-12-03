@@ -10,6 +10,7 @@ function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const [resetSuccess, setResetSuccess] = useState(false);
   const api = new Api();
 
   const handleResetPassword = () => {
@@ -23,11 +24,14 @@ function ForgotPassword() {
       .then((response) => {
         //비밀번호 초기화 성공
         console.log(response.data);
+        setResetSuccess(true);
         setShowAlert(true);
       })
       .catch(error => {
         //비밀번호 초기화 실패
         console.error('비밀번호 초기화 실패:', error);
+        setResetSuccess(false);
+        setShowAlert(true);
         if (error.response) {
           alert(`비밀번호 초기화 실패: ${error.response.data.message}`);
         } else {
@@ -75,14 +79,13 @@ function ForgotPassword() {
         {showAlert && (
           <div className={styles.alert}>
             <div className={styles.alert_header}>
-              <MailOutlineIcon className={styles.mail_icon} />
-              <span className={styles.highlight}>초기화 완료</span>
-              {/* 이메일과 전화번호 에러날시 "초기화 실패"  #FF0101*/}
+              <MailOutlineIcon className={`${styles.mail_icon} ${resetSuccess ? styles.success : styles.fail}`} />
+              <span className={`${styles.highlight} ${resetSuccess ? styles.success : styles.fail}`}>{resetSuccess ? '초기화 완료' : '초기화 실패'}</span>
               <button className={styles.alert_close} onClick={handleCloseAlert}>
                 ✖
               </button>
             </div>
-            <div className={styles.alert_message}>이메일을 확인하세요</div>
+            <div className={styles.alert_message}>{resetSuccess ? '이메일을 확인하세요' : '이메일이나 전화번호 오류'}</div>
           </div>
         )}
       </div>

@@ -943,3 +943,61 @@ export type DeleteNotificationData = ResponseDto;
 export type DeleteNotificationError = ResponseDto;
 
 export type DeleteCommentData = string;
+
+//채팅
+export interface LatestMessage {
+  chatMessageId: number;
+  content: string;
+  senderId: number;
+  createdAt: string;
+}
+
+export interface ChatRoom {
+  chatRoomId: number;
+  counterpartId: number;
+  counterpartProfile: string;
+  latestMessage: LatestMessage;
+}
+
+export interface GetChatRoomListDto {
+  code: string;
+  message: string;
+  data: ChatRoom[];
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+export type GetChatRoomListError = ResponseDto;
+
+export interface ChatMessage {
+  chatMessageId: number;
+  content: string;
+  senderId: number;
+  createdAt: string;
+}
+
+export interface GetChatMessagesResponse {
+  code: string;
+  message: string;
+  data: ChatMessage[];
+  page: number;
+  size: number;
+  totalPages: number;
+  totalElements: number;
+}
+
+export type GetChatMessagesError = ResponseDto;
+
+export interface ChatMessageRequest {
+  content: string;
+  senderId: number;
+}
+
+export interface ChatMessageResponse {
+  chatMessageId: number;
+  content: string;
+  senderId: number;
+  createdAt: string;
+}
