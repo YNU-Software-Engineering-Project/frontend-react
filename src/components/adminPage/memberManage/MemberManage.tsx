@@ -1,20 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import SearchIcon from '@mui/icons-material/Search';
 import KeyboardArrowUpOutlinedIcon from '@mui/icons-material/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import MenuBar from 'components/adminPage/menuBar';
 import PageManage from 'components/adminPage/pageManage';
 import styles from 'styles/adminPage/MemberManage.module.css';
-
-type Member = {
-  number: number;
-  id: string;
-  nickName: string;
-  email: string;
-  address: string;
-  phone: string;
-  date: string;
-};
+import { Admin } from 'apiTypes/Admin';
+import { Token } from 'apiTypes/Token';
+import { GetUserListResponseDto, UserDataDto } from 'apiTypes/data-contracts';
 
 function MemberMange() {
   const [search, setSearch] = useState('');
@@ -37,32 +30,112 @@ function MemberMange() {
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const data = [
-    { number: 1, id: 'admin', nickName: "spending", email: 'spending@yu.ac.kr', address: '대구광역시 달서구 조암로6길 월성푸르지오 스포츠센터', phone: '010-2914-4545', date: '2024-08-01' },
-    { number: 2, id: 'admin2', nickName: "spending2", email: 'spending2@yu.ac.kr', address: '대구광역시 달서구 조암로6길 월성푸르지오 스포츠센터', phone: '010-2914-4546', date: '2024-08-01' },
-    { number: 3, id: 'admin3', nickName: "spending3", email: 'spending3@yu.ac.kr', address: '대구광역시 달서구', phone: '010-2914-4547', date: '2024-08-01' },
-    { number: 4, id: 'admin4', nickName: "spending4", email: 'spending4@yu.ac.kr', address: '대구광역시 달서구 조암로6길 월성푸르지오 스포츠센터', phone: '010-2914-4548', date: '2024-08-02' },
-    { number: 5, id: 'admin5', nickName: "spending5", email: 'spending5@yu.ac.kr', address: '대구광역시 달서구', phone: '010-2914-4549', date: '2024-08-03' },
-    { number: 6, id: 'admin6', nickName: "spending6", email: 'spending6@yu.ac.kr', address: '대구광역시 달서구 조암로6길 월성푸르지오 스포츠센터', phone: '010-2914-4550', date: '2024-08-04' },
-    { number: 7, id: 'admin7', nickName: "spending7", email: 'spending7@yu.ac.kr', address: '대구광역시 달서구', phone: '010-2914-4551', date: '2024-08-05' },
-    { number: 8, id: 'admin8', nickName: "spending8", email: 'spending8@yu.ac.kr', address: '대구광역시 달서구 조암로6길 월성푸르지오 스포츠센터', phone: '010-2914-4552', date: '2024-08-06' },
-    { number: 9, id: 'admin9', nickName: "spending9", email: 'spending9@yu.ac.kr', address: '대구광역시 달서구', phone: '010-2914-4553', date: '2024-08-07' },
-    { number: 10, id: 'admin10', nickName: "spending10", email: 'spending10@yu.ac.kr', address: '대구광역시 달서구 조암로6길 월성푸르지오 스포츠센터', phone: '010-2914-4554', date: '2024-08-08' },
-    { number: 11, id: 'admin11', nickName: "spending11", email: 'spending11@yu.ac.kr', address: '대구광역시 달서구', phone: '010-2914-4555', date: '2024-08-09' },
-  ];
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  // const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
-  
-  const openPopup = (member: Member) => {
-    setSelectedMember(member);
-  };
+  const [selectedMember, setSelectedMember] = useState<UserDataDto | null>(null);
 
   const closePopup = () => {
     setSelectedMember(null);
+  };
+
+  const [sort, setSort] = useState('latest');
+  const [id, setId] = useState('');
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(10);
+  const [userList, setUserList] = useState<UserDataDto[]>([]);
+  const [userId, setUserId] = useState(0);
+  const [role, setRole] = useState('USER'); /** 회원 상태 (USER: 일반 회원, SUSPENDED: 정지 회원) */
+
+  const currentItems = userList.slice(indexOfFirstItem, indexOfLastItem);
+  
+  const adminApi = new Admin();
+
+  useEffect(() => {
+    handleShowMembers();
+  }, [sort, id, page, size]);
+
+  const handleShowMembers = () => {
+    const query ={
+      sort,
+      id,
+      page,
+      size,
+    };
+    const params = Token.getHeaderParms;
+    adminApi.getUserList(query, params)
+    .then((response) =>{
+      if (response.data && response.data.data) {
+        setUserList(response.data.data); 
+      } else {
+        setUserList([]);
+      }
+    })
+    .catch((error)=>{
+      //회원 명단 조회 실패
+      console.error('회원 명단 조회 실패:', error);
+      if (error.response) {
+        alert(`회원 명단 조회 실패: ${error.response.data.message}`);
+      } else {
+        alert('회원조회 명단 실패: 네트워크 오류');
+      }
+    })
+  };
+//user 번호 누르면 정보 뜨게 하기
+  const openPopup = (userId: number | undefined) => {
+    if (!userId) {
+      console.error('User ID is undefined');
+      return;
+    }
+
+    const params = Token.getHeaderParms;
+    adminApi.getUserList1(userId, params)
+    .then((response) =>{
+      if (response.data && response.data.data) {
+        setSelectedMember(response.data.data);
+        // console.log('Selected Member:', response.data.data);
+      } else {
+        setUserList([]);
+      }
+    })
+    .catch((error)=>{
+      //회원 정보 조회 실패
+      console.error('회원 정보 조회 실패:', error);
+      if (error.response) {
+        alert(`회원 정보 조회 실패: ${error.response.data.message}`);
+      } else {
+        alert('회원 정보 조회 실패: 네트워크 오류');
+      }
+    })
+  };
+//save버튼 누르면 저장되도록 - id는 선택한 값, 역할만 변경되게 ㄱ -> 정지회원이면 색깔 바꿔야겠다
+  const handleChangeUser = () => {
+    if (!selectedMember || !selectedMember.userId) {
+      console.error('selectedMember User ID is undefined.');
+      return;
+    }
+  
+    console.log('userId:', selectedMember.userId);
+    console.log('role:', role);
+    const query = {
+      role,
+    };
+    const params = Token.getHeaderParms;
+    adminApi.changeUserState(selectedMember.userId, query, params)
+    .then((response) => {
+      alert('회원 상태 변경');
+    })
+    .catch((error) => {
+      //회원 정보 수정 실패
+      console.error('회원 정보 수정 실패:', error);
+      if (error.response) {
+        alert(`회원 정보 수정 실패: ${error.response.data.message}`);
+      } else {
+        alert('회원 정보 수정 실패: 네트워크 오류');
+      }
+    })
   };
 
   return (
@@ -102,22 +175,23 @@ function MemberMange() {
                 </div>
             </div>
             <div className={styles.member_status_content}>
-              {currentItems.map((item) => (
-                <div className={styles.member_row} key={item.number} onClick={() => openPopup(item)}>
-                    <div className={styles.number}>{item.number}</div>
-                    <div className={styles.id}>{item.id}</div>
-                    <div className={styles.nickName}>{item.nickName}</div>
-                    <div className={styles.email}>{item.email}</div>
-                    <div className={styles.address}>{item.address}</div>
-                    <div className={styles.phone}>{item.phone}</div>
-                    <div className={styles.date}>{item.date}</div>
+              {userList.map((item) => (
+                <div className={styles.member_row} key={item.userId} style={{ cursor: 'pointer' }}>
+                  {/* 검색시 검색한 아이디만 보이게 수정 필요 */}
+                  <div className={styles.number} onClick={() => openPopup(item.userId)}>{item.no}</div>
+                  <div className={styles.id}>{item.id}</div>
+                  <div className={styles.nickName}>{item.nickname}</div>
+                  <div className={styles.email}>{item.schoolEmail}</div>
+                  <div className={styles.address}>{item.address}</div>
+                  <div className={styles.phone}>{item.phoneNumber}</div>
+                  <div className={styles.date}>{item.createdAt}</div>
                 </div>
               ))}
             </div>
         </div>
         <div className={styles.page_manage}>
           <PageManage 
-            totalUsers={data.length} 
+            totalUsers={userList.length} 
             currentPage={currentPage} 
             setCurrentPage={setCurrentPage} 
           />
@@ -134,20 +208,29 @@ function MemberMange() {
             <div>ID</div>
             <input defaultValue={selectedMember.id}></input>
             <div>닉네임</div>
-            <input defaultValue={selectedMember.nickName}></input>
+            <input defaultValue={selectedMember.nickname}></input>
             <div>학교 이메일</div>
-            <input defaultValue={selectedMember.email}></input>
+            <input defaultValue={selectedMember.schoolEmail}></input>
             <div>전화번호</div>
-            <input defaultValue={selectedMember.phone}></input>
+            <input defaultValue={selectedMember.phoneNumber}></input>
             <div>비밀번호 변경</div>
             <input type='text' placeholder='Value'></input>
             <div>주소</div>
             <input defaultValue={selectedMember.address}></input>
-            <div className={styles.member_statue}>normal/정지회원</div>
+            {/* <div className={styles.member_statue}>normal/정지회원</div> */}
+            <div className={styles.member_statue}>
+              <select
+                value={role}
+                onChange={(e) => setRole(e.target.value)}
+              >
+                <option value="USER">normal</option>
+                <option value="SUSPENDED">정지회원</option>
+              </select>
+            </div>
         </div>
         <div className={styles.userState_popup_bottom}>
             <button className={styles.cancel_button} onClick={closePopup}>cancel</button>
-            <button className={styles.save_button}>save</button>
+            <button className={styles.save_button} onClick={() => handleChangeUser}>save</button>
         </div>
       </div>
       )}

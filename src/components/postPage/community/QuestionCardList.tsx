@@ -2,14 +2,26 @@ import style from 'styles/PostPage/community/questionCardList.module.css';
 import Button from 'components/common/Button';
 import CreateIcon from '@mui/icons-material/Create';
 import QuestionCard from './QuestionCard';
-import { forwardRef, useState } from 'react';
+import { forwardRef, useEffect, useState } from 'react';
+import {
+  fetchCommunityQuestionsAtom,
+  commuityQuestionsAtom,
+} from 'atoms/commuityQuestionsAtom';
+import { useAtomValue, useSetAtom } from 'jotai';
 
 type QuestionCardListPorps = {
   handleShow: () => void;
+  fundingId: number;
 };
 
 const QuestionCardList = forwardRef<HTMLDivElement, QuestionCardListPorps>(
-  ({ handleShow }, ref) => {
+  ({ handleShow, fundingId }, ref) => {
+    const questions = useAtomValue(commuityQuestionsAtom);
+    const fetchQuestions = useSetAtom(fetchCommunityQuestionsAtom);
+    useEffect(() => {
+      fetchQuestions(fundingId);
+    }, [fetchQuestions]);
+
     return (
       <>
         <div className={style.wrapper} ref={ref}>
@@ -23,7 +35,9 @@ const QuestionCardList = forwardRef<HTMLDivElement, QuestionCardListPorps>(
           </header>
           <div className={style.divider} />
           <main>
-            <QuestionCard />
+            {questions.map(info => (
+              <QuestionCard key={info.questionId} {...info} />
+            ))}
           </main>
         </div>
       </>

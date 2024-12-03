@@ -73,6 +73,20 @@ export class HttpClient<SecurityDataType = unknown> {
     this.instance = axios.create({
       ...axiosConfig,
       baseURL: axiosConfig.baseURL || 'http://localhost:8080',
+      paramsSerializer: params => {
+        const queryString = Object.keys(params)
+          .map(key => {
+            const value = params[key];
+            // 배열이면 쉼표로 구분하여 직렬화
+            if (Array.isArray(value)) {
+              return `${encodeURIComponent(key)}=${encodeURIComponent(value.join(','))}`;
+            }
+            // 배열이 아니면 일반 쿼리 파라미터로 변환
+            return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
+          })
+          .join('&');
+        return queryString;
+      },
       // withCredentials: true, 나중에 cros 관련 리프레쉬 토큰 일있으면 그때 하는걸로
     });
     this.secure = secure;

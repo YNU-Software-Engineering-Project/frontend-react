@@ -6,6 +6,9 @@ import { Api } from 'apiTypes/Api';
 import { LoginRequestDto, LoginData } from 'apiTypes/data-contracts';
 import { AxiosResponse } from 'axios';
 import { Token } from 'apiTypes/Token';
+import naver from 'assets/naver.png';
+import google from 'assets/google.png';
+import kakao from 'assets/kakao.png';
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -26,6 +29,7 @@ function Login() {
         const token = response.data.accessToken;
         if (token) Token.setToken = token;
         alert('로그인 성공!');
+        console.log('Token set:', token);
         navigate('/');
       })
       .catch(error => {
@@ -73,13 +77,13 @@ function Login() {
 
         <div className={styles.api_login}>
           <button>
-            <img src="/naver.png"></img>
+            <img src={naver}></img>
           </button>
           <button>
-            <img src="/google.png"></img>
+            <img src={google}></img>
           </button>
           <button>
-            <img src="/kakao.png"></img>
+            <img src={kakao}></img>
           </button>
         </div>
         <div style={{ height: 19 }}></div>

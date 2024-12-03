@@ -2,8 +2,11 @@ import style from 'styles/PostPage/Community.module.css';
 import QuestionCardList from './community/QuestionCardList';
 import WriteQuestion from './community/WriteQuestion';
 import { useRef, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
 const Community = () => {
+  const { id } = useParams();
+
   //slider 제어부분
   const [showQuestion, setShowQuestion] = useState<boolean>(false);
   const slide_1 = useRef<HTMLDivElement>(null);
@@ -24,7 +27,11 @@ const Community = () => {
   return (
     <>
       <div className={style.wrapper}>
-        <QuestionCardList ref={slide_1} handleShow={handleToggle} />
+        <QuestionCardList
+          ref={slide_1}
+          handleShow={handleToggle}
+          fundingId={Number(id)}
+        />
         <WriteQuestion ref={slide_2} handleShow={handleToggle} />
       </div>
     </>

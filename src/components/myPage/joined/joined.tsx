@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ProfileMenuBar from 'components/myPage/profileMenuBar';
 import styles from 'styles/myPage/cardList.module.css';
 import Pagination from 'components/myPage/Pagination';
 import PostCard from 'components/common/PostCard';
+import { Api } from 'apiTypes/Api';
+import { Token } from 'apiTypes/Token';
 
 const Joined = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -61,6 +63,36 @@ const Joined = () => {
 
   const startIndex = (currentPage - 1) * cardsPerPage;
   const endIndex = Math.min(startIndex + cardsPerPage, totalFundingCards);
+
+  const api = new Api();
+  const [page, setPage] = useState(0);
+  const [size, setSize] = useState(4);
+  useEffect(() => {
+    handleShowPledges();
+  }, [page, size]);
+  
+  const handleShowPledges = () => {
+    const query = {
+      page,
+      size,
+    };
+    const params = Token.getHeaderParms;
+    api
+      .getPledgeList(query, params)
+      .then((response) => {
+        //참여한 펀딩리스트 조회
+        alert('참여한 펀딩리스트 조회');
+      })
+      .catch(error => {
+        //참여한 펀딩리스트 조회 실패
+        console.error('참여한 펀딩리스트 조회 실패:', error);
+        if (error.response) {
+          alert(`참여한 펀딩리스트 조회 실패: ${error.response.data.message}`);
+        } else {
+          alert('참여한 펀딩리스트 조회 실패: 네트워크 오류');
+        }
+      });
+  };
 
   return (
     <div className={styles.wishList_container}>

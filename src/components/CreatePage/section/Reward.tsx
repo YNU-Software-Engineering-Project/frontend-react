@@ -20,8 +20,6 @@ const Reward = () => {
   const [rewards, setRewards] = useState<Reward[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false); // 모달 상태
   const [isImageVisible, setIsImageVisible] = useState(true); // 이미지를 표시할지 여부
-
-  // const fundingId = 1;
   const [fundingId] = useAtom(fundingIdAtom);
 
   const api = new Api();
@@ -30,7 +28,6 @@ const Reward = () => {
   useEffect(()=>{
     if(fundingId)
       fetchRewards();
-    console.log(fundingId);
   },[fundingId]);
 
   //리워드 목록 가져오기
@@ -39,36 +36,38 @@ const Reward = () => {
       try {
         const response = await api.getReward(fundingId);
         const responseData: GetRewardData = response.data;
-  
-        // 모든 리워드 배열의 길이가 같은지 확인합니다.
-        const { reward_name, amount, reward_description, quantity, reward_id } = responseData;
-  
-        if (
-          reward_name &&
-          amount &&
-          reward_description &&
-          quantity &&
-          reward_id &&
-          reward_name.length === amount.length &&
-          amount.length === reward_description.length &&
-          reward_description.length === quantity.length &&
-          quantity.length === reward_id.length
-        ) {
-          // 모든 리워드 데이터 배열을 순회하며 Reward 객체로 변환
-          const fetchedRewards: Reward[] = reward_name.map((name, index) => ({
-            id: reward_id[index],
-            name: name,
-            amount: amount[index],
-            description: reward_description[index],
-            quantity: quantity[index],
-          }));
-  
-          // 리워드 상태 업데이트
-          setRewards(fetchedRewards);
-          setIsImageVisible(fetchedRewards.length === 0); // 리워드가 없는 경우 이미지를 표시
-        } else {
-          console.warn('리워드 데이터의 형식이 일치하지 않습니다:', responseData);
+        if(response.data){
+            // 모든 리워드 배열의 길이가 같은지 확인합니다.
+          const { reward_name, amount, reward_description, quantity, reward_id } = responseData;
+    
+          if (
+            reward_name &&
+            amount &&
+            reward_description &&
+            quantity &&
+            reward_id &&
+            reward_name.length === amount.length &&
+            amount.length === reward_description.length &&
+            reward_description.length === quantity.length &&
+            quantity.length === reward_id.length
+          ) {
+            // 모든 리워드 데이터 배열을 순회하며 Reward 객체로 변환
+            const fetchedRewards: Reward[] = reward_name.map((name, index) => ({
+              id: reward_id[index],
+              name: name,
+              amount: amount[index],
+              description: reward_description[index],
+              quantity: quantity[index],
+            }));
+    
+            // 리워드 상태 업데이트
+            setRewards(fetchedRewards);
+            setIsImageVisible(fetchedRewards.length === 0); // 리워드가 없는 경우 이미지를 표시
+          } else {
+            console.warn('리워드 데이터의 형식이 일치하지 않습니다:', responseData);
+          }
         }
+        
       } catch (error) {
         console.error("리워드 정보를 불러오는 중 오류 발생:", error);
         alert("리워드 정보를 불러오는 중 오류가 발생했습니다.");
@@ -114,7 +113,7 @@ const Reward = () => {
                   description: description,
                   quantity: quantity
                 };
-    addReward(newReward);
+              addReward(newReward);
             } else {
                 console.error('서버에서 유효한 reward_id를 반환하지 않았습니다.');
             }
@@ -141,9 +140,9 @@ const Reward = () => {
             // 상태에서 해당 태그를 제거
             setRewards(prevRewards => {
               const updatedRewards = prevRewards.filter(reward => reward.id !== id);
-    if (updatedRewards.length === 0) {
-      setIsImageVisible(true); // 리워드가 없으면 이미지를 다시 표시
-    }
+              if (updatedRewards.length === 0) {
+                setIsImageVisible(true); // 리워드가 없으면 이미지를 다시 표시
+              }
               return updatedRewards;
             });    
             alert("리워드가 삭제되었습니다.");

@@ -8,16 +8,27 @@ import {
 import Badge from '@mui/material/Badge';
 import Avatar from '@mui/material/Avatar';
 import CommnetList from './CommentList';
-import { useState } from 'react';
+import { FC, useEffect, useState } from 'react';
+import { QuestionResponseDto } from 'apiTypes/data-contracts';
+import { deleteQuestion } from 'api/deleteQuestion';
 
-const QuestionCard = () => {
+const QuestionCard: FC<QuestionResponseDto> = ({
+  questionId,
+  nickname,
+  profileImage,
+  createdAt,
+  commentCount,
+  content,
+}) => {
+  const writeTime = createdAt?.split('T1').join('  ');
+
   // 삭제 버튼 부분
-  const handleDeleteButton = () => {
-    // API연결 부분
+  const handleDeleteButton = async () => {
+    if (!questionId) return;
+    const response = await deleteQuestion(questionId);
   };
 
   // 댓글 부분
-  const commentNumber = 1;
   const [showComment, setShowComment] = useState<boolean>(false);
   const handleShowCommentButtonToggle = () => {
     setShowComment(!showComment);
@@ -28,32 +39,25 @@ const QuestionCard = () => {
       <div className={style.wrapper}>
         <header>
           <div>
-            <Avatar
-              src="https://picsum.photos/200/300"
-              sx={{ marginRight: '10px' }}
-            >
-              nickname
-            </Avatar>
-            <span>제목</span>
+            <Avatar src={profileImage} sx={{ marginRight: '10px' }} />
+            <span>{nickname}</span>
           </div>
-          <DeleteOutline
-            onClick={handleDeleteButton}
-            sx={{ fontSize: '32px', cursor: 'pointer' }}
-          />
+          <div>
+            <span className={style.day}>{writeTime}</span>
+            <DeleteOutline
+              onClick={handleDeleteButton}
+              sx={{ fontSize: '32px', cursor: 'pointer' }}
+            />
+          </div>
         </header>
-        <main>
-          질문내용질문내용질문내용 질문내용질문내용질문내용
-          질문내용질문내용질문내용 질문내용질문내용질문내용
-          질문내용질문내용질문내용 질문내용질문내용질문내용
-          질문내용질문내용질문내용
-        </main>
+        <main>{content}</main>
         <footer>
           <div
             className={style.inlineFlex}
             onClick={handleShowCommentButtonToggle}
           >
             <div>
-              <Badge badgeContent={commentNumber} color="primary">
+              <Badge badgeContent={commentCount} color="primary">
                 <ChatBubbleOutline
                   sx={{ fontSize: '32px', cursor: 'pointer' }}
                 />
@@ -67,7 +71,7 @@ const QuestionCard = () => {
             )}
           </div>
         </footer>
-        {showComment && <CommnetList />}
+        {showComment && questionId && <CommnetList questionId={questionId} />}
       </div>
     </>
   );

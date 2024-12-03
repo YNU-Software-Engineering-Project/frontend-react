@@ -45,9 +45,9 @@ const ServiceInfo = () => {
             alt="hiFive Img"
           />
         </div>
-        <Button>
-          <Link to="/termsOfService/ServiceInfo" style={{color:'white'}}>더보기</Link>
-        </Button>
+        <Link to="/termsOfService/ServiceInfo">
+          <Button>더보기</Button>
+        </Link>
       </div>
     </>
   );

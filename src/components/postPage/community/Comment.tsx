@@ -1,31 +1,25 @@
 import { Avatar } from '@mui/material';
 import style from 'styles/PostPage/community/comment.module.css';
+import { CommentResponseDto } from 'apiTypes/data-contracts';
+import { deleteComment } from 'api/deleteCommnet';
 
-type commentProps = {
-  avatorImgUrl: string;
-  nickname: string;
-  day: string;
-  content: string;
-  onClick: () => void;
-};
-
-const Commnet: React.FC<commentProps> = ({
-  avatorImgUrl,
-  nickname,
-  day,
+const Commnet: React.FC<CommentResponseDto> = ({
+  commentId,
   content,
-  onClick,
+  nickname,
+  createdAt,
 }) => {
+  const onClick = async () => {
+    if (!commentId) return;
+    await deleteComment(commentId);
+  };
   return (
     <>
       <div className={style.wrapper}>
-        <Avatar
-          src={avatorImgUrl}
-          sx={{ marginRight: '10px' }}
-        >{`${nickname[0]}`}</Avatar>
+        <Avatar sx={{ marginRight: '10px' }}>{nickname}</Avatar>
         <main>
           <span>{nickname}</span>
-          <span className={style.day}>{`${day}일전`}</span>
+          <span className={style.day}>{createdAt}</span>
           <div className={style.divider} />
           <p>{content}</p>
         </main>

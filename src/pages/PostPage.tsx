@@ -1,28 +1,56 @@
 import style from 'styles/PostPage/PostPage.module.css';
 import OptionList from 'components/common/OptionList';
 import Button from 'components/common/Button';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import {
   ChatBubbleOutline,
   FavoriteBorder,
   Favorite,
 } from '@mui/icons-material';
 import RewardOptionModal from 'components/postPage/RewardOptionModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { fundingInfoAtom } from 'atoms/fundingInfo';
+import { FundingDetailsResponseDto } from 'apiTypes/data-contracts';
+import { useAtomValue } from 'jotai';
+import { likeToggle } from 'api/likeToggle';
+import { Api } from 'apiTypes/Api';
+import { Token } from 'apiTypes/Token';
 
 const PostPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { id } = useParams();
+  const data = useAtomValue(
+    fundingInfoAtom(Number(id)),
+  ) as FundingDetailsResponseDto;
+
+  const [authentic, setAuthentic] = useState(false);
+  useEffect(() => {
+    const checkAuth = async () => {
+      const api = new Api();
+      if (!id) return;
+      const response = (
+        await api.checkPermission(parseInt(id), Token.getHeaderParms)
+      ).data;
+      setAuthentic(response);
+    };
+    checkAuth();
+  }, []);
+
+  if (Object.keys(data).includes('code')) {
+    navigate('*');
+  }
 
   // 네비 버튼 부분
-  const navList = [
+  let navList = [
     { label: '스토리', path: 'story' },
     { label: '커뮤니티', path: 'comunity' },
     { label: '환불 정책', path: 'refund' },
     { label: '리워드 정보', path: 'rewardInfo' },
     { label: '상황판', path: 'dashboard' },
   ];
+  if (!authentic) navList = navList.slice(0, 4);
   const handleNav = (
     label: string,
     event: React.MouseEvent<HTMLLIElement> | undefined,
@@ -30,7 +58,7 @@ const PostPage = () => {
     if (event === undefined) return;
     const link = navList.find(item => item.label === label);
     if (link === undefined) return;
-    navigate(`/post/${link.path}`);
+    navigate(`/post/${id}/${link.path}`);
   };
 
   // 버튼 부분
@@ -42,8 +70,9 @@ const PostPage = () => {
 
   // - 좋아요 버튼
   const [liked, setLiked] = useState<boolean>(false);
-  const handleLikeButton = () => {
+  const handleLikeButton = async () => {
     setLiked(prev => !prev);
+    if (id) await likeToggle(parseInt(id));
   };
 
   // - 후원 버튼
@@ -63,27 +92,33 @@ const PostPage = () => {
         </header>
         <div className={style.main}>
           <div className={style.content}>
-            <Outlet />
+            <Outlet context={id} />
           </div>
-          {location.pathname === '/post/dashboard' || (
+          {location.pathname.split('/')[3] === 'dashboard' || (
             <div className={style.sidebar}>
               <div className={style.title}>목표 금액</div>
-              <div className={style.price}>500,000원</div>
+              <div
+                className={style.price}
+              >{`${data.targetAmount?.toLocaleString('ko-KR')}원`}</div>
               <div className={style.title}>모인 금액</div>
-              <div className={style.price}>90,686,700원</div>
+              <div
+                className={style.price}
+              >{`${data.currentAmount?.toLocaleString('ko-KR')}원`}</div>
               <div className={style.title}>달성률</div>
-              <div className={style.price}>1000%</div>
+              <div
+                className={style.price}
+              >{`${data.achievementRate?.toPrecision(2)}%`}</div>
               <div className={style.title}>남은 시간</div>
-              <div className={style.price}>17일</div>
+              <div className={style.price}>{`${data.remainingDays}일`}</div>
               <div className={style.title}>후원자</div>
-              <div className={style.price}>1,264</div>
+              <div className={style.price}>{`${data.supporterCount}명`}</div>
               <div className={style.divider}></div>
               <div className={style.buttonBox}>
                 <Button variant="outlined" onClick={handleChatButton}>
                   <ChatBubbleOutline sx={{ marginRight: '5px' }} />
                   주최자와 채팅
                 </Button>
-                <Button variant="outlined" onClick={handleLikeButton}>
+                <Button variant="outlined" onClick={() => handleLikeButton()}>
                   {liked && (
                     <Favorite color="error" sx={{ fontSize: '32px' }} />
                   )}

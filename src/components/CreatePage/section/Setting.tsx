@@ -1,5 +1,5 @@
 import Modal from "components/CreatePage/modals/Modal";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "styles/CreatePage/section/setting.module.css";
 import { useAtom } from 'jotai';
 import { fundingIdAtom } from 'components/CreatePage/atoms';
@@ -54,6 +54,7 @@ const Setting = () => {
       .then((response) => {
         alert("삭제 성공: 펀딩이 삭제되었습니다.");
         console.log("응답 데이터:", response.data);
+        navigate('/');
       })
       .catch(error => {
         console.error("삭제 실패:", error);
