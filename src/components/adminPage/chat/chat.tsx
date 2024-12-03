@@ -1,25 +1,15 @@
-import { useEffect, useState } from 'react';
-import ChatRoomPage from 'components/adminPage/chat/ChatRoomPage';
-import ChatPage from 'components/adminPage/chat/ChatPage';
-import MenuBar from 'components/adminPage/menuBar';
-import ProfileMenuBar from 'components/myPage/profileMenuBar';
+import { useEffect, useState } from "react";
+import ChatPage from "./ChatPage";
+import ChatRoomPage from "./ChatRoomPage";
 import styles from 'styles/adminPage/chatting.module.css';
-
-import { Token } from 'apiTypes/Token';
+import { Token } from "apiTypes/Token";
+import MenuBar from "../menuBar";
+import ProfileMenuBar from "components/myPage/profileMenuBar";
 
 function Chat() {
   const storedRole = localStorage.getItem('userRole');
-  const [currentChatRoom, setCurrentChatRoom] = useState<number | null>(null);
-
-  const handleSelectChatRoom = (chatRoom: any) => {
-    setCurrentChatRoom(chatRoom);
-  };
-
-  const handleBackToRoomList = () => {
-    setCurrentChatRoom(null);
-  };
-
-  //debuf
+  const [currentChatRoomId, setCurrentChatRoomId] = useState<number | null>(null);
+   //debug 및 메뉴바 선택을 위함
   useEffect(() => {
     const token = Token.getToken?.split(' ')[1];
     if (token) {
@@ -40,21 +30,27 @@ function Chat() {
       }
     }
   })
+  //채탕방 선택
+  const handleSelectChatRoom = (chatRoomId: number) => {
+    setCurrentChatRoomId(chatRoomId);
+    console.log("chat.tsx",chatRoomId);
+  };
 
   return (
     <div className={styles.chat_container}>
-    {storedRole === 'ADMIN' ? <MenuBar /> : <ProfileMenuBar />}
-    <div className={styles.chat_main_content}>
-      <div className={styles.chat_room_list1}>
-        <ChatRoomPage onSelectChatRoom={handleSelectChatRoom} />
+      {storedRole === 'ADMIN' ? <MenuBar /> : <ProfileMenuBar />}
+      <div className={styles.chat_main_content}>
+        <div className={styles.chat_room_list1}>
+          <ChatRoomPage onSelectChatRoom={handleSelectChatRoom}/>
+        </div>
+
+        <div className={styles.chat_room1}>
+          <ChatPage chatRoomId={currentChatRoomId ?? 0}/>
+        </div>
       </div>
-      <div className={styles.chat_room1}>
-        {currentChatRoom !== null && (
-          <ChatPage chatRoom={currentChatRoom} onBackToRoomList={handleBackToRoomList} />
-        )}
-      </div>
+      
+
     </div>
-  </div>
   );
 }
 
