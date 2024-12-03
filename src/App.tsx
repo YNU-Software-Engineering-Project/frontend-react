@@ -43,6 +43,9 @@ import KakaoLoginCallback from 'components/loginPage/social/KakaoLoginCallback';
 import GoogleLoginPage from 'components/loginPage/social/GoogleLoginPage';
 import NaverLoginCallback from 'components/loginPage/social/NaverLoginCallback';
 
+import SuccessPage from 'components/postPage/rewardModal/paymentSucess';
+import FailPage from 'components/postPage/rewardModal/paymentFail';
+
 function App() {
   return (
     <Routes>
@@ -96,11 +99,16 @@ function App() {
           <Route path="policy" element={<Policy />} />
           <Route path="setting" element={<Setting />} />
         </Route>
+
+        <Route path="/payment/:id">
+          <Route path="success" element={<SuccessPage />} />
+          <Route path="fail" element={<FailPage />} />
+        </Route>
       </Route>
 
       <Route path="*" element={<NotFoundPage />} />
 
-      {/* admin 페이지는 나중에 분리할 예정임. template에 맞춰서 디자인 수정 및 페이지 link 작업 */}
+      {/* */}
       <Route element={<Template />}>
         <Route path="/admin" element={<AdminPage />}>
           <Route index element={<Admin />} />

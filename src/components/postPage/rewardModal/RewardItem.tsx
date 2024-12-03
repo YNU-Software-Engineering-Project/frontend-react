@@ -1,20 +1,36 @@
-import { useState } from 'react';
+import { FC, useState } from 'react';
 import style from 'styles/PostPage/rewardModal/RewardItem.module.css';
 import { Add, Remove } from '@mui/icons-material';
+import { RewardListResponseDto } from 'apiTypes/data-contracts';
+import { updateItemsAtom } from 'atoms/rewardItemsAtom';
+import { useSetAtom } from 'jotai';
 
-const RewardItem = () => {
-  //페이지 text
-  const price = 100000;
-  const maxAmount = 300;
-
+const RewardItem: FC<RewardListResponseDto> = ({
+  rewardId,
+  amount = 0,
+  rewardName = '',
+  rewardDescription = '',
+  quantity = 0,
+}) => {
+  const updateItems = useSetAtom(updateItemsAtom);
   // 수량 부분
   const [counter, setCounter] = useState<number>(0);
   const handleCountUp = () => {
-    if (counter > maxAmount) return;
+    if (counter + 1 > 10) return;
     setCounter(counter + 1);
+    updateItems({
+      id: rewardId?.toString()!,
+      amount: (counter + 1)?.toString(),
+      price: amount.toString(),
+    });
   };
   const handleCountDown = () => {
     if (counter - 1 < 0) return;
+    updateItems({
+      id: rewardId?.toString()!,
+      amount: (counter + 1)?.toString(),
+      price: amount.toString(),
+    });
     setCounter(counter - 1);
   };
 
@@ -22,17 +38,21 @@ const RewardItem = () => {
     <>
       <div className={style.wrapper}>
         <div className={style.card}>
-          <div>리워드</div>
+          <div>{rewardName}</div>
           <div className={style.divider} />
-          <div>리워드 설명</div>
+          <div>{rewardDescription}</div>
           <div className={style.divider} />
           <div className={style.flexSpaceBetween}>
             <span>가격</span>
-            <span>{`${price}원`}</span>
+            <span>{`${amount?.toLocaleString('KO-kr')}원`}</span>
           </div>
           <div className={style.flexSpaceBetween}>
             <span>제한 수량</span>
-            <span>{`${maxAmount}개`}</span>
+            <span>
+              {quantity
+                ? `${quantity?.toLocaleString('KO-kr')}개 남음`
+                : '현재 수량이 없습니다.'}
+            </span>
           </div>
         </div>
         <div className={style.checkBox}>
