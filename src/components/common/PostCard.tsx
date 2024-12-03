@@ -7,7 +7,10 @@ import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import LinearProgressWithLabel from './ProgressLineBar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { FundingSortResponseDto } from 'apiTypes/data-contracts';
+import { useNavigate } from 'react-router-dom';
+import { likeToggle } from 'api/likeToggle';
 
 type ExpiredOverlayProps = {
   children?: string;
@@ -39,35 +42,37 @@ const ExpiredOverlay: React.FC<ExpiredOverlayProps> = ({ children }) => {
   );
 };
 
-export type PostCardProps = {
-  avatarImgUrl: String;
-  postTitle: String;
-  postImgUrl: String;
-  postSummary: String;
-  progressBarValue: number;
-  tagList: String[];
-  isExpired?: boolean;
-};
-
-const PostCard: React.FC<PostCardProps> = ({
-  avatarImgUrl,
-  postTitle,
-  postImgUrl,
-  postSummary,
-  progressBarValue,
-  tagList,
-  isExpired = false,
+const PostCard: React.FC<FundingSortResponseDto> = ({
+  fundingId,
+  profileImage,
+  title = '',
+  mainImage,
+  achievementRate,
+  createdAt,
+  current,
+  details,
+  tag = [],
+  likedByCurrentUser = false,
 }) => {
-  const [liked, setLiked] = useState<boolean>(false);
+  const nav = useNavigate();
+  const [liked, setLiked] = useState<boolean>(likedByCurrentUser);
 
-  const handleLike = () => {
+  const handleLike = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     setLiked(prev => !prev);
-    console.log(isExpired);
+    const res = await likeToggle(fundingId as number);
+    console.log(res);
   };
+
+  const [tagJoin, setTagJoin] = useState<String>('');
+  useEffect(() => {
+    setTagJoin(tag.map(item => '#' + item).join(' '));
+  }, [tag]);
 
   return (
     <>
       <Card
+        onClick={() => nav(`/post/${fundingId}`)}
         sx={{
           width: 360,
           height: 470,
@@ -80,19 +85,26 @@ const PostCard: React.FC<PostCardProps> = ({
           position: 'relative',
         }}
       >
-        {isExpired && <ExpiredOverlay>종료되었습니다</ExpiredOverlay>}
+        {current === 'CLOSED' && (
+          <ExpiredOverlay>종료되었습니다</ExpiredOverlay>
+        )}
         <CardHeader
-          avatar={<Avatar alt="avator Img" src={`${avatarImgUrl}`} />}
+          avatar={
+            <Avatar
+              alt="avator Img"
+              src={profileImage ? `${profileImage}` : undefined}
+            />
+          }
           title={
             <div style={{ fontSize: '18px', fontWeight: 'bold' }}>
-              {postTitle}
+              {title.length > 15 ? `${title.slice(0, 15)}...` : title}
             </div>
           }
-          subheader={tagList.map((tag, index) => (
-            <span key={index} style={{ marginRight: '0.3rem' }}>
-              {`#${tag}`}
+          subheader={
+            <span style={{ marginRight: '0.3rem' }}>
+              {tagJoin.length > 18 ? `${tagJoin.slice(0, 10)}...` : tagJoin}
             </span>
-          ))}
+          }
           action={
             <IconButton onClick={handleLike} aria-label="like">
               <FavoriteIcon
@@ -104,7 +116,7 @@ const PostCard: React.FC<PostCardProps> = ({
         />
         <CardMedia
           component="img"
-          src={`${postImgUrl}`}
+          src={`${mainImage}`}
           height="250px"
           alt="product image"
         />
@@ -115,15 +127,16 @@ const PostCard: React.FC<PostCardProps> = ({
             component="p"
             style={{ height: '60px' }}
           >
-            {postSummary}
+            {details}
           </Typography>
           <Typography sx={{ marginTop: '5px' }}>목표 펀딩 달성률</Typography>
           <LinearProgressWithLabel
             variant="determinate"
-            value={progressBarValue}
+            value={achievementRate || 0}
           />
         </CardContent>
       </Card>
+      {/* </Link> */}
     </>
   );
 };

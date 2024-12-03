@@ -1,15 +1,16 @@
 import Button from './Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import { ReactNode, FC } from 'react';
 
 type orderButtonProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   isClicked: boolean;
   isDescending?: boolean;
   onClick: () => void;
 };
 
-const OrderButton: React.FC<orderButtonProps> = ({
+const OrderButton: FC<orderButtonProps> = ({
   children,
   isClicked,
   isDescending,
@@ -22,8 +23,8 @@ const OrderButton: React.FC<orderButtonProps> = ({
       onClick={onClick}
     >
       {children}
-      {isClicked && isDescending && <KeyboardArrowDownIcon />}
-      {isClicked && (isDescending || <KeyboardArrowUpIcon />)}
+      {isClicked && isDescending && <KeyboardArrowUpIcon />}
+      {isClicked && (isDescending || <KeyboardArrowDownIcon />)}
     </Button>
   );
 };

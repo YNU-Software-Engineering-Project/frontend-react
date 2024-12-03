@@ -1,14 +1,3 @@
-/* eslint-disable */
-/* tslint:disable */
-/*
- * ---------------------------------------------------------------
- * ## THIS FILE WAS GENERATED VIA SWAGGER-TYPESCRIPT-API        ##
- * ##                                                           ##
- * ## AUTHOR: acacode                                           ##
- * ## SOURCE: https://github.com/acacode/swagger-typescript-api ##
- * ---------------------------------------------------------------
- */
-
 import {
   CommentRequestDto,
   ConfirmEmailData,
@@ -105,6 +94,8 @@ import {
   PatchPhoneNumberRequestDto,
   PolicyRefundRequestDto,
   PolicyRewardRequestDto,
+  PrintEditorImageData,
+  PrintEditorImageError,
   QuestionRequestDto,
   RegisterData,
   RegisterError,
@@ -112,12 +103,15 @@ import {
   RegisterFundingError,
   ResetPasswordData,
   ResetPasswordError,
+  SavePostData,
+  SavePostError,
   SearchFundingData,
   SearchFundingError,
   SendEmailTokenData,
   SendEmailTokenError,
   SignupData,
   SignupError,
+  StoryContentDto,
   SignUpRequestDto,
   SubmitFundingData,
   SubmitFundingError,
@@ -125,6 +119,9 @@ import {
   UploadDocumentData,
   UploadDocumentError,
   UploadDocumentPayload,
+  UploadEditorImageData,
+  UploadEditorImageError,
+  UploadEditorImagePayload,
   UploadIDcardData,
   UploadIDcardError,
   UploadIDcardPayload,
@@ -160,7 +157,7 @@ export class Api<
    * No description
    *
    * @tags funding-story-controller
-   * @name ModifyProject
+   * @name ModifyProjnpmect
    * @summary 프로젝트 제목, 요약 작성
    * @request POST:/api/user/fundings/{funding_id}/story/modify
    * @response `200` `ModifyProjectData` 작성 성공
@@ -390,6 +387,50 @@ export class Api<
     this.request<GiveupFundingData, GiveupFundingError>({
       path: `/api/user/fundings/${fundingId}/giveup`,
       method: 'POST',
+      ...params,
+    });
+    /**
+   * No description
+   *
+   * @tags markdown-controller
+   * @name SavePost
+   * @summary toast ui 저장
+   * @request POST:/api/user/fundings/{funding_id}/editor/save
+   * @response `200` `SavePostData` 스토리 내용 저장 성공
+   * @response `400` `ResponseDto` 스토리 내용 저장 실패
+   */
+  savePost = (
+    fundingId: number,
+    data: StoryContentDto,
+    params: RequestParams = {},
+  ) =>
+    this.request<SavePostData, SavePostError>({
+      path: `/api/user/fundings/${fundingId}/editor/save`,
+      method: 'POST',
+      body: data,
+      type: ContentType.Json,
+      ...params,
+    });
+  /**
+   * No description
+   *
+   * @tags markdown-controller
+   * @name UploadEditorImage
+   * @summary toast ui 이미지 저장하기
+   * @request POST:/api/user/fundings/{funding_id}/editor/image-upload
+   * @response `200` `UploadEditorImageData` 서버에 이미지 저장 성공
+   * @response `400` `ResponseDto` 이미지 저장 실패
+   */
+  uploadEditorImage = (
+    fundingId: number,
+    data: UploadEditorImagePayload,
+    params: RequestParams = {},
+  ) =>
+    this.request<UploadEditorImageData, UploadEditorImageError>({
+      path: `/api/user/fundings/${fundingId}/editor/image-upload`,
+      method: 'POST',
+      body: data,
+      type: ContentType.FormData,
       ...params,
     });
   /**
@@ -850,6 +891,23 @@ export class Api<
       method: 'GET',
       ...params,
     });
+     /**
+   * No description
+   *
+   * @tags markdown-controller
+   * @name PrintEditorImage
+   * @summary 이미지 url
+   * @request GET:/api/user/fundings/editor/image-print/{filename}
+   * @response `200` `PrintEditorImageData` 이미지 보여주기 성공
+   * @response `400` `string` 이미지 보여주기 실패
+   */
+  printEditorImage = (filename: string, params: RequestParams = {}) =>
+    this.request<PrintEditorImageData, PrintEditorImageError>({
+      path: `/api/user/fundings/editor/image-print/${filename}`,
+      method: 'GET',
+      format: 'blob',
+      ...params,
+    });
   /**
    * No description
    *
@@ -1128,17 +1186,10 @@ export class Api<
    * @request GET:/api/fundings/achievement
    * @response `200` `GetHighAchievementFundingsData` (현재금액/목표금액)이 높은 순으로 정렬
    */
-  getHighAchievementFundings = (
-    query: {
-      /** @format int32 */
-      page: number;
-    },
-    params: RequestParams = {},
-  ) =>
+  getHighAchievementFundings = (params: RequestParams = {}) =>
     this.request<GetHighAchievementFundingsData, any>({
       path: `/api/fundings/achievement`,
       method: 'GET',
-      query: query,
       ...params,
     });
   /**
@@ -1391,6 +1442,20 @@ export class Api<
     this.request<DeleteCommentData, any>({
       path: `/api/comments/${commentId}`,
       method: 'DELETE',
+      ...params,
+    });
+
+  /**
+   * No description
+   * @name checkPermission
+   * @summary 커뮤니티 댓글 삭제
+   * @request get:/api/funding/{fundingId}/check-permission
+   * @response `200` `true` 게시물에 대한 권한 확인
+   */
+  checkPermission = (fundingId: number, params: RequestParams = {}) =>
+    this.request<any, any>({
+      path: `/api/funding/${fundingId}/check-permission`,
+      method: 'GET',
       ...params,
     });
 }

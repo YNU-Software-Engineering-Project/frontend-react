@@ -2,16 +2,33 @@ import { useState, useRef, useEffect } from 'react';
 import Avatar from '@mui/material/Avatar';
 import style from 'styles/PostPage/community/commnetList.module.css';
 import Commnet from './Comment';
+import {
+  commuityCommentAtom,
+  fetchCommunityCommentAtom,
+} from 'atoms/communityCommentAtom';
+import { useAtomValue, useSetAtom } from 'jotai';
+import { createComment } from 'api/createComment';
 
-const CommnetList = () => {
+const CommnetList = ({ questionId }: { questionId: number }) => {
+  const commentList = useAtomValue(commuityCommentAtom);
+  const fetchComment = useSetAtom(fetchCommunityCommentAtom);
+
+  useEffect(() => {
+    if (!questionId) return;
+    fetchComment(questionId);
+  }, [fetchComment]);
+
   // form 댓글 작성 부분
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [inputValue, setInputValue] = useState<string>('');
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (inputValue.trim() === '') return;
-    console.log(inputValue);
+    const data = {
+      content: inputValue,
+    };
+    const response = await createComment(questionId, data);
     setInputValue('');
   };
 
@@ -31,9 +48,6 @@ const CommnetList = () => {
   useEffect(() => {
     adjustHeight();
   }, [inputValue]);
-
-  // commnet 부분
-  const handleDeleteComment = () => {};
 
   return (
     <>
@@ -59,13 +73,9 @@ const CommnetList = () => {
           </form>
         </div>
         <div className={style.commetBox}>
-          <Commnet
-            avatorImgUrl="https://picsum.photos/5/200/300"
-            nickname="닉네임"
-            day="3"
-            content="오늘은 좋은 아침입니다. 서포터님 질문 감사합니다. ~~~ 무슨 내용~~~ 입니다. \n\n\n"
-            onClick={handleDeleteComment}
-          />
+          {commentList.map(info => (
+            <Commnet key={info.commentId} {...info} />
+          ))}
         </div>
       </div>
     </>

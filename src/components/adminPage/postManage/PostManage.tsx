@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import MenuBar from 'components/adminPage/menuBar';
 import styles from 'styles/adminPage/PostManage.module.css';
+import { Admin } from 'apiTypes/Admin';
+import { Token } from 'apiTypes/Token';
+import { GetFundingStateCountData } from 'apiTypes/data-contracts';
 
 function PostManage() {
   interface Card {
@@ -73,6 +76,93 @@ function PostManage() {
   const doneCards = getSlicedCards(cards.filter(card => card.status === '심사 완료'), currentPageDone);
   const inProgressCards = getSlicedCards(cards.filter(card => card.status === '펀딩 진행 중'), currentPageInProgress);
 
+  const adminApi = new Admin();
+  const [fundingStateCount, setFundingStateCount] = useState({
+    review: 0,
+    reviewCompleted: 0,
+    onGoing: 0,
+  });
+
+  useEffect(() => {
+    handleFundingStateCount();
+  }, []);
+  //펀딩 상태에 해당하는 개수 출력
+  const handleFundingStateCount = () => {
+    const params = Token.getHeaderParms;
+    adminApi.getFundingStateCount(params)
+    .then(response => {
+      const data = response.data?.data;
+
+      if (data) {
+        setFundingStateCount({
+          review: data.review ?? 0,              
+          reviewCompleted: data.reviewCompleted ?? 0,
+          onGoing: data.onGoing ?? 0,               
+        });
+      } else {
+        console.error('Invalid response data');
+        alert('펀딩 상태에 따른 개수 조회 실패: 데이터가 없습니다.');
+      }
+    })
+    .catch(error => {
+      //펀딩 상태에 따른 개수 조회 실패
+      console.error('펀딩 상태에 따른 개수 조회 실패:', error);
+      if (error.response) {
+        alert(`펀딩 상태에 따른 개수 조회 실패: ${error.response.message}`);
+      } else {
+        alert('펀딩 상태에 따른 개수 조회 실패: 네트워크 오류');
+      }
+    })
+  }
+  //펀딩 상태에 해당하는 걸로 이동하게 ㄱ 그게 이거 인듯 getFundingByState; REVIEW: 심사 대기, REVIEW_COMPLETED: 심사 완료, ONGOING: 진행 중
+  const handleFundingByState = (state: string, keyword: string = '', page: number = 0, size: number = 6) => {
+    const query ={
+      keyword,
+      state,
+      page,
+      size,
+    };
+    const params = Token.getHeaderParms;
+    adminApi.getFundingByState(query, params)
+    .then(response =>{
+      if (response.data && response.data.data) {
+        console.log('펀딩 상태에 따른 게시물 리스트:', response.data.data);
+      } else {
+        console.log('No fundings found for this state');
+      }
+    })
+    .catch(error => {
+      console.log('펀딩상태 및 펀딩 조회 실패',error);
+      if (error.response) {
+        alert(`펀딩상태 및 펀딩 조회 실패: ${error.response.message}`);
+      } else {
+        alert('펀딩상태 및 펀딩 조회 실패: 네트워크 오류');
+      }
+    })
+  }
+
+  //펀딩 상태 변경=changeFundingState - 게시물 보는 곳애서 변경되게 ㄱ -> 태화가 만든 페이지로 이동되게 해야 함
+  const handleChangeFundingState = (fundingId: number, state: string) => {
+    const query = {
+      state,
+    };
+    const params = Token.getHeaderParms;
+  
+    adminApi.changeFundingState(fundingId, query, params)
+      .then((response) => {
+        alert('펀딩 상태 변경 성공');
+        console.log('펀딩 상태 변경 성공:', response);
+      })
+      .catch((error) => {
+        console.error('펀딩 상태 변경 실패:', error);
+        if (error.response) {
+          alert(`펀딩 상태 변경 실패: ${error.response.data.message}`);
+        } else {
+          alert('펀딩 상태 변경 실패: 네트워크 오류');
+        }
+      });
+  };  
+
   return (
     <div className={styles.admin_container}>
       <MenuBar />
@@ -84,17 +174,17 @@ function PostManage() {
           <div className={styles.posting_status_component}>
             <div className={styles.posting_status_container}>
               <div className={styles.waiting}>심사 대기</div>
-              <div>-</div>
+              <div>{fundingStateCount.review}</div>
             </div> 
             <div className={styles.verticle_line} />
             <div className={styles.posting_status_container}>
               <div className={styles.done}>심사 완료</div>
-              <div>-</div>
+              <div>{fundingStateCount.reviewCompleted}</div>
             </div> 
             <div className={styles.verticle_line} />
             <div className={styles.posting_status_container}>
               <div className={styles.ing}>펀딩 진행 중</div>
-              <div>-</div>
+              <div>{fundingStateCount.onGoing}</div>
             </div> 
             <div className={styles.verticle_line} />
           </div>

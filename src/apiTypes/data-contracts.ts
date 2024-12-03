@@ -115,6 +115,16 @@ export interface DeleteFileResponseDto {
   message?: string;
 }
 
+export interface StoryContentDto {
+  content?: string;
+}
+
+export interface StoryImageResponseDto {
+  code?: string;
+  message?: string;
+  filename?: string;
+}
+
 export interface EmailSendTokenRequestDto {
   email: string;
 }
@@ -142,8 +152,6 @@ export interface PasswordResetResponseDto {
 }
 
 export interface FundingLikeRequestDto {
-  /** @format int64 */
-  userId?: number;
   /** @format int64 */
   fundingId?: number;
 }
@@ -359,6 +367,7 @@ export interface GetProjectResponseDto {
   image_url?: string[];
   image_uuid?: string[];
   summary?: string;
+  story?: string;
 }
 
 export interface GetMRewardResponseDto {
@@ -406,6 +415,7 @@ export interface QuestionResponseDto {
   createdAt?: string;
   /** @format int32 */
   commentCount?: number;
+  profileImage?: string;
 }
 
 export interface GetNotificationsResponseDto {
@@ -468,7 +478,7 @@ export interface FundingSortResponseDto {
   createdAt?: string;
   current?: 'DRAFT' | 'REVIEW' | 'REVIEW_COMPLETED' | 'ONGOING' | 'CLOSED';
   details?: string;
-  tags?: string[];
+  tag?: string[];
   likedByCurrentUser?: boolean;
 }
 
@@ -735,6 +745,19 @@ export type GiveupFundingData = DeleteFileResponseDto;
 
 export type GiveupFundingError = ResponseDto;
 
+export type SavePostData = ResponseDto;
+
+export type SavePostError = ResponseDto;
+
+export interface UploadEditorImagePayload {
+  /** @format binary */
+  image: File;
+}
+
+export type UploadEditorImageData = StoryImageResponseDto;
+
+export type UploadEditorImageError = ResponseDto;
+
 export type SendEmailTokenData = ResponseDto;
 
 export type SendEmailTokenError = ResponseDto;
@@ -843,6 +866,10 @@ export type GetInfoData = GetInfoResponseDto;
 
 export type GetInfoError = ResponseDto;
 
+export type PrintEditorImageData = string;
+
+export type PrintEditorImageError = string;
+
 export type RegisterData = ResponseDto;
 
 export type RegisterError = ResponseDto;
@@ -875,13 +902,13 @@ export type GetfundPolicyData = FundingDetailsResponseDto;
 
 export type GetfundPolicyError = ResponseDto;
 
-export type GetTop3PopularFundingsData = FundingSortResponseDto;
+export type GetTop3PopularFundingsData = FundingSortResponseDto[];
 
-export type GetSmallFundingsData = FundingSortResponseDto;
+export type GetSmallFundingsData = FundingSortResponseDto[];
 
-export type GetNewFundingsData = FundingSortResponseDto;
+export type GetNewFundingsData = FundingSortResponseDto[];
 
-export type GetHighAchievementFundingsData = FundingSortResponseDto;
+export type GetHighAchievementFundingsData = FundingSortResponseDto[];
 
 export type GetRewardListData = GetRewardListResponseDto;
 

@@ -1,16 +1,40 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from 'styles/login/ForgotPassword.module.css';
 import { Link } from 'react-router-dom';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
 import Button from 'components/common/Button';
+import { Api } from 'apiTypes/Api';
+import { PasswordResetRequestDto } from 'apiTypes/data-contracts';
 
 function ForgotPassword() {
   const [email, setEmail] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [showAlert, setShowAlert] = useState(false);
+  const api = new Api();
 
   const handleResetPassword = () => {
-    setShowAlert(true);
+    setShowAlert(false);
+    const requestData: PasswordResetRequestDto = {
+      email,
+      phoneNumber,
+    };
+    api
+      .resetPassword(requestData)
+      .then((response) => {
+        //비밀번호 초기화 성공
+        console.log(response.data);
+        setShowAlert(true);
+      })
+      .catch(error => {
+        //비밀번호 초기화 실패
+        console.error('비밀번호 초기화 실패:', error);
+        if (error.response) {
+          alert(`비밀번호 초기화 실패: ${error.response.data.message}`);
+        } else {
+          alert('비밀번호 초기화 실패: 네트워크 오류');
+        }
+      });
+    
   };
   const handleCloseAlert = () => {
     setShowAlert(false);

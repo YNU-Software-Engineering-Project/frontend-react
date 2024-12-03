@@ -1,39 +1,16 @@
 import style from 'styles/PostListPage/Category.module.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Autocomplete, TextField } from '@mui/material';
 import Chip from 'components/common/Chip';
+import { searchFundingQueryAtom } from 'atoms/SearchFundingAtom';
+import { useSetAtom } from 'jotai';
+import { categoryCode } from 'atoms/SearchFundingAtom';
 
 const Category = () => {
-  const categories = [
-    '캐릭터·굿즈 전체',
-    '애니메이션',
-    '게임',
-    '케이팝',
-    'TV·영화',
-    '브랜드',
-    '크리에이터',
-    '홈·리빙',
-    '사진',
-    '키즈',
-    '도서·전자책',
-    '여행',
-    '만화·웹툰',
-    '스포츠·아웃도어',
-    '테크·가전',
-    '자동차',
-    '패션',
-    '아트',
-    '기타',
-  ];
+  const setQuery = useSetAtom(searchFundingQueryAtom);
+  const categories = Object.keys(categoryCode);
 
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-  const handleChange = (event: any) => {
-    const {
-      target: { value },
-    } = event;
-    setSelectedCategories(typeof value === 'string' ? value.split(',') : value);
-  };
 
   const handleAutocompleteChange = (event: any, newValue: string | null) => {
     if (newValue && !selectedCategories.includes(newValue)) {
@@ -46,6 +23,16 @@ const Category = () => {
       selectedCategories.filter((_, index) => target !== index),
     );
   };
+
+  useEffect(() => {
+    const categories = selectedCategories.map(
+      label => categoryCode[label as keyof typeof categoryCode],
+    );
+    setQuery(prev => ({
+      ...prev,
+      categories,
+    }));
+  }, [handleAutocompleteChange]);
 
   return (
     <>
