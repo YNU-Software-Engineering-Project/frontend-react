@@ -24,7 +24,7 @@ function Chat() {
         );
         const decodedToken = JSON.parse(jsonPayload);
         const loggedInUserId = decodedToken.id;
-        console.log("userId",loggedInUserId);
+        // console.log("userId",loggedInUserId);
       } catch (error) {
         console.error('토큰 디코딩 실패:', error);
       }
@@ -33,7 +33,7 @@ function Chat() {
   //채탕방 선택
   const handleSelectChatRoom = (chatRoomId: number) => {
     setCurrentChatRoomId(chatRoomId);
-    console.log("chat.tsx",chatRoomId);
+    console.log("chat.tsx - roomId",chatRoomId);
   };
 
   return (

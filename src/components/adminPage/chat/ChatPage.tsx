@@ -74,6 +74,7 @@ function ChatPage({ chatRoomId }:{ chatRoomId: number; }) {
   }, [chatRoomId]);
 
   const sendMessage = () => {
+    console.log("page sendMessage chatRoomId",chatRoomId);
     if (stompClient && newMessage) {
       const chatMessage: ChatMessage = {
         senderId: loggedInUserId ?? 0,
@@ -85,7 +86,9 @@ function ChatPage({ chatRoomId }:{ chatRoomId: number; }) {
         destination: `/app/chat/rooms/${chatRoomId}/send`,
         body: JSON.stringify(chatMessage),
       });
-      console.log(messages);
+      console.log("page sendMessage chatMessage",JSON.stringify(chatMessage));
+      console.log("보낸 메세지",newMessage);
+      console.log("total 보낸 메세지",messages);
       setNewMessage("");
     }
   };

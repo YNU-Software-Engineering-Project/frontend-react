@@ -21,7 +21,7 @@ const SideNav: React.FC<SideNavProps> = ({ isOpen, onToogle }) => {
     { label: '마이페이지', key: 'myPage', path: '/mypage' },
     { label: '개시물 작성하기', key: 'createPage', path: '/CreatePage' },
     { label: '서비스 소개', key: 'termsOfService', path: '/termsOfService' },
-    { label: '로그아웃', key: 'logout', path: '/' },
+    { label: '로그아웃', key: 'logout', path: '/logout' },
   ];
 
   const [scrollPosition, setScrollPosition] = useState(0);

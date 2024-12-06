@@ -117,11 +117,13 @@ function Mypage() {
 
   const handleMypage = () => { //마이페이지 수정; susbit버튼 누를 시
     const formData = new FormData();
-    if (profileImage) {
-      formData.append('profileImage', profileImage);
-    }
+    // if (profileImage) {
+    //   formData.append('profileImage', profileImage);
+    // }
+    const profileImageString = profileImage ? profileImage : undefined;
     const requestData: ModifyProfilePayload = {
-      profileImage: profileImage ?? undefined, 
+      // profileImage: profileImage ?? undefined,
+      profileImage: profileImageString,  
       userInfo: {
         nickname,
         password,

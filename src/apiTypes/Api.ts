@@ -659,6 +659,39 @@ export class Api<
   /**
    * No description
    *
+<<<<<<< HEAD
+=======
+   * @tags SocialAuthController
+   * @name kakaoLogin
+   * @summary 소셜 로그인
+   * @request POST:/api/auth/oauth/kakao
+   * @response `200` `LoginData` 카카오 로그인 성공
+   * @response `400` `ResponseDto` Login information mismatch
+   */
+  kakaoLogin = (code: string) =>
+    this.request<LoginData, LoginError>({
+      path: `/api/auth/oauth/kakao`,
+      method: 'POST',
+      query: { code },
+    });
+  naverLogin = (code: string, params: RequestParams = {}) =>
+    this.request<LoginData, LoginError>({
+      path: `/api/auth/oauth/naver`,
+      method: 'POST',
+      query: { code },
+      ...params,
+    });    
+  goolgeLogin = (code: string, params: RequestParams = {}) =>
+    this.request<LoginData, LoginError>({
+      path: `/api/auth/oauth/google`,
+      method: 'POST',
+      query: { code },
+      ...params,
+    });  
+  /**
+   * No description
+   *
+>>>>>>> 4987f6d836440b97fc19f816cc28d267d7a0d182
    * @tags user-controller
    * @name ModifyProfile
    * @summary 사용자 프로필 수정
@@ -1492,7 +1525,7 @@ export class Api<
       method: 'POST',
       ...params,
     });
-    
+
   /** 채팅 관련 api
    * No description
    *

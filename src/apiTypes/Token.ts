@@ -34,4 +34,9 @@ export const Token = {
       },
     };
   },
+
+  // 토큰을 삭제
+  removeToken() {
+    localStorage.removeItem(Token.ACCESSTOKENKEY);
+  },
 };

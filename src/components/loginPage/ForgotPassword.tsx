@@ -23,7 +23,7 @@ function ForgotPassword() {
       .resetPassword(requestData)
       .then((response) => {
         //비밀번호 초기화 성공
-        console.log(response.data);
+        // console.log(response.data);
         setResetSuccess(true);
         setShowAlert(true);
       })
