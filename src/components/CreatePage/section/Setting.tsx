@@ -1,37 +1,77 @@
 import Modal from "components/CreatePage/modals/Modal";
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "styles/CreatePage/section/setting.module.css";
+import { useAtom } from 'jotai';
+import { fundingIdAtom } from 'components/CreatePage/atoms';
+import { Api } from "apiTypes/Api";
+import { useNavigate } from 'react-router-dom';
 
 const Setting = () => {
-  const [text, setText] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'submit' | 'cancel' | null>(null);
+  const [fundingId, setFundingId] = useAtom(fundingIdAtom);
+  const navigate = useNavigate();
+  const api = new Api();
 
   // 모달 열기 (제출 또는 포기)
   const openModal = (type: 'submit' | 'cancel') => {
     setModalType(type);
     setIsModalOpen(true);
   };
-
   // 모달 닫기
   const closeModal = () => {
     setIsModalOpen(false);
     setModalType(null);
   };
-
   // 제출하기 버튼의 처리 함수
   const handleSubmit = async () => {
-    console.log(text, '모두 저장되었습니다.');
-    closeModal(); // 모달 닫기
+    if (fundingId != null) {
+      api.submitFunding(fundingId)
+      .then((response) => {
+        setFundingId(null);
+        localStorage.removeItem('fundingId');
+        alert("저장 성공: 펀딩이 저장되었습니다.");
+        console.log("응답 데이터:", response.data);
+        navigate('/');
+      })
+      .catch(error => {
+        console.error("저장 실패:", error);
+        if (error.response) {
+          alert(`저장 실패: ${error.response.data.message || "서버 오류"}`);
+        } else {
+          alert("저장 실패: 네트워크 오류");
+        }
+      });
+      } else {
+        alert("펀딩 ID가 없습니다.");
+    }
+    closeModal();
   };
 
-  // 작성 포기하기 버튼의 처리 함수
   const handleCancel = async () => {
-    setText(''); // 작성된 내용을 초기화
-    console.log('게시물 작성이 취소되었습니다.');
-    closeModal(); // 모달 닫기
+    if (fundingId != null) {
+      api.giveupFunding(fundingId)
+      .then((response) => {
+        setFundingId(null);
+        localStorage.removeItem('fundingId');
+        alert("삭제 성공: 펀딩이 삭제되었습니다.");
+        console.log("응답 데이터:", response.data);
+        navigate('/');
+      })
+      .catch(error => {
+        console.error("삭제 실패:", error);
+        if (error.response) {
+          alert(`삭제 실패: ${error.response.data.message || "서버 오류"}`);
+        } else {
+          alert("삭제 실패: 네트워크 오류");
+        }
+      });
+      } else {
+        alert("펀딩 ID가 없습니다.");
+    }
+    closeModal();
   };
-
+  
   return (
     <>
       <div className={styles.wrapper}>

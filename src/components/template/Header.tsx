@@ -4,9 +4,6 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import styles from 'styles/template/Header.module.css';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Token } from 'apiTypes/Token';
-import { atom } from 'jotai';
-
-export const userRoleAtom = atom<string | null>(null);
 
 type HeaderProps = {
   isOpen: boolean;
@@ -22,38 +19,24 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
   };
   const handleProfileIcon = () => {
     const token = Token.getToken;
-    if (token){
-      //role 확인
-      const storedRole = localStorage.getItem('userRole');
-
-      if (storedRole === 'USER') {
-        navigate('/mypage');
-      } else if (storedRole === 'ADMIN') {
-        navigate('/admin');
-      } else {
-        navigate('/login');
-      }
-    }else {
-      localStorage.removeItem('userRole');
-      navigate('/login');
+    console.log(token);
+    if (token) {
+      // 로그인되어 있을 경우, 마이페이지로 이동
+      navigate('/mypage'); 
+    } else {
+      // 로그인되어 있지 않을 경우, 로그인 페이지로 이동
+      navigate('/login'); 
     }
   };
-  const handleAlarmIcon = () => {
+  const handleRegister = () => {
     const token = Token.getToken;
-    if (token){
-      //role 확인
-      const storedRole = localStorage.getItem('userRole');
-
-      if (storedRole === 'USER') {
-        navigate('/mypage/alarm');
-      } else if (storedRole === 'ADMIN') {
-        navigate('/admin/chat');
-      } else {
-        navigate('/login');
-      }
-    }else {
-      localStorage.removeItem('userRole');
-      navigate('/login');
+    console.log(token);
+    if (token) {
+      // 로그인되어 있을 경우, 등록하기로 이동
+      navigate('/CreatePage'); 
+    } else {
+      // 로그인되어 있지 않을 경우, 로그인 페이지로 이동
+      navigate('/login'); 
     }
   };
 
@@ -77,18 +60,20 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
           <Link to="/">SPARK+SEED</Link>
         </div>
         <div className={`${styles.etcBtn} ${isOpen ? styles.fade : ''}`}>
-          <div style={{cursor:'pointer'}} onClick={handleAlarmIcon}>
-            <NotificationsNoneIcon sx={{ fontSize: '48px' }} />
+          <div>
+            <Link to="/mypage/alarm">
+              <NotificationsNoneIcon sx={{ fontSize: '48px' }} />
+            </Link>
           </div>
           <div style={{cursor:'pointer'}} onClick={handleProfileIcon}>
-            
+            {/* 로그인 확인되면 라우팅 경로가 mypage로 바뀌어야함. */}
             
               <AccountCircleOutlinedIcon sx={{ fontSize: '48px' }} />
             
           </div>
-          <div>
+          <div style={{cursor:'pointer'}} onClick={handleRegister}>
             {/* 로그인 확인되면 라우팅 경로가 create로 바뀌어야함. */}
-            <Link to="/login">등록하기</Link>
+            등록하기
           </div>
         </div>
       </header>

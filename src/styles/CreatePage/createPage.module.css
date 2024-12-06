@@ -15,3 +15,12 @@
 .sectionContent{
     max-width: 885px;
 }
+textarea {
+    font-family: "GmarketSans" !important;
+    word-break: keep-all;
+}
+button{
+    font-family: "GmarketSans" !important;
+    word-break: keep-all;   
+    cursor: pointer;
+}

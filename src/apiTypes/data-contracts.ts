@@ -115,6 +115,16 @@ export interface DeleteFileResponseDto {
   message?: string;
 }
 
+export interface StoryContentDto {
+  content?: string;
+}
+
+export interface StoryImageResponseDto {
+  code?: string;
+  message?: string;
+  filename?: string;
+}
+
 export interface EmailSendTokenRequestDto {
   email: string;
 }
@@ -357,6 +367,7 @@ export interface GetProjectResponseDto {
   image_url?: string[];
   image_uuid?: string[];
   summary?: string;
+  story?: string;
 }
 
 export interface GetMRewardResponseDto {
@@ -734,6 +745,19 @@ export type GiveupFundingData = DeleteFileResponseDto;
 
 export type GiveupFundingError = ResponseDto;
 
+export type SavePostData = ResponseDto;
+
+export type SavePostError = ResponseDto;
+
+export interface UploadEditorImagePayload {
+  /** @format binary */
+  image: string;
+}
+
+export type UploadEditorImageData = StoryImageResponseDto;
+
+export type UploadEditorImageError = ResponseDto;
+
 export type SendEmailTokenData = ResponseDto;
 
 export type SendEmailTokenError = ResponseDto;
@@ -841,6 +865,10 @@ export type GetPolicyError = ResponseDto;
 export type GetInfoData = GetInfoResponseDto;
 
 export type GetInfoError = ResponseDto;
+
+export type PrintEditorImageData = string;
+
+export type PrintEditorImageError = string;
 
 export type RegisterData = ResponseDto;
 
