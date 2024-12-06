@@ -12,48 +12,6 @@ function PostManage() {
     title: string;
     status: '펀딩 진행 중' | '심사 중' | '심사 완료';
   }
-
-  const [cards] = useState<Card[]>([
-    { title: '펀딩 제목 1', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 2', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 3', status: '심사 중' },
-    { title: '펀딩 제목 4', status: '심사 완료' },
-    { title: '펀딩 제목 5', status: '심사 완료' },
-    { title: '펀딩 제목 6', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 7', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 8', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 9', status: '심사 완료' },
-    { title: '펀딩 제목 10', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 11', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 12', status: '심사 완료' },
-    { title: '펀딩 제목 13', status: '심사 완료' },
-    { title: '펀딩 제목 14', status: '심사 중' },
-    { title: '펀딩 제목 15', status: '심사 완료' },
-    { title: '펀딩 제목 16', status: '심사 중' },
-    { title: '펀딩 제목 17', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 18', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 19', status: '심사 중' },
-    { title: '펀딩 제목 20', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 21', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 22', status: '심사 완료' },
-    { title: '펀딩 제목 23', status: '심사 완료' },
-    { title: '펀딩 제목 24', status: '심사 중' },
-    { title: '펀딩 제목 25', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 26', status: '심사 완료' },
-    { title: '펀딩 제목 27', status: '심사 완료' },
-    { title: '펀딩 제목 28', status: '심사 중' },
-    { title: '펀딩 제목 29', status: '심사 중' },
-    { title: '펀딩 제목 30', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 31', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 32', status: '심사 완료' },
-    { title: '펀딩 제목 33', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 34', status: '심사 완료' },
-    { title: '펀딩 제목 35', status: '심사 중' },
-    { title: '펀딩 제목 36', status: '심사 완료' },
-    { title: '펀딩 제목 37', status: '펀딩 진행 중' },
-    { title: '펀딩 제목 38', status: '심사 완료' },
-    { title: '펀딩 제목 39', status: '펀딩 진행 중' },
-  ]);
   const [waitingCards, setWaitingCards] = useState<Card[]>([]);
   const [doneCards, setDoneCards] = useState<Card[]>([]);
   const [inProgressCards, setInProgressCards] = useState<Card[]>([]);

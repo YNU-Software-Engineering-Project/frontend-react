@@ -11,8 +11,6 @@ import google from 'assets/google.png';
 import kakao from 'assets/kakao.png';
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { atom } from 'jotai';
-import axios from 'axios';
-import * as jwt_decode from "jwt-decode";
 
 
 export const userRoleAtom = atom<string | null>(null);
@@ -22,7 +20,6 @@ function Login() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const api = new Api();
-  const jwt_decode = require("jwt-decode");
 
   const handleLogin = async () => {
     const requestData: LoginRequestDto = {
@@ -36,13 +33,32 @@ function Login() {
         // 로그인 성공
         const token = response.data.accessToken;
         const role = response.data.role ?? null;
-        console.log("role",role);
+        // console.log("role",role);
         if (token) Token.setToken = token;
         if (role) {
           localStorage.setItem('userRole', role);
         }
         alert('로그인 성공!');
-        console.log('Token set:', token);
+        // console.log('Token set:', token);
+
+        const p = Token.getToken?.split(' ')[1];
+        if (p) {
+          try {
+            const base64Url = p.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(
+              atob(base64)
+                .split('')
+                .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+                .join('')
+            );
+            const decodedToken = JSON.parse(jsonPayload);
+            // console.log("decodedToken",decodedToken);
+          } catch (error) {
+            console.error('토큰 디코딩 실패:', error);
+          }
+        }
+
         navigate('/');
       })
       .catch(error => {
@@ -117,15 +133,13 @@ function Login() {
 
         <div className={styles.api_login}>
           <button>
-            <img src={naver} 
-            // onClick={() => socialLogin('naver')}
+            <img src={naver}
             onClick={naverLogin}
             ></img>
           </button>
           <button>
             <img src={google} 
             onClick={googleLogin}
-            // onClick={googleLoginReact}
             ></img>
           </button>
           <button>

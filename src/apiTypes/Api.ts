@@ -629,7 +629,7 @@ export class Api<
     });    
   goolgeLogin = (code: string, params: RequestParams = {}) =>
     this.request<LoginData, LoginError>({
-      path: `/api/auth/oauth/naver`,
+      path: `/api/auth/oauth/google`,
       method: 'POST',
       query: { code },
       ...params,
@@ -1453,7 +1453,7 @@ export class Api<
       method: 'POST',
       ...params,
     });
-    
+
   /** 채팅 관련 api
    * No description
    *

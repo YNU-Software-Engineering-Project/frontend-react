@@ -22,14 +22,18 @@ const GoogleLoginCallback = () => {
   const code = params.get("code");
 
   const handleLoginPost = async (code: string) => {
-    const data = {
-      code: code,
-    };
+    // const data = {
+    //   code: code,
+    // };
     try {
-      const res = await axios.post(
-        "https://server.bageasy.net/auth/login",
-        data,
-      );
+      // const res = await axios.post(
+      //   // "https://server.bageasy.net/auth/login",
+      //   "/api/auth/oauth/google",
+      //   data,
+      // );
+      const res = await axios.post(`http://localhost:8080/api/auth/oauth/google`, null, {
+                  params: { code }
+                });
        // 토큰 localstorage에 저장
        const accessToken = res.data.accessToken;
        localStorage.setItem("bagtoken", accessToken);

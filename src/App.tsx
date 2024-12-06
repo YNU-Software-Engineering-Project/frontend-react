@@ -38,16 +38,19 @@ import Alarm from 'components/myPage/alarm/alarm';
 import Joined from 'components/myPage/joined/joined';
 import Myfunding from 'components/myPage/myfunding/myfunding';
 import WishList from 'components/myPage/wishList/wishList';
-import Chatting from 'components/myPage/chat/chatting';
 import KakaoLoginCallback from 'components/loginPage/social/KakaoLoginCallback';
 import GoogleLoginPage from 'components/loginPage/social/GoogleLoginPage';
 import NaverLoginCallback from 'components/loginPage/social/NaverLoginCallback';
 
 import SuccessPage from 'components/postPage/rewardModal/paymentSucess';
 import FailPage from 'components/postPage/rewardModal/paymentFail';
+import Logout from 'components/loginPage/logout';
+import Checking from 'components/loginPage/checking';
 
 function App() {
   return (
+    <>
+    <Checking /> {/* 토큰 존재 하는지 확인 후, 만료되면 로그인 페이지로 이동 */}
     <Routes>
       <Route element={<Template />}>
         <Route index element={<Homepage />} />
@@ -63,6 +66,9 @@ function App() {
 
         <Route path="/oauth/redirected/kakao" element={<KakaoLoginCallback />} />
         <Route path="/oauth/redirected/naver" element={<NaverLoginCallback />} />
+        <Route path="/oauth/redirected/google" element={<GoogleLoginPage />} />
+
+        <Route path="/logout" element={<Logout />} />
 
         <Route path="/mypage" element={<MyPageTemplate />}>
           <Route index element={<Mypage />} />
@@ -71,7 +77,6 @@ function App() {
           <Route path="myfunding" element={<Myfunding />} />
           <Route path="wishList" element={<WishList />} />
           <Route path="chatting" element={<Chat />} />
-          {/* <Route path="chatting" element={<Chatting />} /> */}
         </Route>
 
         <Route path="/post/:id" element={<PostPage />}>
@@ -118,6 +123,7 @@ function App() {
         </Route>
       </Route>
     </Routes>
+    </>
   );
 }
 

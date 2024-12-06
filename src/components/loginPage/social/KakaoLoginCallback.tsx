@@ -77,7 +77,7 @@ const KakaoLoginCallback = () => {
     const handleKakaoLogin = async () => {
       const query = new URLSearchParams(location.search);
       const code = query.get("code");
-      console.log("카카오 로그인 응답:", code);
+      // console.log("카카오 로그인 응답:", code);
 
       if (code) {
         try {
@@ -97,21 +97,21 @@ const KakaoLoginCallback = () => {
           }
 
           const responseData = await response.json();
-          console.log('API 응답:', responseData);
+          // console.log('API 응답:', responseData);
 
           const token = responseData.accessToken;
           const role = responseData.role ?? null;
 
           if (token) {
             Token.setToken = token.toString();
-            console.log('Access Token:', token);
+            // console.log('Access Token:', token);
           } else {
             console.error('Access Token이 없습니다.');
           }
 
           if (role) {
             localStorage.setItem('userRole', role);
-            console.log('Role:', role);
+            // console.log('Role:', role);
           } else {
             console.error('Role 정보가 없습니다.');
           }

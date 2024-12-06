@@ -5,6 +5,7 @@ import Pagination from 'components/myPage/Pagination';
 import PostCard from 'components/common/PostCard';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
+import { FundingDataDto } from 'apiTypes/data-contracts';
 
 const WishList = () => {
   const [page, setPage] = useState(0);
@@ -12,8 +13,9 @@ const WishList = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 4;
+  const [fundingData, setFundingData] = useState<FundingDataDto[]>([]);
 
-  const fundingData = [
+  const fundingDataEx = [
     {
       isExpired: false,
       avatarImgUrl: "A",
@@ -61,10 +63,13 @@ const WishList = () => {
     },
   ];
 
+  // const totalFundingCardsEx = fundingDataEx.length;
+  // const totalPagesEx = Math.ceil(totalFundingCardsEx / cardsPerPage);
   const totalFundingCards = fundingData.length;
   const totalPages = Math.ceil(totalFundingCards / cardsPerPage);
 
   const startIndex = (currentPage - 1) * cardsPerPage;
+  // const endIndexEx = Math.min(startIndex + cardsPerPage, totalFundingCardsEx);
   const endIndex = Math.min(startIndex + cardsPerPage, totalFundingCards);
 
   const api = new Api();
@@ -82,6 +87,8 @@ const WishList = () => {
       .getWishList(query, params)
       .then((response) => {
         //위시리스트 조회
+        // console.log(response);
+        setFundingData(response.data.data ?? []);
         alert('위시리스트 조회');
       })
       .catch(error => {
@@ -100,20 +107,40 @@ const WishList = () => {
       <ProfileMenuBar />
       <div className={styles.wishList}>
         <div className={styles.wishList_title}>내가 관심있는 상품들</div>
+
+        {fundingData.length === 0 ? (
+          <div className={styles.empty_funding}>관심 있는 상품이 없습니다.</div>
+        ) : (
         <div className={styles.funding_list_container}>
           <div className={styles.funding_card_list}>
-            {fundingData.slice(startIndex, endIndex).map((funding, index) => (
+            {/* {fundingDataEx.slice(startIndex, endIndexEx).map((funding, index) => (
               <PostCard key={index} {...funding} />
+            ))} */}
+            {fundingData.slice(startIndex, endIndex).map((funding, index) => (
+              <PostCard
+                key={funding.fundingId}
+                fundingId={funding.fundingId}
+                profileImage={funding.profileImage}
+                title={funding.title}
+                mainImage={funding.mainImage}
+                achievementRate={funding.achievementRate}
+                current={funding.state as "DRAFT" | "REVIEW" | "REVIEW_COMPLETED" | "ONGOING" | "CLOSED" | undefined}
+                details={funding.projectSummary}
+                tag={funding.tag}
+                likedByCurrentUser={funding.liked}
+              />
             ))}
           </div>
 
           <Pagination
             currentPage={currentPage} 
+            // totalPages={totalPagesEx}
             totalPages={totalPages} 
             onPageChange={setCurrentPage} 
           />
 
         </div>
+        )}
       </div>
     </div>
   );
