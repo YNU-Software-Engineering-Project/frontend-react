@@ -3,7 +3,7 @@ import styles from 'styles/CreatePage/sideBar.module.css';
 import { Link } from 'react-router-dom';
 import { Api } from 'apiTypes/Api';
 import { useAtom } from 'jotai';
-import { fundingIdAtom } from './atoms';
+import { fundingIdAtom } from 'components/CreatePage/atoms';
 
 const SideBar: React.FC = () => {
   const [fundingId] = useAtom(fundingIdAtom);

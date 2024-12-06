@@ -28,6 +28,17 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
       navigate('/login'); 
     }
   };
+  const handleRegister = () => {
+    const token = Token.getToken;
+    console.log(token);
+    if (token) {
+      // 로그인되어 있을 경우, 등록하기로 이동
+      navigate('/CreatePage'); 
+    } else {
+      // 로그인되어 있지 않을 경우, 로그인 페이지로 이동
+      navigate('/login'); 
+    }
+  };
 
   return (
     <>
@@ -60,9 +71,9 @@ const Header: React.FC<HeaderProps> = ({ isOpen, onToogle }) => {
               <AccountCircleOutlinedIcon sx={{ fontSize: '48px' }} />
             
           </div>
-          <div>
+          <div style={{cursor:'pointer'}} onClick={handleRegister}>
             {/* 로그인 확인되면 라우팅 경로가 create로 바뀌어야함. */}
-            <Link to="/login">등록하기</Link>
+            등록하기
           </div>
         </div>
       </header>

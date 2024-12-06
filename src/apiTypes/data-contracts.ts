@@ -751,7 +751,7 @@ export type SavePostError = ResponseDto;
 
 export interface UploadEditorImagePayload {
   /** @format binary */
-  image: File;
+  image: string;
 }
 
 export type UploadEditorImageData = StoryImageResponseDto;

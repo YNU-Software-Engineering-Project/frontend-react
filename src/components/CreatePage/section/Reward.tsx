@@ -23,7 +23,14 @@ const Reward = () => {
   const [fundingId] = useAtom(fundingIdAtom);
 
   const api = new Api();
-
+  // 컴포넌트가 마운트될 때 로컬 스토리지에서 `fundingId` 가져오기
+  useEffect(() => {
+    const savedId = localStorage.getItem('fundingId');
+    if (savedId) {
+      fundingId;
+      console.log("로컬 스토리지에서 불러온 fundingId:", savedId);
+    }
+  }, []);
   // `fundingId`가 유효한지 확인
   useEffect(()=>{
     if(fundingId)
@@ -80,17 +87,14 @@ const Reward = () => {
     setRewards([...rewards, reward]);
     setIsImageVisible(false); // 리워드 추가 시 이미지 숨김
   };
-
   // 모달 열기
   const openModal = () => {
     setIsModalOpen(true);
   };
-
   // 모달 닫기
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
   // 리워드 저장
   const saveReward = async (name: string, amount: string, description: string, quantity: string) => {
     const requestData: MakeRewardRequestDto = {
@@ -129,7 +133,6 @@ const Reward = () => {
     }
     else alert("펀딩 id 없음");
   };
-
   // 리워드 삭제
   const removeReward = async (id:number) => {
     if(fundingId!=null){

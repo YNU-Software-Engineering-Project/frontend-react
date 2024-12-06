@@ -4,9 +4,9 @@ import documentImg from "assets/documentFrame.png";
 import { FundingInfoRequestDto, InsertTagRequestDto, UploadDocumentPayload, UploadIDcardPayload } from "apiTypes/data-contracts";
 import { Api } from "apiTypes/Api";
 import { Token } from "apiTypes/Token";
-import { FileApi } from "apiTypes/File";
 import { useAtom } from 'jotai';
 import { fundingIdAtom } from "components/CreatePage/atoms";
+import axios from "axios";
 
 const categories = [
     { label: "캐릭터·굿즈", value: "캐릭터·굿즈" },
@@ -34,7 +34,7 @@ interface Tag {
 }
 
 const ProjectInfo =()=>{
-    const [selectedCategory, setSelectedCategory] = useState<string>('');
+    const [selectedCategory, setSelectedCategory] = useState<string>();
 
     const [tag, setTag] = useState<string>(''); // 태그 입력 값
     const [tags, setTags] = useState<Tag[]>([]); // 추가된 태그 리스트
@@ -54,17 +54,29 @@ const ProjectInfo =()=>{
     const [fundingId, setFundingId] = useAtom(fundingIdAtom);
 
     const api = new Api();
-    const storedFundingId = localStorage.getItem('fundingId');
-
+    
+    // 컴포넌트가 마운트될 때 로컬 스토리지에서 `fundingId` 가져오기
     useEffect(() => {
-        if (storedFundingId) {
-        setFundingId(Number(storedFundingId));
+        const savedId = localStorage.getItem('fundingId');
+        if (savedId) {
+        setFundingId(Number(savedId));
+        console.log("로컬 스토리지에서 불러온 fundingId:", savedId);
         }
+    }, []);
 
-        handleInfo();
-      }, []);
-
-    const handleInfo =()=>{
+    // `fundingId`가 설정되면 handleInfo 실행
+    useEffect(() => {
+        if (fundingId) {
+        handleInfo(fundingId);
+        // `fundingId`를 로컬 스토리지에 저장
+        localStorage.setItem('fundingId', String(fundingId));
+        }
+        else{
+            alert("대표자명, 대표자 이메일, 세금 계산서 발행 이메일을 먼저 작성해 주세요!")
+        }
+    }, [fundingId]);  
+    
+    const handleInfo =(fundingId: number)=>{
         if (fundingId) {
             // `fundingId`가 있을 때만 프로젝트 정보 불러오기
             api.getInfo(fundingId)
@@ -101,7 +113,6 @@ const ProjectInfo =()=>{
         if (!idCardInputRef.current) return;
         idCardInputRef.current.click();
     }
-    
     const onIdCardChangeHandler = (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
     
@@ -127,7 +138,6 @@ const ProjectInfo =()=>{
             alert("신분증 업로드 중 오류가 발생했습니다.");
         }
     }
-    
     const onIdCardCloseButtonClickHandler = () => { // 심사 서류 삭제
         if (!idCardInputRef.current) return;
         idCardInputRef.current.value = "";
@@ -149,13 +159,11 @@ const ProjectInfo =()=>{
             alert("신분증 삭제 중 오류가 발생했습니다.");
         }
     }
-
     //심사 서류
     const imageButtonHandler = () => {
         if (!imageInputRef.current) return;
         imageInputRef.current.click();
     };
-
     // 이미지 추가 핸들러 (이미지 업로드)
     const onImageChangeHandler = async (event: ChangeEvent<HTMLInputElement>) => {
         if (!event.target.files || !event.target.files.length) return;
@@ -184,7 +192,6 @@ const ProjectInfo =()=>{
             console.error("이미지 업로드 중 오류 발생:", error);
         }
     };
-    
     // 이미지 삭제 핸들러
     const onImageCloseButtonClickHandler = async (deleteIndex: number) => {
         try {
@@ -202,14 +209,13 @@ const ProjectInfo =()=>{
             console.error("이미지 삭제 중 오류 발생:", error);
         }
     };
-        
     //Tag
     const handleTagChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
         if (event.target.value.length <= 10) {
           setTag(event.target.value);
         }
     };
-        // 태그 추가 처리 함수
+    // 태그 추가 처리 함수
     const addTag = async () => {
         if (tag.trim() && tags.length < 5 && !tags.some(t => t.name === tag)) {
             const requestTag: InsertTagRequestDto = {
@@ -231,7 +237,7 @@ const ProjectInfo =()=>{
                             console.error('서버에서 유효한 tag_id를 반환하지 않았습니다.');
                         }
                         // 입력 필드 초기화
-                        // setTag('');
+                        setTag('');
                     }
                 } catch (error: any) {
                     console.error("태그 추가 실패:", error);
@@ -244,7 +250,6 @@ const ProjectInfo =()=>{
             }
         }
     };
-
     const removeTag = async (tagToRemove: Tag) => {
         try {
             const response = await api.deleteTag(tagToRemove.id); // 서버에서 받은 tag_id를 사용해서 삭제 요청
@@ -261,7 +266,6 @@ const ProjectInfo =()=>{
             alert("태그 삭제에 실패했습니다.");
         }
     };
-    
     const fetchTags = async () => {
         if (fundingId != null) {
             try {
@@ -287,12 +291,10 @@ const ProjectInfo =()=>{
             }
         }
     };
-    
     // 카테고리 변경 처리 함수
     const categoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         setSelectedCategory(event.target.value);
     };
-    
     const getMaxEndDate = () => {
         if (!firstDate) return ''; // 첫 날짜가 비어 있으면 최대 날짜도 비워둡니다.
         
@@ -301,22 +303,23 @@ const ProjectInfo =()=>{
         maxDate.setDate(first.getDate() + 60); // 첫 날짜로부터 60일 더하기
         return maxDate.toISOString().split('T')[0]; // YYYY-MM-DD 형식으로 변환
     };
-
     const handleSubmit = async () => {
         const dataToSend:FundingInfoRequestDto = {
-            category: selectedCategory,
-            organizer_name: name,
-            organizer_email: email,
-            tax_email: taxEmail,
-            target_amount: amount,
-            start_date: firstDate,
-            end_date: endDate,
+            category: selectedCategory || undefined,
+            organizer_name: name || undefined,
+            organizer_email: email || undefined,
+            tax_email: taxEmail || undefined,
+            target_amount: amount || undefined,
+            start_date: firstDate || undefined,
+            end_date: endDate || undefined
         };
-          const params = {
+        const params = {
             headers: {
                 Authorization: Token.getToken,
-            },
+        },
         };
+        console.log(dataToSend);
+        console.log(fundingId);
         if(fundingId!=null){
             api
             .modifyInfo(fundingId,dataToSend, params)
@@ -334,26 +337,36 @@ const ProjectInfo =()=>{
             })
         }
         else{
-            const headers = {
-                'Authorization': `Bearer ${Token.getToken}`  // Token.getToken()은 토큰을 반환해야 합니다.
-              };
             api.register(Token.getHeaderParms)
-                .then((response)=>{
-                    return api.registerFunding(dataToSend,Token.getHeaderParms);
-                })
-                .then((response) => {
-                    // registerFunding의 응답에서 펀딩 ID를 받아와 상태와 로컬 스토리지에 설정합니다.
-                    const newFundingId = response.data?.funding_id;
-                    if (newFundingId) {
-                        setFundingId(newFundingId);  // 상태로 설정
-                        alert("펀딩 게시물 생성이 성공적으로 완료되었습니다.");
-                    } else {
-                        throw new Error('펀딩 ID를 받을 수 없습니다.');
-                    }
+                .then(()=>{
+                    api.registerFunding(dataToSend,Token.getHeaderParms)
+                    .then((response) => {
+                        // registerFunding의 응답에서 펀딩 ID를 받아온다.
+                        const newFundingId = response.data?.funding_id;
+                        if (newFundingId) {
+                            setFundingId(newFundingId);  // 상태로 설정
+                            alert("펀딩 게시물 생성이 성공적으로 완료되었습니다.");
+                        } else {
+                            throw new Error('펀딩 ID를 받을 수 없습니다.');
+                        }
+                    })
+                    .catch((error) => {
+                        if (axios.isAxiosError(error) && error.response) {
+                            console.error("펀딩 등록 실패:", error.response.data);
+                            alert(`펀딩 등록 실패: ${error.response.data.message || '서버 오류'}`);
+                        } else {
+                            console.error("펀딩 등록 실패: 네트워크 오류", error);
+                            alert("펀딩 등록 중 네트워크 오류가 발생했습니다.");
+                        }
+                    });
                 })
                 .catch((error) => {
-                    console.error("펀딩 등록 실패:", error);
-                    alert("펀딩 등록 중 오류가 발생했습니다.");
+                    if (error.response && error.response.status === 400) {
+                        alert("학교 이메일 인증을 해주세요! (마이페이지->학교 이메일 인증)");
+                    } else {
+                        console.error("오류 발생:", error);
+                        alert("알 수 없는 오류가 발생했습니다.");
+                    }
                 });
         }
     };
@@ -364,7 +377,7 @@ const ProjectInfo =()=>{
             <div className={styles.title}>카테고리</div>
             <div className={styles.light}>카테고리를 하나 선택하세요. 카테고리를 상세하게 선택할수록 서포터가 프로젝트를 더 잘 찾을 수 있어요.<br/> 혹시, 중분류 카테고리에 원하는 항목이 없다면 해당 없음을 선택해 주세요.</div>
             <div className={styles.categoryBox}>
-                <select className={styles.categorySelect} style={{fontSize:'18px', width: '212px',height: '48px', backgroundColor:'#FAFAFA', borderRadius:'8px'}} value={selectedCategory || ''} onChange={categoryChange}>
+                <select className={styles.categorySelect} style={{ cursor:"pointer",fontSize:'18px', width: '212px',height: '48px', backgroundColor:'#FAFAFA', borderRadius:'8px'}} value={selectedCategory || ''} onChange={categoryChange}>
                     <option disabled value="">카테고리를 선택하세요</option>
                     {categories.map((category, index) => (
                         <option key={index} value={category.value}>
@@ -404,7 +417,7 @@ const ProjectInfo =()=>{
             {idCardUrl && (
                 <div style={{position:'relative'}}>
                     <img className={styles.img} src={idCardUrl} style={{width:'100%'}}/>
-                    <button style={{display:'flex', width:'30px', height:'30px', opacity:0.7, border:'none',position:'absolute', top:'20px', right:'20px', borderRadius:'50%',cursor: 'pointer',justifyContent:'center', alignItems:'center'}} onClick={onIdCardCloseButtonClickHandler}>X</button>
+                    <button style={{display:'flex', width:'30px', height:'30px', opacity:0.7, border:'none',position:'absolute', top:'20px', right:'20px', borderRadius:'50%',justifyContent:'center', alignItems:'center'}} onClick={onIdCardCloseButtonClickHandler}>X</button>
                 </div>
             )}
             <div className={styles.setOrganInfo}>
@@ -423,7 +436,7 @@ const ProjectInfo =()=>{
         <div className={styles.screenDocument}>
             <div className={styles.title}>심사 서류</div>
             <div className={styles.grayBox}>심사 서류는 앞으로 작성할 스토리 보드 내용이 허위가 아님을 증명하는 서류를 추가하시면 됩니다.</div>
-            <div style={{ cursor: "pointer", justifySelf: "center", alignSelf: "center" }} onClick={imageButtonHandler}>
+            <div style={{ cursor:"pointer", justifySelf: "center", alignSelf: "center" }} onClick={imageButtonHandler}>
                 <img className={styles.documentImg}src={documentImg}alt="document image"width="500px" style={{ display: "block" }}/>
             </div>
             <input ref={imageInputRef} type="file" accept="image/*" style={{ display: "none" }} onChange={onImageChangeHandler} />
@@ -433,7 +446,7 @@ const ProjectInfo =()=>{
                         {boardImageFileList[index]?.name || "이미지 이름을 알 수 없음"}
                         <button
                             style={{ display: "flex", width: "30px", height: "30px", opacity: 0.7, border: "none", position: "absolute",
-                                top: "20px", right: "20px", borderRadius: "50%", cursor: "pointer", justifyContent: "center", alignItems: "center",}} onClick={() => onImageCloseButtonClickHandler(index)}>X
+                                top: "20px", right: "20px", borderRadius: "50%", justifyContent: "center", alignItems: "center",}} onClick={() => onImageCloseButtonClickHandler(index)}>X
                         </button>
                     </div>
                 ))}
@@ -445,11 +458,11 @@ const ProjectInfo =()=>{
             <div style={{display:'flex', flexWrap:'wrap', gap: '20px'}}>
                 <div>
                     <p>시작 날짜를 고르시오.</p>
-                    <input type="date" id='firstDate' value={firstDate} max="2099-12-31" min="1999-01-01" onChange={(e) => setFirstDate(e.target.value)} style={{width:'380px', height: '28px',fontSize:'18px'}}></input>
+                    <input type="date" id='firstDate' value={firstDate} max="2099-12-31" min="1999-01-01" onChange={(e) => setFirstDate(e.target.value)} style={{width:'380px', height: '28px',fontSize:'18px',cursor:'pointer'}}></input>
                 </div>
                 <div>
                     <p>마감 날짜를 고르시오.</p>
-                    <input type="date" id='endDate' value={endDate} max={getMaxEndDate()} min={firstDate} onChange={(e) => setEndDate(e.target.value)} style={{width:'380px', height: '28px',fontSize:'18px'}}></input>
+                    <input type="date" id='endDate' value={endDate} max={getMaxEndDate()} min={firstDate} onChange={(e) => setEndDate(e.target.value)} style={{width:'380px', height: '28px',fontSize:'18px',cursor:'pointer'}}></input>
                 </div>
             </div>
         </div>

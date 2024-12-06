@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import styles from 'styles/CreatePage/section/story.module.css';
 import { Api } from 'apiTypes/Api';
-import { FundingStoryRequestDto, StoryContentDto, UploadEditorImageData, UploadEditorImagePayload, UploadImagesPayload, UploadMainPayload } from 'apiTypes/data-contracts';
+import { FundingStoryRequestDto, StoryContentDto, UploadImagesPayload, UploadMainPayload } from 'apiTypes/data-contracts';
 import { useAtom } from 'jotai';
-import { fundingIdAtom, projectNameAtom, mainImageAtom } from 'components/CreatePage/atoms';
+import { fundingIdAtom } from 'components/CreatePage/atoms';
 import { Editor } from '@toast-ui/editor';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import axios from 'axios';
 
 const Story = () => {
-  const [projectName, setProjectName] = useAtom(projectNameAtom);
-  const [projectSummary, setProjectSummary] = useState('');
-  const [imageUrls, setImageUrls] = useState<any[]>([]); // 소개 사진 등록용 이미지
-  const [boardImageFileList, setBoardImageFileList] = useState<string[]>([]); 
-  const [mainImage, setMainImg] = useAtom(mainImageAtom); // 대표 이미지
+  const [projectName, setProjectName] = useState<string>('');
+  const [projectSummary, setProjectSummary] = useState<string>('');
+  const [imageUrls, setImageUrls] = useState<any[]>([]); // 소개 사진 등록용 이미지 url
+  const [boardImageFileList, setBoardImageFileList] = useState<string[]>([]); // uuid
+  const [mainImage, setMainImg] = useState<string | null>(); // 대표 이미지
   const [fundingId] = useAtom(fundingIdAtom);
-  const editorRef = useRef<Editor | null>(null);
 
+  const editorRef = useRef<Editor | null>(null);
   const editorContainerRef = useRef<HTMLDivElement>(null);
   const mainImgRef = useRef<HTMLInputElement | null>(null);
   const imageRef = useRef<HTMLInputElement | null>(null);
@@ -24,7 +24,7 @@ const Story = () => {
   const api = new Api();
 
   useEffect(() => {
-    if (editorContainerRef.current && !editorRef.current) {
+    if (editorContainerRef.current && !editorRef.current && fundingId) {
       // 에디터가 아직 초기화되지 않았다면 초기화
       editorRef.current = new Editor({
         el: editorContainerRef.current,
@@ -33,46 +33,46 @@ const Story = () => {
         placeholder: '내용을 입력해 주세요.',
         previewStyle: 'vertical',
         hooks: {
-          addImageBlobHook: async (blob, callback) => {
+          addImageBlobHook: async (file, callback) => {
+            // FormData를 사용하여 이미지를 업로드합니다.
             const formData = new FormData();
-            formData.append("image", blob);
-
+            formData.append("image", file); // 이미지 파일을 formData에 추가합니다.
+      
             try {
-                const formData = new FormData();
-                formData.append("image", blob);
-
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/user/fundings/${fundingId}/editor/image-upload`, {
-                    method: "POST",
-                    body: formData
-                });
-
-                const responseData = await response.json(); // JSON 파싱
-                const filename = responseData.filename; // filename 필드 추출
-                // const filename = await response.text();
-
-                const imageUrl = `${process.env.NEXT_PUBLIC_API_URL}/api/user/fundings/editor/image-print/${filename}`;
-                callback(imageUrl, filename);
+              // axios를 사용하여 파일 업로드
+              const baseURL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+              const response = await axios.post(
+                `${baseURL}/api/user/fundings/${fundingId}/editor/image-upload`,
+                formData,
+                {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+                }
+              );
+      
+              // 서버에서 받은 filename 사용
+              const filename = response.data.filename; // 서버에서 반환된 파일 이름 필드 추출
+              const imageUrl = `${baseURL}/api/user/fundings/editor/image-print/${filename}`;
+      
+              // 에디터에 이미지 삽입 콜백 호출
+              callback(imageUrl, filename);
+              alert("이미지 업로드 성공");
             } catch (error) {
-                console.error("Image upload failed", error);
+              console.error("이미지 업로드 실패:", error);
             }
           }
-        },
+        }
       });
     }
-  handleProjectStory();
-    return () => {
-      if (editorRef.current) {
-        // editorRef.current.destroy();
-      }
-    };
+    handleProjectStory();
   }, []);
-
+  // 불러오기
   const handleProjectStory = () => {
     if (fundingId) {
       api.getProject(fundingId)
         .then((response) => {
           const storyData = response.data;
-          console.log("data: ",storyData.title, storyData.summary)
           setProjectName(storyData.title || "");
           setProjectSummary(storyData.summary || "");
           //에디터 인스턴스가 있을 때 storyData.story를 로드
@@ -81,6 +81,8 @@ const Story = () => {
           }
           setMainImg(storyData.main_url || "");
           setImageUrls(storyData.image_url || []);
+          setBoardImageFileList(storyData.image_uuid ? storyData.image_uuid: []);
+          // setImageUrls(storyData.image_url || []);
         })
         .catch((error) => {
           console.error("프로젝트 정보를 불러오는 중 오류 발생:", error);
@@ -88,12 +90,12 @@ const Story = () => {
         });
     }
   };
-
+  //메인 이미지 설정
   const mainImgClickHandler = () =>{
     if(!mainImgRef.current) return;
     mainImgRef.current.click();
   };
-
+  // 메인 이미지 추가 
   const addMainImageHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || !event.target.files.length) return;
 
@@ -119,7 +121,7 @@ const Story = () => {
       alert("메인 이미지 업로드 중 오류가 발생했습니다.");
     }
   };
-
+  //메인 이미지 삭제
   const mainImgDeleteHandler = () =>{
     if(!mainImgRef.current) return;
     mainImgRef.current.value = "";
@@ -139,12 +141,12 @@ const Story = () => {
       alert("메인 이미지 삭제 중 오류가 발생했습니다.");
     }
   };
-
+  // 소개 사진 설정
   const imageClickHandler = () => {
     if (!imageRef.current) return;
     imageRef.current.click();
   };
-  
+  // 소개 사진 추가
   const addImageHandler = async (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files || !event.target.files.length) return;
   
@@ -158,58 +160,76 @@ const Story = () => {
     try {
       if (fundingId) {
         const uploadedImageUrls: string[] = [];
-          for (const file of newFiles) {
+        const uploadedUuids: string[] = [];
+  
+        for (const file of newFiles) {
           const payload: UploadImagesPayload = {
             file,
           };
+  
           // 이미지 업로드 요청 보내기
           try {
             const imageResponse = await api.uploadImages(fundingId, payload);
+            const uuid = imageResponse.data.uuid_name;
             const url = imageResponse.data.url;
-
-            if (url) {
+  
+            if (uuid && url) {
               uploadedImageUrls.push(url);
-              setBoardImageFileList((prevFiles) => [...prevFiles, url]); // URL 문자열 추가
+              uploadedUuids.push(uuid);
             }
           } catch (error) {
             console.error("이미지 업로드 중 오류 발생:", error);
           }
         }
-        // 새로운 이미지 URL 배열로 업데이트
-        setImageUrls((prevUrls) => [...prevUrls, ...uploadedImageUrls]);
+        if (uploadedImageUrls.length === uploadedUuids.length) {
+          setImageUrls((prevUrls) => [...prevUrls, ...uploadedImageUrls]);
+          setBoardImageFileList((prevFiles) => [...prevFiles, ...uploadedUuids]);
+        } else {
+          alert("이미지 업로드 중 일부 실패했습니다. 다시 시도해 주세요.");
+        }
       }
     } catch (error) {
       console.error("소개 사진 업로드 중 오류 발생:", error);
     }
   };
   
-  const imageDeleteHandler = (deleteIndex:number) =>{
-    try{
-      const uuidName = imageUrls[deleteIndex];
-      if(uuidName){
-        api.deleteImage(uuidName)
-          .then((response)=>{
-            setImageUrls((prevUrls)=> prevUrls.filter((_, index)=> index !== deleteIndex));
-            setBoardImageFileList((prevFiles) => prevFiles.filter((_, index)=> index !== deleteIndex));
+  // 이미지 삭제 핸들러 (uuid 사용)
+  const imageDeleteHandler = (uuid: string) => {
+    try {
+      if (uuid) {
+        console.log("삭제할 uuid:", uuid);
+  
+        api.deleteImage(uuid)
+          .then(() => {
+            setImageUrls((prevUrls) =>
+              prevUrls.filter((_, index) => boardImageFileList[index] !== uuid)
+            );
+            setBoardImageFileList((prevFiles) =>
+              prevFiles.filter((fileUuid) => fileUuid !== uuid)
+            );
           })
+          .catch((error) => {
+            console.error("이미지 삭제 중 오류 발생:", error);
+            alert("이미지 삭제에 실패했습니다.");
+          });
       }
-    }catch(error){
-      console.log("소개 이미지 삭제 중 오류 발생:", error);
+    } catch (error) {
+      console.error("소개 이미지 삭제 중 오류 발생:", error);
     }
-  }
-
+  };
+  // 프로젝트 명 설정
   const handleNameChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length <= 20) {
       setProjectName(event.target.value);
     }
   };
-
+  //프로젝트 요약 설정
   const handleSummaryChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     if (event.target.value.length <= 100) {
       setProjectSummary(event.target.value);
     }
   };
-
+  // 저장하기 (제출하기)
   const handleSubmit = async () => {
     const editorContent = editorRef.current ? editorRef.current.getMarkdown() : '';
 
@@ -236,9 +256,6 @@ const Story = () => {
           }
         });
         api.savePost(fundingId,tuiData)
-        .then(()=>{
-          alert("tui saved");
-        })
         .catch(error=>{
           console.error("tui 저장 실패:", error);
           if (error.response) {
@@ -319,7 +336,7 @@ const Story = () => {
                 <img  src={imageUrl} style={{ width: '200px', height: '200px', objectFit: 'cover' }} />
                 <button
                   style={{ padding: '0', position: 'absolute', border: 'none', backgroundColor: 'transparent', left: '100%' }}
-                  onClick={() => imageDeleteHandler(index)}
+                  onClick={() => imageDeleteHandler(boardImageFileList[index])}
                 >
                   X
                 </button>
