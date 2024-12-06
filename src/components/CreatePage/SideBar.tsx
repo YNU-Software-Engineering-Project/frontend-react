@@ -41,14 +41,7 @@ const SideBar: React.FC = () => {
           }}
         />
         <div
-          className={styles.productName}
-          style={{
-            fontSize: '16px',
-            height: '57px',
-            alignContent: 'center',
-            padding: '35px 0',
-          }}
-        >
+          className={styles.productName} style={{ fontSize: '16px', height: '57px', alignContent: 'center', padding: '35px 0',}}>
           {projectName || '상품명'}
         </div>
       </div>
