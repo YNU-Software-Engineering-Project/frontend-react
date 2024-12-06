@@ -13,9 +13,7 @@ const RewardInfo = () => {
   return (
     <>
       <TuiViewer
-        content={
-          data.rewardInfo ? data.rewardInfo : '## 내용을 불러올 수 없습니다.'
-        }
+        content={data.rewardInfo ? data.rewardInfo : '## 리워드 정보입니다.'}
       />
     </>
   );

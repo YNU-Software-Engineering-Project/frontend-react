@@ -13,11 +13,7 @@ const Refund = () => {
   return (
     <>
       <TuiViewer
-        content={
-          data.refundPolicy
-            ? data.refundPolicy
-            : '## 내용을 불러올 수 없습니다.'
-        }
+        content={data.refundPolicy ? data.refundPolicy : '## 환불내용입니다.'}
       />
     </>
   );
