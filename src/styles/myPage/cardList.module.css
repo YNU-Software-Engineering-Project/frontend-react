@@ -26,3 +26,12 @@
     gap: 1rem;
     height: 969px;
 }
+
+.empty_funding{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70%;
+    width: 100%;
+    text-align: center;
+}

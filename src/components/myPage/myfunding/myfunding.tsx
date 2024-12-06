@@ -4,11 +4,14 @@ import styles from 'styles/myPage/myfunding.module.css';
 import { useState, useEffect } from 'react';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
+import { ShortFundingDataDto } from 'apiTypes/data-contracts';
 
 function Myfunding() {
-    const fund = [1000000];
+  const [todayAmount, setTodayAmount] = useState(0);
+  const [todayLikes, setTodayLikes] = useState(0);
+  const [fundingList, setFundingList] = useState<ShortFundingDataDto[]>([]);
 
-    const api = new Api();
+  const api = new Api();
   const [page, setPage] = useState(0);
   const [size, setSize] = useState(4);
   useEffect(() => {
@@ -25,6 +28,11 @@ function Myfunding() {
       .getMyFundingList(query, params)
       .then((response) => {
         //내 펀딩리스트 조회
+        // console.log(response.data); //debug
+        const { data=[], todayAmount=0, todayLikes=0 } = response.data;
+        setFundingList(data);
+        setTodayAmount(todayAmount);
+        setTodayLikes(todayLikes);
         alert('내 펀딩리스트 조회');
       })
       .catch(error => {
@@ -44,7 +52,15 @@ function Myfunding() {
             <div className={styles.myfunding_content}>
                 <div className={styles.title}>내 펀딩</div>
                 <div className={styles.myfunding_card}>
-                    <MyfundingCard />
+                    {/* <MyfundingCard /> */}
+                    {/* {fundingList.map((funding) => (
+            <MyfundingCard key={funding.fundingId} 
+            title={funding.title ?? ''} 
+            mainImage={funding.mainImage ?? ''} 
+            state={funding.state ?? ''} 
+            fundingId={funding.fundingId ?? 0} />
+          ))} */}
+          <MyfundingCard cards={fundingList} />
                 </div>
 
                 <div className={styles.myfunding_data}>
@@ -52,11 +68,11 @@ function Myfunding() {
                     <div className={styles.myfunding_data_content}>
                         <div className={styles.fund}>
                             <div>후원금</div>
-                            <div>${fund.toLocaleString()}</div>
+                            <div>{todayAmount !== 0 ? `$${todayAmount.toLocaleString()}` : '-'}</div>
                         </div>
                         <div className={styles.like}>
                             <div>좋아요</div>
-                            <div>-</div>
+                            <div>{todayLikes !== 0 ? `${todayLikes.toLocaleString()}` : '-'}</div>
                         </div>
                     </div>
                 </div>

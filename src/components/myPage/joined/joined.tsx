@@ -5,12 +5,15 @@ import Pagination from 'components/myPage/Pagination';
 import PostCard from 'components/common/PostCard';
 import { Api } from 'apiTypes/Api';
 import { Token } from 'apiTypes/Token';
+import { FundingDataDto } from 'apiTypes/data-contracts';
 
 const Joined = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const cardsPerPage = 4;
+  const [fundingData, setFundingData] = useState<FundingDataDto[]>([]);
+  const [totalPages, setTotalPages] = useState<number>(0);
 
-  const fundingData = [
+  const fundingDataEx = [
     {
       isExpired: false,
       avatarImgUrl: "A",
@@ -58,11 +61,12 @@ const Joined = () => {
     },
   ];
 
-  const totalFundingCards = fundingData.length;
-  const totalPages = Math.ceil(totalFundingCards / cardsPerPage);
+  const totalFundingCardsEx = fundingDataEx.length;
+  const totalPagesEx = Math.ceil(totalFundingCardsEx / cardsPerPage);
 
   const startIndex = (currentPage - 1) * cardsPerPage;
-  const endIndex = Math.min(startIndex + cardsPerPage, totalFundingCards);
+  // const endIndexEx = Math.min(startIndex + cardsPerPage, totalFundingCardsEx);
+  const endIndex = Math.min(startIndex + cardsPerPage, fundingData.length);
 
   const api = new Api();
   const [page, setPage] = useState(0);
@@ -81,6 +85,9 @@ const Joined = () => {
       .getPledgeList(query, params)
       .then((response) => {
         //참여한 펀딩리스트 조회
+        console.log(response);
+        setFundingData(response.data.data ?? []);
+        setTotalPages(response.data.totalPages ?? 0);
         alert('참여한 펀딩리스트 조회');
       })
       .catch(error => {
@@ -99,20 +106,29 @@ const Joined = () => {
       <ProfileMenuBar />
       <div className={styles.wishList}>
         <div className={styles.wishList_title}>내가 참여한 펀딩</div>
+
+        {fundingData.length === 0 ? (
+          <div className={styles.empty_funding}>참여한 펀딩이 없습니다.</div>
+        ) : (
         <div className={styles.funding_list_container}>
           <div className={styles.funding_card_list}>
-            {fundingData.slice(startIndex, endIndex).map((funding, index) => (
+            {/* {fundingDataEx.slice(startIndex, endIndexEx).map((funding, index) => (
               <PostCard key={index} {...funding} />
+            ))} */}
+            {fundingData.slice(startIndex, endIndex).map((funding, index) => (
+              <PostCard key={funding.fundingId} {...funding} /> 
             ))}
           </div>
 
           <Pagination
             currentPage={currentPage} 
+            // totalPages={totalPagesEx} 
             totalPages={totalPages} 
             onPageChange={setCurrentPage} 
           />
 
         </div>
+        )}
       </div>
     </div>
   );
