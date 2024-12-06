@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom';
 const Setting = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalType, setModalType] = useState<'submit' | 'cancel' | null>(null);
-  const [fundingId] = useAtom(fundingIdAtom);
+  const [fundingId, setFundingId] = useAtom(fundingIdAtom);
   const navigate = useNavigate();
   const api = new Api();
 
@@ -18,18 +18,18 @@ const Setting = () => {
     setModalType(type);
     setIsModalOpen(true);
   };
-
   // 모달 닫기
   const closeModal = () => {
     setIsModalOpen(false);
     setModalType(null);
   };
-
   // 제출하기 버튼의 처리 함수
   const handleSubmit = async () => {
     if (fundingId != null) {
       api.submitFunding(fundingId)
       .then((response) => {
+        setFundingId(null);
+        localStorage.removeItem('fundingId');
         alert("저장 성공: 펀딩이 저장되었습니다.");
         console.log("응답 데이터:", response.data);
         navigate('/');
@@ -52,6 +52,8 @@ const Setting = () => {
     if (fundingId != null) {
       api.giveupFunding(fundingId)
       .then((response) => {
+        setFundingId(null);
+        localStorage.removeItem('fundingId');
         alert("삭제 성공: 펀딩이 삭제되었습니다.");
         console.log("응답 데이터:", response.data);
         navigate('/');

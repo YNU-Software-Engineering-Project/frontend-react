@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "styles/CreatePage/section/policy.module.css";
-import { atom } from "jotai";
 import { PolicyRefundRequestDto, PolicyRewardRequestDto } from "apiTypes/data-contracts";
 import { Api } from "apiTypes/Api";
 import { useAtom } from 'jotai';
@@ -13,7 +12,7 @@ const Policy = () => {
   const rewardTextareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const api = new Api();
-  const [fundingId, setFundingId] = useAtom(fundingIdAtom);
+  const [fundingId] = useAtom(fundingIdAtom);
   
   useEffect(() => {
     handleProjectStory();
@@ -35,7 +34,6 @@ const Policy = () => {
       });
     }
   }
-
   // 공통된 textarea 높이 자동 조절 함수
   const textReSize = (
     e: React.ChangeEvent<HTMLTextAreaElement>, 
@@ -49,8 +47,7 @@ const Policy = () => {
       textareaRef.current.style.height = scrollHeight + "px"; // 자동 높이 조절
     }
   };
-
-  // API로 데이터를 저장하는 함수
+  // 리워드 정보 저장
   const rewardSubmit = async (content: string) => {
     const requestData: PolicyRewardRequestDto = {
       reward_info: content,
@@ -72,15 +69,14 @@ const Policy = () => {
     })
     }
   };
-
-    // API로 데이터를 저장하는 함수
-    const refundSubmit = async (content: string) => {
-      const requestData: PolicyRefundRequestDto = {
-        refund_policy: content,
-      };
+  // 환불 정책 저장
+  const refundSubmit = async (content: string) => {
+    const requestData: PolicyRefundRequestDto = {
+      refund_policy: content,
+    };
   
-      if(fundingId!=null){
-        api.insertRefundPolicy(fundingId,requestData)
+    if(fundingId!=null){
+      api.insertRefundPolicy(fundingId,requestData)
         .then((response)=>{
           alert("저장 성공: 펀딩 환불 정보가 저장되었습니다.");
           console.log("응답 데이터:", response.data);
@@ -93,8 +89,8 @@ const Policy = () => {
             alert("저장 실패: 네트워크 오류");
           }
         })
-      }
-};
+    }
+  };
 
   return (
     <div className={styles.wrapper}>

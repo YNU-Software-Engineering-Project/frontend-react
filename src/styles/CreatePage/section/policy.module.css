@@ -30,7 +30,7 @@
 .saveButton{
     width: fit-content;
     padding: 8px;
-    border: 1px solid #767676;
+    border: none;
     border-radius: 8px;
     justify-self: end;
 }
