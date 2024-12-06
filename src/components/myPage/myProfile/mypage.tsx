@@ -121,6 +121,7 @@ function Mypage() {
     //   formData.append('profileImage', profileImage);
     // }
     const profileImageString = profileImage ? profileImage : undefined;
+    const profileImageDebug = undefined;
     const requestData: ModifyProfilePayload = {
       // profileImage: profileImage ?? undefined,
       profileImage: profileImageString,  
